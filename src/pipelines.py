@@ -1,7 +1,7 @@
-# OWL Pipeline — production
+# oWL Pipeline — production
 # 강의 transcript을 KG로 변환하는 두 가지 파이프라인:
 #   - slide_anchored: 슬라이드 PART 구조 기반 (메인, slide_text 필요)
-#   - multi_stage:    slide 없을 때 fallback (KU 기반)
+#   - multi_stage: slide 없을 때 fallback (KU 기반)
 # 기타 실험 변종은 archive/ 참고
 
 import sys
@@ -9,7 +9,7 @@ import os
 import time
 import json
 
-# Add project root to path so we can import src modules
+# add project root to path so we can import src modules
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
@@ -17,7 +17,7 @@ if _PROJECT_ROOT not in sys.path:
 from src.prompt_loader import load_prompt
 from src.extract_edges import extract_edges, refine_edges
 
-# Registry
+# registry
 _PIPELINES = {}
 
 
@@ -43,30 +43,30 @@ def list_pipelines():
 # 파이프라인 기본 설정
 DEFAULT_CONFIG = {
     "pipeline": "slide_anchored",
-    # KU extraction
+    # kU extraction
     "ku_model": "gpt-5.2",
     "ku_temperature": 0.1,
     "ku_match_threshold": 0.5,
-    # Node construction
+    # node construction
     "node_model": "gpt-5.2",
     "node_temperature": 0.2,
-    # Strict edges
+    # strict edges
     "strict_model": "gpt-5.2",
     "strict_temperature": 0.1,
     "strict_similarity_threshold": 0.8,
     "include_strict": True,
-    # Soft edges
+    # soft edges
     "soft_model": "gpt-5.2",
     "soft_temperature": 0.2,
     "soft_default_confidence": 0.7,
     "include_soft": True,
-    # Refinement
+    # refinement
     "refine_temperature": 0.1,
-    # Slide
+    # slide
     "slide_text": None,
-    # Enrichment
+    # enrichment
     "enrich_graph": False,
-    # Edge types
+    # edge types
     "edge_types": [
         "defines", "requires", "explains", "details",
         "example_of", "contrasts", "drives",
@@ -74,20 +74,20 @@ DEFAULT_CONFIG = {
 }
 
 
-# Shared helper: enrich_graph
+# shared helper: enrich_graph
 #
-# Post-extraction enrichment step.  Adds student-facing explanations to
+# post-extraction enrichment step. Adds student-facing explanations to
 # every node and edge in the graph:
 #
-#   Node fields added:
-#     description     2–3 sentences explaining the concept for revision
-#     why_it_matters  1–2 sentences on why the concept matters in the lecture
+#   node fields added:
+#     description 2–3 sentences explaining the concept for revision
+#     why_it_matters 1–2 sentences on why the concept matters in the lecture
 #
-#   Edge fields added:
-#     reason          1–2 sentences explaining the logical / pedagogical link
+#   edge fields added:
+#     reason 1–2 sentences explaining the logical / pedagogical link
 #
-# Called by any pipeline that has config["enrich_graph"] = True.
-# Silently returns the original graph unchanged on any error.
+# called by any pipeline that has config["enrich_graph"] = True.
+# silently returns the original graph unchanged on any error.
 
 _GRAPH_ENRICH_SYSTEM = load_prompt("enrich_graph_system", """\
 You are improving a lecture knowledge graph for student readability.
@@ -187,7 +187,7 @@ def enrich_graph(
     model = config.get("node_model", "gpt-5.2")
     temperature = config.get("node_temperature", 0.2)
 
-    # Batch size: max items per LLM call to avoid context overload
+    # batch size: max items per LLM call to avoid context overload
     BATCH_SIZE = 20
 
     def _edge_from(e):
@@ -239,13 +239,13 @@ def enrich_graph(
     node_enrich_map = {}
     edge_enrich_map = {}
 
-    # Batch nodes
+    # batch nodes
     for i in range(0, max(len(nodes), 1), BATCH_SIZE):
         batch_n = nodes[i:i + BATCH_SIZE]
-        # Find edges connected to this batch of nodes
+        # find edges connected to this batch of nodes
         batch_node_ids = {n.get("id") for n in batch_n}
         batch_e = [e for e in edges if _edge_from(e) in batch_node_ids or _edge_to(e) in batch_node_ids]
-        # Cap edges per batch too
+        # cap edges per batch too
         batch_e = batch_e[:BATCH_SIZE]
 
         result = _enrich_batch(batch_n, batch_e)
@@ -260,7 +260,7 @@ def enrich_graph(
             if eid:  # only store if edge_id is non-empty
                 edge_enrich_map[eid] = item
 
-    # Handle any edges not covered by the node batches
+    # handle any edges not covered by the node batches
     enriched_edge_ids = set(edge_enrich_map.keys())
     remaining_edges = [e for e in edges if e.get("edge_id", "") not in enriched_edge_ids]
     if remaining_edges:
@@ -288,12 +288,12 @@ def enrich_graph(
     enriched_edges = []
     for e in edges:
         edge_copy = dict(e)
-        # Use edge_id as primary key; fall back to (from, to, edge_type) tuple
+        # use edge_id as primary key; fall back to (from, to, edge_type) tuple
         eid = e.get("edge_id", "")
         if eid and eid in edge_enrich_map:
             enrich = edge_enrich_map[eid]
         else:
-            # Fallback: match by endpoint+type for edges that lost their edge_id
+            # fallback: match by endpoint+type for edges that lost their edge_id
             fallback_key = (_edge_from(e), _edge_to(e), _edge_type(e))
             enrich = next(
                 (v for v in edge_enrich_map.values()
@@ -306,7 +306,7 @@ def enrich_graph(
 
     return {"nodes": enriched_nodes, "edges": enriched_edges}
 
-# Post-processing helpers (slide_anchored_full pipeline)
+# post-processing helpers (slide_anchored_full pipeline)
 
 def _split_transcript_sentences(transcript: str):
     """Split transcript into sentences for fuzzy matching"""
@@ -371,7 +371,7 @@ def _compute_ordering(nodes):
     for rank, n in enumerate(backbone_sorted, 1):
         n["lecture_order"] = rank
 
-    # Non-backbone nodes get None
+    # non-backbone nodes get None
     for n in nodes:
         if "lecture_order" not in n:
             n["lecture_order"] = None
@@ -404,8 +404,8 @@ def pipeline_slide_anchored(transcript: str, config):
     node_temp = config.get("node_temperature", 0.1)
 
     # ---- Step 1: Python — extract PART IDs from slide notes (no LLM call) ----
-    # Parses "PART I — Title" lines to get stable slide_anchor_ids.
-    # The FULL raw slide_text (Core Focus, Key Ideas, Why This Part Exists) goes
+    # parses "PART I — Title" lines to get stable slide_anchor_ids.
+    # FULL raw slide_text (Core Focus, Key Ideas, Why This Part Exists) goes
     # directly to the node extraction LLM — nothing is parsed away.
     t0 = time.time()
     part_ids = _extract_part_ids(slide_text)
@@ -414,7 +414,7 @@ def pipeline_slide_anchored(transcript: str, config):
     if not part_ids:
                 return {"nodes": [], "edges": [], "kus": [], "timing": {}, "error": "slide_anchored requires slide_text — use direct pipeline for transcript-only"}
 
-    # Upgrade to full section parse: gets core_focus, key_ideas, why_this_part_exists
+    # upgrade to full section parse: gets core_focus, key_ideas, why_this_part_exists
     sections = _extract_part_sections(slide_text)
     if not sections:
         # _extract_part_ids found some IDs but _extract_part_sections returned nothing
@@ -426,7 +426,7 @@ def pipeline_slide_anchored(transcript: str, config):
     valid_slide_ids = {s["section_id"] for s in sections}
     slide_title_map = {s["section_id"]: s["title"] for s in sections}
 
-    # Build structured {slide_sections_text} for the prompt
+    # build structured {slide_sections_text} for the prompt
     slide_sections_text = _format_slide_sections_text(sections)
 
     # ---- Step 2: COMBINED — structured slide sections + transcript → nodes ----
@@ -453,7 +453,7 @@ def pipeline_slide_anchored(transcript: str, config):
     raw_node_list = node_data.get("nodes", [])
 
     # ---- Step 3: Python — validate anchors, assign node IDs, build node dicts ----
-    # Also fuzzy-match sentence_index for each node
+    # also fuzzy-match sentence_index for each node
     transcript_sentences = _split_transcript_sentences(transcript)
 
     nodes = []
@@ -467,7 +467,7 @@ def pipeline_slide_anchored(transcript: str, config):
 
         if not label:
             continue
-        # Reject any node whose slide_anchor_id doesn't match — hallucination guard
+        # reject any node whose slide_anchor_id doesn't match — hallucination guard
         if anchor_id not in valid_slide_ids:
             continue
 
@@ -488,11 +488,11 @@ def pipeline_slide_anchored(transcript: str, config):
     if len(nodes) < 2:
                 return {"nodes": [], "edges": [], "kus": [], "timing": {}, "error": "slide_anchored requires slide_text — use direct pipeline for transcript-only"}
 
-    # Fuzzy-compute sentence_index per node
+    # fuzzy-compute sentence_index per node
     for n in nodes:
         n["sentence_index"] = _find_sentence_index(n["source_sentence"], transcript_sentences)
 
-    # Resolve parent_id: label → node ID
+    # resolve parent_id: label → node ID
     for n in nodes:
         parent_label = n.pop("_parent_label", "")
         if parent_label:
@@ -501,7 +501,7 @@ def pipeline_slide_anchored(transcript: str, config):
         else:
             n["parent_id"] = None
 
-    # Compute section_order and lecture_order
+    # compute section_order and lecture_order
     nodes = _compute_ordering(nodes)
 
     # ---- Step 4a: Edge extraction Pass 1 — Grounded/Explicit ----
@@ -514,7 +514,7 @@ def pipeline_slide_anchored(transcript: str, config):
     types_section = _build_edge_types_section(edge_types)
     edge_type_set = set(edge_types)
 
-    # Include slide_anchor_id so LLM knows which section each node belongs to
+    # include slide_anchor_id so LLM knows which section each node belongs to
     nodes_text = "\n".join(
         f"  {n['id']}: {n['label']}  [section: {n.get('slide_anchor_id', '?')}]"
         for n in nodes
@@ -631,8 +631,8 @@ def pipeline_slide_anchored(transcript: str, config):
 
     # ---- Step 5b: Cross-PART direction validation ----
     # "drives" edges where source PART > target PART are likely reversed.
-    # The LLM often confuses "A drives B" with "A is driven by B".
-    # Fix: auto-swap direction for suspicious backward "drives" edges.
+    # LLM often confuses "A drives B" with "A is driven by B".
+    # fix: auto-swap direction for suspicious backward "drives" edges.
     node_part_num = {}
     for n in nodes:
         sid = n.get("slide_anchor_id", "")
@@ -648,7 +648,7 @@ def pipeline_slide_anchored(transcript: str, config):
         src_part = node_part_num.get(e["from"], 0)
         tgt_part = node_part_num.get(e["to"], 0)
         if src_part > 0 and tgt_part > 0 and src_part > tgt_part:
-            # Swap direction: "A drives B" where A is later → flip to B drives A
+            # swap direction: "A drives B" where A is later → flip to B drives A
             e["from"], e["to"] = e["to"], e["from"]
             e["_direction_swapped"] = True
 
@@ -656,8 +656,8 @@ def pipeline_slide_anchored(transcript: str, config):
         e["edge_id"] = f"edge_{i + 1:03d}"
 
     # ---- Step 6 (optional): Enrichment pass ----
-    # Adds description + why_it_matters to nodes, reason to edges.
-    # Only runs when config["enrich_graph"] = True.
+    # adds description + why_it_matters to nodes, reason to edges.
+    # only runs when config["enrich_graph"] = True.
     if config.get("enrich_graph", False):
         t4 = time.time()
         enriched = enrich_graph(nodes, edges, transcript, config)
@@ -862,7 +862,7 @@ def pipeline_direct(transcript: str, config):
     model = config.get("node_model", "gpt-5.2")
     temperature = config.get("node_temperature", 0.2)
 
-    # Step 1: Node extraction (single LLM call)
+    # step 1: Node extraction (single LLM call)
     t0 = time.time()
     try:
         response = client.chat.completions.create(
@@ -881,7 +881,7 @@ def pipeline_direct(transcript: str, config):
 
     timing["node_extraction"] = round(time.time() - t0, 2)
 
-    # Python: assign IDs
+    # python: assign IDs
     raw_nodes = data.get("nodes", [])
     nodes = []
     for i, n in enumerate(raw_nodes):
@@ -903,7 +903,7 @@ def pipeline_direct(transcript: str, config):
         timing["total"] = round(sum(timing.values()), 2)
         return {"nodes": nodes, "edges": [], "kus": [], "timing": timing}
 
-    # Step 2: 2-pass edge extraction (reuses extract_edges from src)
+    # step 2: 2-pass edge extraction (reuses extract_edges from src)
     t1 = time.time()
     edges = extract_edges(transcript, nodes, knowledge_units=[], include_soft=True, config=config)
     timing["edge_extraction_2pass"] = round(time.time() - t1, 2)

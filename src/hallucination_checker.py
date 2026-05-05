@@ -1,5 +1,5 @@
 # 추출된 KG의 사실성 검증 (hallucination check).
-# Gemini + Google Search grounding으로 외부 사실과 비교 — transcript에 없다고 hallucination 아님 (강의는 일부만 다룸)
+# gemini + Google Search grounding으로 외부 사실과 비교 — transcript에 없다고 hallucination 아님 (강의는 일부만 다룸)
 import json
 import os
 import re
@@ -190,7 +190,7 @@ def _edge_is_grounded(e):
     return "confidence_score" not in e
 
 
-# LLM 프롬프트용 텍스트 포맷. 추출 단계 vs enrichment 단계 출처 표시해서 audit이 구분하게
+# lLM 프롬프트용 텍스트 포맷. 추출 단계 vs enrichment 단계 출처 표시해서 audit이 구분하게
 def _format_kg_for_prompt(nodes, edges):
     lines = []
     lines.append("### Nodes")

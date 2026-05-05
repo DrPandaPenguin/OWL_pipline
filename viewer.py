@@ -27,7 +27,7 @@ _GRAPHS_DIR = os.path.join(_PROJECT_ROOT, "graphs")
 
 
 # ---------------------------------------------------------------------------
-# Edge colors
+# edge colors
 # ---------------------------------------------------------------------------
 EDGE_COLORS: dict[str, str] = {
     "defines":    "#2196F3",
@@ -43,7 +43,7 @@ EDGE_COLORS: dict[str, str] = {
 
 
 # ---------------------------------------------------------------------------
-# Stylesheet
+# stylesheet
 # ---------------------------------------------------------------------------
 def _build_stylesheet() -> list[dict]:
     base = [
@@ -145,7 +145,7 @@ DAGRE_LAYOUT = {
 
 
 # ---------------------------------------------------------------------------
-# KG normalization + Cytoscape conversion
+# kG normalization + Cytoscape conversion
 # ---------------------------------------------------------------------------
 def normalize_kg(raw: dict) -> dict:
     nodes = []
@@ -193,7 +193,7 @@ def to_cytoscape_elements(kg: dict) -> list:
     elements: list[dict] = []
     node_ids = {n["id"] for n in nodes}
 
-    # Compound nodes (PART groups)
+    # compound nodes (PART groups)
     part_map: dict[str, str] = {}
     for n in nodes:
         sid = n.get("slide_anchor_id", "")
@@ -208,14 +208,14 @@ def to_cytoscape_elements(kg: dict) -> list:
             "classes": "compound",
         })
 
-    # Lecture order map for backbone numbering
+    # lecture order map for backbone numbering
     lecture_order_map: dict[str, int] = {}
     for n in nodes:
         lo = n.get("lecture_order")
         if lo is not None:
             lecture_order_map[n["id"]] = int(lo)
 
-    # Regular nodes
+    # regular nodes
     for n in nodes:
         nid = n["id"]
         is_bb = n.get("is_backbone", False)
@@ -244,7 +244,7 @@ def to_cytoscape_elements(kg: dict) -> list:
         cls = "node backbone" if is_bb else "node support"
         elements.append({"data": node_data, "classes": cls})
 
-    # Edges
+    # edges
     for i, e in enumerate(edges):
         src, tgt = e.get("source", ""), e.get("target", "")
         if src not in node_ids or tgt not in node_ids:
@@ -313,7 +313,7 @@ def _filter_edges_by_source(elements: list, edge_mode: str) -> list:
 
 
 # ---------------------------------------------------------------------------
-# KG helpers
+# kG helpers
 # ---------------------------------------------------------------------------
 def get_node_by_id(kg: dict, node_id: str) -> Optional[dict]:
     return next((n for n in kg.get("nodes", []) if n["id"] == node_id), None)
@@ -340,7 +340,7 @@ def section_title(kg: dict, section_id: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Graph loading
+# graph loading
 # ---------------------------------------------------------------------------
 def _load_graph(graph_id: str) -> Optional[dict]:
     safe_id = re.sub(r"[^\w\-]", "_", graph_id)
@@ -362,7 +362,7 @@ def _list_graphs() -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Edge legend
+# edge legend
 # ---------------------------------------------------------------------------
 def _edge_legend() -> html.Div:
     items = []
@@ -382,7 +382,7 @@ def _edge_legend() -> html.Div:
 
 
 # ---------------------------------------------------------------------------
-# Dash app
+# dash app
 # ---------------------------------------------------------------------------
 app = Dash(__name__, title="OWL Pipeline \u2013 Knowledge Graph Viewer")
 
@@ -449,7 +449,7 @@ def _viewer_page(graph_id: str) -> html.Div:
     n_edges = len(kg.get("edges", []))
 
     return html.Div([
-        # Header
+        # header
         html.Div([
             html.A("\u2190 All graphs", href="/",
                    style={"fontSize": "12px", "color": "#888", "textDecoration": "none",
@@ -461,9 +461,9 @@ def _viewer_page(graph_id: str) -> html.Div:
         ], style={"padding": "12px 16px", "borderBottom": "1px solid #ddd",
                   "backgroundColor": "#fafafa", "display": "flex", "alignItems": "center"}),
 
-        # Main: graph + inspector
+        # main: graph + inspector
         html.Div([
-            # Graph panel
+            # graph panel
             html.Div([
                 html.Div([
                     dcc.Input(
@@ -510,7 +510,7 @@ def _viewer_page(graph_id: str) -> html.Div:
                 ),
             ], style={"flex": "3", "padding": "12px", "minWidth": 0}),
 
-            # Inspector panel
+            # inspector panel
             html.Div([
                 html.H4("\U0001f50d Inspector",
                          style={"margin": "0 0 8px 0", "fontSize": "16px"}),
@@ -526,7 +526,7 @@ def _viewer_page(graph_id: str) -> html.Div:
             }),
         ], style={"display": "flex", "flexDirection": "row", "flexWrap": "wrap", "minHeight": "620px"}),
 
-        # Stores
+        # stores
         dcc.Store(id="kg-store", data=kg),
     ], style={"fontFamily": "system-ui, -apple-system, sans-serif",
               "maxWidth": "1400px", "margin": "0 auto"})
@@ -535,7 +535,7 @@ def _viewer_page(graph_id: str) -> html.Div:
 def serve_layout():
     from flask import has_request_context, request
     if not has_request_context():
-        # Dash validates layout at import time — return a placeholder
+        # dash validates layout at import time — return a placeholder
         return html.Div("Loading...")
     graph_id = request.args.get("graph")
     if graph_id:
@@ -548,7 +548,7 @@ app.config.suppress_callback_exceptions = True
 
 
 # ---------------------------------------------------------------------------
-# Callbacks
+# callbacks
 # ---------------------------------------------------------------------------
 
 @callback(
@@ -629,7 +629,7 @@ def update_inspector(node_data, edge_data, kg):
 
 
 # ---------------------------------------------------------------------------
-# Inspector rendering
+# inspector rendering
 # ---------------------------------------------------------------------------
 
 def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
@@ -644,7 +644,7 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
     _divider = html.Hr(style={"margin": "10px 0", "border": "none", "borderTop": "1px solid #e0e0e0"})
     children: list = []
 
-    # Badges
+    # badges
     badges = []
     type_color = "#1565C0" if node_type == "concept" else "#2E7D32"
     type_bg = "#E3F2FD" if node_type == "concept" else "#E8F5E9"
@@ -663,10 +663,10 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
         ))
     children.append(html.Div(badges, style={"marginBottom": "6px"}))
 
-    # Label
+    # label
     children.append(html.H3(label, style={"margin": "0 0 4px 0", "fontSize": "16px", "lineHeight": "1.3"}))
 
-    # Section
+    # section
     sec_title = node_data.get("slide_anchor_title", "")
     sec_id = node_data.get("slide_anchor_id", "")
     if sec_title or sec_id:
@@ -675,7 +675,7 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
             html.Span(sec_title or sec_id, style={"color": "#666"}),
         ], style={"fontSize": "12px", "margin": "0 0 4px 0"}))
 
-    # Parent
+    # parent
     if parent_id:
         parent_lbl = node_label(kg, parent_id) if kg else parent_id
         children.append(html.P([
@@ -683,7 +683,7 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
             html.Span(parent_lbl, style={"color": "#1565C0", "fontSize": "12px"}),
         ], style={"margin": "2px 0 0 0"}))
 
-    # Description
+    # description
     children.append(_divider)
     if description:
         children.append(html.P(description,
@@ -692,7 +692,7 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
         children.append(html.P("No description available.",
                                style={"fontSize": "12px", "color": "#aaa", "fontStyle": "italic", "marginBottom": "8px"}))
 
-    # Why it matters
+    # why it matters
     if why_it_matters:
         children.append(html.Div([
             html.P("\U0001f4a1 Why It Matters",
@@ -700,7 +700,7 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
             html.P(why_it_matters, style={"fontSize": "13px", "color": "#555", "lineHeight": "1.4", "margin": "0"}),
         ], style={"marginBottom": "4px", "borderLeft": "3px solid #FFA726", "paddingLeft": "8px"}))
 
-    # Relations
+    # relations
     children.append(_divider)
     children.append(_render_node_connections(nid, kg))
 
@@ -788,21 +788,21 @@ def _render_edge_card(edge_data: dict, kg: Optional[dict]) -> html.Div:
 
     children: list = []
 
-    # Edge type
+    # edge type
     line_label = "dashed" if is_inferred else "solid"
     children.append(html.Div([
         html.Span(rel, style={"color": color, "fontWeight": "bold", "fontSize": "15px"}),
         html.Span(f" \u2500\u2500 {line_label}", style={"fontSize": "11px", "color": "#888", "marginLeft": "8px"}),
     ]))
 
-    # From → To
+    # from → To
     children.append(html.P([
         html.Strong(src_lbl),
         html.Span(" \u2192 ", style={"color": "#888"}),
         html.Strong(tgt_lbl),
     ], style={"fontSize": "13px", "margin": "4px 0 12px 0"}))
 
-    # Justification
+    # justification
     if justification:
         children.append(html.Div([
             html.P("\U0001f4cc Justification",
@@ -811,7 +811,7 @@ def _render_edge_card(edge_data: dict, kg: Optional[dict]) -> html.Div:
                    style={"fontSize": "12px", "fontStyle": "italic", "color": "#555", "margin": "0"}),
         ], style={"marginBottom": "10px", "borderLeft": f"3px solid {color}", "paddingLeft": "8px"}))
 
-    # Reason
+    # reason
     if reason:
         children.append(html.Div([
             html.P("\U0001f4ac Reason",
@@ -822,7 +822,7 @@ def _render_edge_card(edge_data: dict, kg: Optional[dict]) -> html.Div:
         children.append(html.P("No explanation available.",
                                style={"fontSize": "12px", "color": "#aaa", "fontStyle": "italic", "marginBottom": "10px"}))
 
-    # Section
+    # section
     if evidence_section:
         sec_display = section_title(kg, evidence_section)
         children.append(html.P([
@@ -830,7 +830,7 @@ def _render_edge_card(edge_data: dict, kg: Optional[dict]) -> html.Div:
             html.Strong("Section: "), sec_display,
         ], style={"fontSize": "12px", "marginBottom": "4px"}))
 
-    # Confidence
+    # confidence
     if conf is not None and is_inferred:
         children.append(html.P([
             html.Strong("Confidence: "), f"{float(conf):.2f}",
@@ -840,7 +840,7 @@ def _render_edge_card(edge_data: dict, kg: Optional[dict]) -> html.Div:
 
 
 # ---------------------------------------------------------------------------
-# Run
+# run
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050))

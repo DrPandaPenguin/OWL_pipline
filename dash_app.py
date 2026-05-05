@@ -1,4 +1,4 @@
-# Dash 기반 그래프 viewer + 백그라운드 파이프라인 실행 UI.
+# dash 기반 그래프 viewer + 백그라운드 파이프라인 실행 UI.
 # - 좌: transcript/slide 입력 -> 파이프라인 실행 (background thread)
 # - 우: cytoscape로 KG 렌더링, 노드 클릭하면 description/edges 표시
 # 라우팅: ?graph=<id> 로 들어오면 viewer-only 레이아웃, 아니면 풀 레이아웃
@@ -15,7 +15,7 @@ from dash.exceptions import PreventUpdate
 import dash_cytoscape as cyto
 cyto.load_extra_layouts()  # enables dagre, cola, etc.
 
-# Path setup
+# path setup
 _PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 _SRC_DIR = os.path.join(_PROJECT_ROOT, "src")
 if _SRC_DIR not in sys.path:
@@ -28,11 +28,11 @@ from build_graph import build_graph as build_graph_src
 from hallucination_checker import check_hallucinations
 
 
-# Outputs directory
+# outputs directory
 _OUTPUTS_DIR = os.path.join(_PROJECT_ROOT, "outputs")
 
 
-# Edge colors
+# edge colors
 EDGE_COLORS = {
     "defines":    "#2196F3",   # blue
     "requires":   "#FF5722",   # deep orange
@@ -46,7 +46,7 @@ EDGE_COLORS = {
     "cross_lecture": "#FF6F00",  # dark amber (course map)
 }
 
-# Short display labels for edge types (cleaner on graph)
+# short display labels for edge types (cleaner on graph)
 EDGE_DISPLAY = {
     "defines":       "defines",
     "requires":      "requires",
@@ -84,7 +84,7 @@ def _build_stylesheet() -> list[dict]:
             },
         },
         # --- Backbone node — light fill with dark text + bold border for emphasis ---
-        # Previous design used dark fill + white text, which became hard to
+        # previous design used dark fill + white text, which became hard to
         # read when most nodes are backbone (typical: ~70%). Switching to a
         # readable mid-tone fill with dark text and a stronger blue border
         # keeps backbone visually distinct without sacrificing legibility.
@@ -151,7 +151,7 @@ def _build_stylesheet() -> list[dict]:
             },
         },
     ]
-    # Per-edge-type colors via raw_type data field
+    # per-edge-type colors via raw_type data field
     for edge_type, color in EDGE_COLORS.items():
         base.append({
             "selector": f"edge[raw_type='{edge_type}']",
@@ -172,7 +172,7 @@ DAGRE_LAYOUT = {
     "padding": 30,
 }
 
-# Fallback COSE layout (for graphs without PART structure)
+# fallback COSE layout (for graphs without PART structure)
 COSE_LAYOUT = {
     "name": "cose",
     "idealEdgeLength": 120,
@@ -192,7 +192,7 @@ COSE_LAYOUT = {
 }
 
 
-# KG normalization + Cytoscape conversion
+# kG normalization + Cytoscape conversion
 # 파이프라인마다 schema가 살짝 달라서 viewer가 쓰기 좋게 통일하는 함수
 def normalize_kg(raw: dict) -> dict:
     nodes = []
@@ -207,10 +207,10 @@ def normalize_kg(raw: dict) -> dict:
             "source_sentence": n.get("source_sentence") or n.get("label", ""),
             "slide_anchor_id": n.get("slide_anchor_id", ""),
             "slide_anchor_title": n.get("slide_anchor_title", ""),
-            # Enrichment fields (may be empty if enrich_graph() not run)
+            # enrichment fields (may be empty if enrich_graph() not run)
             "description": n.get("description", ""),
             "why_it_matters": n.get("why_it_matters", ""),
-            # Ordering fields
+            # ordering fields
             "lecture_order": n.get("lecture_order"),
             "section_order": n.get("section_order"),
         })
@@ -247,24 +247,24 @@ def to_cytoscape_elements(kg: dict) -> list:
     node_ids = {n["id"] for n in nodes}
 
     # --- PART compound nodes (hierarchy Level 1) ---
-    # Collect all unique slide_anchor_id + title pairs
+    # collect all unique slide_anchor_id + title pairs
     part_map = {}  # section_id → title
     for n in nodes:
         sid = n.get("slide_anchor_id", "")
         if sid and sid not in part_map:
             part_map[sid] = n.get("slide_anchor_title", sid)
 
-    # Sort by section_id for stable ordering
+    # sort by section_id for stable ordering
     for i, sid in enumerate(sorted(part_map.keys()), start=1):
         title = part_map[sid]
-        # Extract part number from sid (e.g. "part_005" → 5)
+        # extract part number from sid (e.g. "part_005" → 5)
         part_num = int(sid.split("_")[-1]) if sid.split("_")[-1].isdigit() else i
         elements.append({
             "data": {"id": f"compound_{sid}", "label": f"PART {part_num} — {title}"},
             "classes": "compound",
         })
 
-    # Build lecture_order map for backbone numbering
+    # build lecture_order map for backbone numbering
     lecture_order_map = {}
     for n in nodes:
         lo = n.get("lecture_order")
@@ -301,15 +301,15 @@ def to_cytoscape_elements(kg: dict) -> list:
             "lecture_order": n.get("lecture_order"),
             "section_order": n.get("section_order"),
         }
-        # Assign node to its PART compound parent
+        # assign node to its PART compound parent
         sid = n.get("slide_anchor_id", "")
         if sid and f"compound_{sid}" in {el["data"]["id"] for el in elements}:
             node_data["parent"] = f"compound_{sid}"
-        # CSS classes for backbone styling
+        # cSS classes for backbone styling
         cls = "node backbone" if is_bb else "node support"
         elements.append({"data": node_data, "classes": cls})
 
-    # Edges
+    # edges
     for i, e in enumerate(edges):
         src, tgt = e.get("source", ""), e.get("target", "")
         if src not in node_ids or tgt not in node_ids:
@@ -373,11 +373,11 @@ def _filter_edges_by_source(elements: list, edge_mode: str) -> list:
     result = []
     for el in elements:
         classes = el.get("classes", "")
-        # Keep anything that's not an edge
+        # keep anything that's not an edge
         if "edge" not in classes:
             result.append(el)
             continue
-        # Check edge_source in data
+        # check edge_source in data
         src = el.get("data", {}).get("edge_source", "")
         if edge_mode == "explicit" and src == "explicit":
             result.append(el)
@@ -389,8 +389,8 @@ def _filter_edges_by_source(elements: list, edge_mode: str) -> list:
     return result
 
 
-# Background pipeline
-# Output saving
+# background pipeline
+# output saving
 def _save_outputs(
     name: str,
     raw_nodes: list,
@@ -416,7 +416,7 @@ def _save_outputs(
     with open(os.path.join(out_dir, "graph.json"), "w", encoding="utf-8") as f:
         json.dump(kg, f, indent=2, ensure_ascii=False)
 
-    # Save transcript for downstream features (e.g. hallucination check
+    # save transcript for downstream features (e.g. hallucination check
     # in viewer mode). Stored as plain text to keep it human-inspectable.
     if transcript:
         with open(os.path.join(out_dir, "transcript.txt"), "w", encoding="utf-8") as f:
@@ -485,7 +485,7 @@ def build_pipeline_sync(transcript, name, pipeline_name, slide_text, model_name,
     return kg, orphan_info, save_path
 
 
-# Inspector helpers
+# inspector helpers
 def get_node_by_id(kg: dict, node_id: str):
     return next((n for n in kg.get("nodes", []) if n["id"] == node_id), None)
 
@@ -553,7 +553,7 @@ def _edge_legend() -> html.Div:
     })
 
 
-# Dash app + layout
+# dash app + layout
 app = Dash(__name__, title="OWL Pipeline – Knowledge Graph")
 app.config.suppress_callback_exceptions = True
 
@@ -570,7 +570,7 @@ def _build_full_layout() -> html.Div:
     html.Div([
         html.H3("OWL Pipeline – Knowledge Graph", style={"margin": "0 0 10px 0", "fontSize": "18px"}),
 
-        # Pipeline selector + Model selector (same row)
+        # pipeline selector + Model selector (same row)
         html.Div([
             html.Span("Pipeline: ", style={"fontSize": "12px", "marginRight": "6px", "color": "#555"}),
             dcc.Dropdown(
@@ -598,7 +598,7 @@ def _build_full_layout() -> html.Div:
             ),
         ], style={"display": "flex", "alignItems": "center", "marginBottom": "8px"}),
 
-        # API Key input (required when no server-side key is set)
+        # aPI Key input (required when no server-side key is set)
         html.Div([
             html.Span("🔑 API Key: ", style={"fontSize": "12px", "marginRight": "6px", "color": "#555"}),
             dcc.Input(
@@ -609,13 +609,13 @@ def _build_full_layout() -> html.Div:
                        "border": "1px solid #ccc", "borderRadius": "4px"},
             ),
             html.Span(
-                "✅ Server key set" if os.getenv("OPENAI_API_KEY") else "⚠️ Required to build graphs",
+                "Server key set" if os.getenv("OPENAI_API_KEY") else "required to build graphs",
                 style={"fontSize": "11px", "marginLeft": "8px",
                        "color": "#4CAF50" if os.getenv("OPENAI_API_KEY") else "#FF9800"},
             ),
         ], style={"display": "flex", "alignItems": "center", "marginBottom": "8px"}),
 
-        # Transcript name input + file upload
+        # transcript name input + file upload
         html.Div([
             dcc.Input(
                 id="transcript-name-input",
@@ -651,7 +651,7 @@ def _build_full_layout() -> html.Div:
             },
         ),
 
-        # Slide text input — shown only when slide_structure pipeline is selected
+        # slide text input — shown only when slide_structure pipeline is selected
         html.Div(
             id="slide-text-container",
             children=[
@@ -700,7 +700,7 @@ def _build_full_layout() -> html.Div:
     # ---- Main: graph (left) + inspector (right) ----
     html.Div([
 
-        # Graph panel
+        # graph panel
         html.Div([
             html.Div([
                 dcc.Input(
@@ -772,7 +772,7 @@ def _build_full_layout() -> html.Div:
             ),
         ], style={"flex": "3", "padding": "12px", "minWidth": 0}),
 
-        # Inspector panel
+        # inspector panel
         html.Div([
             html.Div([
                 html.H4("🔍 Inspector", style={"margin": "0", "display": "inline-block"}),
@@ -803,7 +803,7 @@ def _build_full_layout() -> html.Div:
 app.layout = _build_full_layout()
 
 
-# Callbacks
+# callbacks
 
 @callback(
     Output("kg-store", "data"),
@@ -820,12 +820,12 @@ app.layout = _build_full_layout()
     prevent_initial_call=True,
 )
 def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_text, model_name, user_api_key):
-    # Build 버튼 누르면 동기로 실행 — 끝날 때까지 페이지 멈춰있음
+    # build 버튼 누르면 동기로 실행 — 끝날 때까지 페이지 멈춰있음
     if not transcript or not transcript.strip():
-        return no_update, "⚠️ Empty input", no_update, no_update
+        return no_update, "empty input", no_update, no_update
     api_key = (user_api_key or "").strip() or os.getenv("OPENAI_API_KEY", "")
     if not api_key:
-        return no_update, "⚠️ No API key — enter your OpenAI key above", no_update, no_update
+        return no_update, "no API key — enter your OpenAI key above", no_update, no_update
 
     name = (name_input or "").strip() or datetime.now().strftime("transcript_%Y%m%d_%H%M%S")
     selected = pipeline_name or "slide_anchored"
@@ -835,15 +835,15 @@ def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_te
             (slide_text or "").strip(), model_name or "gpt-5.2", api_key,
         )
     except Exception as e:
-        return no_update, f"❌ {e}", None, no_update
+        return no_update, f"error: {e}", None, no_update
 
     if kg is None or not kg.get("nodes"):
-        return None, "⚠️ Pipeline produced no graph", None, no_update
+        return None, "pipeline produced no graph", None, no_update
 
     n, e = len(kg.get("nodes", [])), len(kg.get("edges", []))
     rel_path = os.path.relpath(save_path, _PROJECT_ROOT) if save_path else "—"
-    save_info = f"💾 Saved → {rel_path}/" if save_path else ""
-    return kg, f"✅ {n} nodes, {e} edges", orphan, save_info
+    save_info = f"saved: {rel_path}/" if save_path else ""
+    return kg, f"{n} nodes, {e} edges", orphan, save_info
 
 
 @callback(
@@ -870,17 +870,17 @@ def update_elements(kg, filter_kw, edge_mode, collapse_clicks):
     elements = filter_elements(elements, filter_kw)
     elements = _filter_edges_by_source(elements, edge_mode or "all")
 
-    # Collapse: hide child nodes + edges, show only compound + backbone
+    # collapse: hide child nodes + edges, show only compound + backbone
     collapsed = (collapse_clicks or 0) % 2 == 1
     if collapsed:
         visible_ids = set()
-        # Keep compound nodes and backbone nodes
+        # keep compound nodes and backbone nodes
         for el in elements:
             d = el.get("data", {})
             cls = el.get("classes", "")
             if "compound" in cls or "backbone" in cls:
                 visible_ids.add(d.get("id"))
-        # Filter: keep compound, backbone, edges between visible nodes
+        # filter: keep compound, backbone, edges between visible nodes
         filtered = []
         for el in elements:
             d = el.get("data", {})
@@ -910,7 +910,7 @@ def update_collapse_label(n_clicks):
     Input("fit-btn", "n_clicks"),
 )
 def update_layout(direction, _fit_clicks):
-    # Re-setting layout triggers Cytoscape to re-render and fit to viewport
+    # re-setting layout triggers Cytoscape to re-render and fit to viewport
     return {**DAGRE_LAYOUT, "rankDir": direction or "TB", "fit": True}
 
 
@@ -922,19 +922,19 @@ def update_layout(direction, _fit_clicks):
 )
 def update_inspector(node_data, edge_data, kg):
 
-    # Determine which input actually fired — tapNodeData and tapEdgeData
+    # determine which input actually fired — tapNodeData and tapEdgeData
     # both retain stale values, so we must check ctx.triggered_id.
     triggered = ctx.triggered_id if ctx.triggered_id else None
 
     if triggered == "cytoscape" and ctx.triggered:
-        # Figure out which property triggered the callback
+        # figure out which property triggered the callback
         prop_id = ctx.triggered[0]["prop_id"]  # e.g. "cytoscape.tapEdgeData"
         if "tapEdgeData" in prop_id and edge_data:
             return _render_edge_card(edge_data, kg)
         if "tapNodeData" in prop_id and node_data:
             return _render_node_card(node_data, kg)
 
-    # Fallback: if triggered by mode toggle, show whichever was last clicked
+    # fallback: if triggered by mode toggle, show whichever was last clicked
     if node_data and not edge_data:
         return _render_node_card(node_data, kg)
     if edge_data and not node_data:
@@ -959,16 +959,16 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
     children: list = []
 
     # ═══════════════════════════════════════════════════════════════
-    # BLOCK 1 — Identity: badges, label, section, parent
+    # bLOCK 1 — Identity: badges, label, section, parent
     # ═══════════════════════════════════════════════════════════════
-    # Extract node number from label "[N] ..." if present
+    # extract node number from label "[N] ..." if present
     import re as _re
     num_match = _re.match(r'\[(\d+)\]\s*(.*)', label)
     node_num = num_match.group(1) if num_match else ""
     clean_label = num_match.group(2) if num_match else label
 
     badges = []
-    # Node number badge — big and visible
+    # node number badge — big and visible
     if node_num:
         badges.append(html.Span(
             f"#{node_num}",
@@ -994,10 +994,10 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
         ))
     children.append(html.Div(badges, style={"marginBottom": "6px"}))
 
-    # Label (without number prefix)
+    # label (without number prefix)
     children.append(html.H3(clean_label, style={"margin": "0 0 4px 0", "fontSize": "16px", "lineHeight": "1.3"}))
 
-    # Section (lecture part)
+    # section (lecture part)
     sec_title = node_data.get("slide_anchor_title", "")
     sec_id = node_data.get("slide_anchor_id", "")
     if sec_title or sec_id:
@@ -1010,7 +1010,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
             html.Span(sec_text, style={"color": "#666"}),
         ], style={"fontSize": "12px", "margin": "0 0 4px 0"}))
 
-    # Parent
+    # parent
     if parent_id:
         parent_lbl = node_label(kg, parent_id) if kg else parent_id
         if is_debug:
@@ -1023,7 +1023,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
         ], style={"margin": "2px 0 0 0"}))
 
     # ═══════════════════════════════════════════════════════════════
-    # BLOCK 2 — Semantic: description, why_it_matters
+    # bLOCK 2 — Semantic: description, why_it_matters
     # ═══════════════════════════════════════════════════════════════
     children.append(_divider)
 
@@ -1042,13 +1042,13 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
         ], style={"marginBottom": "4px", "borderLeft": "3px solid #FFA726", "paddingLeft": "8px"}))
 
     # ═══════════════════════════════════════════════════════════════
-    # BLOCK 3 — Relations (outgoing / incoming, with fold)
+    # bLOCK 3 — Relations (outgoing / incoming, with fold)
     # ═══════════════════════════════════════════════════════════════
     children.append(_divider)
     children.append(_render_node_connections(nid, kg))
 
     # ═══════════════════════════════════════════════════════════════
-    # DEBUG panel (only in debug mode, visually separated)
+    # dEBUG panel (only in debug mode, visually separated)
     # ═══════════════════════════════════════════════════════════════
     if is_debug:
         children.append(html.Hr(style={"margin": "10px 0", "border": "none",
@@ -1208,7 +1208,7 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
             html.Strong("Section: "), sec_display,
         ], style={"fontSize": "12px", "marginBottom": "4px"}))
 
-    # General: show confidence only on inferred edges; Debug: always show
+    # general: show confidence only on inferred edges; Debug: always show
     if conf is not None and (is_inferred or is_debug):
         children.append(html.P([
             html.Strong("Confidence: "), f"{float(conf):.2f}",
@@ -1301,7 +1301,7 @@ def download_graph_json(n_clicks: int, kg, name_input):
     return dcc.send_string(json.dumps(kg, indent=2, ensure_ascii=False), filename)
 
 
-# Hallucination Checker callback
+# hallucination Checker callback
 
 @callback(
     Output("halluc-result", "children"),
@@ -1314,7 +1314,7 @@ def run_hallucination_check(n_clicks: int, kg, transcript):
     """Run Gemini-based hallucination check on the current KG + transcript"""
     if not kg or not transcript or not transcript.strip():
         return html.Div(
-            "⚠ Graph and transcript are both required for hallucination check.",
+            "graph and transcript are both required for hallucination check.",
             style={"color": "#E65100", "fontSize": "12px", "padding": "6px",
                    "backgroundColor": "#FFF3E0", "borderRadius": "4px"},
         )
@@ -1323,13 +1323,13 @@ def run_hallucination_check(n_clicks: int, kg, transcript):
         result = check_hallucinations(kg, transcript)
     except ValueError as e:
         return html.Div(
-            f"⚠ {e}",
+            f"error: {e}",
             style={"color": "#C62828", "fontSize": "12px", "padding": "6px",
                    "backgroundColor": "#FFEBEE", "borderRadius": "4px"},
         )
     except Exception as e:
         return html.Div(
-            f"⚠ Hallucination check failed: {e}",
+            f"hallucination check failed: {e}",
             style={"color": "#C62828", "fontSize": "12px", "padding": "6px",
                    "backgroundColor": "#FFEBEE", "borderRadius": "4px"},
         )
@@ -1342,13 +1342,13 @@ def run_hallucination_check(n_clicks: int, kg, transcript):
     severity_colors = {"high": "#C62828", "medium": "#E65100", "low": "#F9A825"}
     severity_bg = {"high": "#FFEBEE", "medium": "#FFF3E0", "low": "#FFFDE7"}
 
-    # Header
+    # header
     if not issues:
         header_color, header_bg = "#2E7D32", "#E8F5E9"
-        header_icon = "✅"
+        header_icon = "ok:"
     else:
         header_color, header_bg = "#E65100", "#FFF3E0"
-        header_icon = "⚠"
+        header_icon = "warn:"
 
     children = [
         html.Div([
@@ -1366,7 +1366,7 @@ def run_hallucination_check(n_clicks: int, kg, transcript):
                                    "margin": "6px 0 4px 0", "fontStyle": "italic"})
         )
 
-    # Issue list
+    # issue list
     for issue in issues:
         sev = issue.get("severity", "low")
         body_lines = [
@@ -1430,8 +1430,8 @@ def run_hallucination_check(n_clicks: int, kg, transcript):
 
 
 if __name__ == "__main__":
-    # PORT env var is set by Hugging Face Spaces (7860) and Railway/Render.
-    # Falls back to 8050 for local development.
+    # pORT env var is set by Hugging Face Spaces (7860) and Railway/Render.
+    # falls back to 8050 for local development.
     port = int(os.environ.get("PORT", 8050))
     debug = os.environ.get("HF_SPACE") is None  # disable debug on HF
     app.run(debug=debug, host="0.0.0.0", port=port)

@@ -1,4 +1,4 @@
-# OpenAI API 호출량/비용 추적용. install()로 한 번 monkey-patch 걸어두면 자동 집계됨
+# openAI API 호출량/비용 추적용. install()로 한 번 monkey-patch 걸어두면 자동 집계됨
 import time
 from collections import defaultdict
 
@@ -104,7 +104,7 @@ def report():
 _INSTALLED = False
 
 
-# OpenAI SDK의 chat.completions.create를 감싸서 호출 시점에 토큰 자동 집계
+# openAI SDK의 chat.completions.create를 감싸서 호출 시점에 토큰 자동 집계
 def install():
     global _INSTALLED
     if _INSTALLED:

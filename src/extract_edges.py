@@ -1,4 +1,4 @@
-# Edge 추출 (2-pass 구조)
+# edge 추출 (2-pass 구조)
 # - Strict: KU에 있는 문장을 근거로 한 grounded edge
 # - Soft: transcript 전체를 보고 추론한 interpretive edge (confidence_score 0~1)
 # - Refine: 위 결과를 LLM이 한 번 더 review해서 add/remove
@@ -204,7 +204,7 @@ def _sentence_similarity(a, b):
     return len(aw & bw) / len(union)
 
 
-# Strict edge 검증: justification_sentence가 실제 KU text에 (거의) 그대로 있어야 통과
+# strict edge 검증: justification_sentence가 실제 KU text에 (거의) 그대로 있어야 통과
 def _validate_strict_edge(edge, node_ids, ku_texts, config=None):
     cfg = config or {}
     fr = edge.get("from") or edge.get("source_node")
@@ -229,7 +229,7 @@ def _validate_strict_edge(edge, node_ids, ku_texts, config=None):
     return False
 
 
-# Soft edge 검증: justification_span이 transcript에 어느 정도 단어 겹치면 통과
+# soft edge 검증: justification_span이 transcript에 어느 정도 단어 겹치면 통과
 def _validate_soft_edge(edge, node_ids, transcript, config=None):
     cfg = config or {}
     fr = edge.get("from") or edge.get("source_node")
@@ -413,7 +413,7 @@ def extract_edges(transcript, nodes, knowledge_units=None, include_soft=True, co
     return combined
 
 
-# Edge Refinement Pass
+# edge Refinement Pass
 
 _EDGE_REFINE_SYSTEM = _load_prompt("edge_refine_system", (
     "You are a knowledge graph editor. "
@@ -475,7 +475,7 @@ Rules:
 """)
 
 
-# Refinement: 추출된 edge를 LLM이 다시 보고 잘못된 거 빼고 빠진 거 추가
+# refinement: 추출된 edge를 LLM이 다시 보고 잘못된 거 빼고 빠진 거 추가
 def refine_edges(transcript, nodes, edges, config=None):
     if not nodes or not edges or not transcript:
         return edges
