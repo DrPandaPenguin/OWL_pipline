@@ -1,8 +1,5 @@
-# oWL Pipeline — production
-# 강의 transcript을 KG로 변환하는 두 가지 파이프라인:
-#   - slide_anchored: 슬라이드 PART 구조 기반 (메인, slide_text 필요)
-#   - multi_stage: slide 없을 때 fallback (KU 기반)
-# 기타 실험 변종은 archive/ 참고
+# pipelines: slide_anchored (slides+transcript), direct (transcript only)
+# 실험 변종은 archive/
 
 import sys
 import os
@@ -74,20 +71,7 @@ DEFAULT_CONFIG = {
 }
 
 
-# shared helper: enrich_graph
-#
-# post-extraction enrichment step. Adds student-facing explanations to
-# every node and edge in the graph:
-#
-#   node fields added:
-#     description 2–3 sentences explaining the concept for revision
-#     why_it_matters 1–2 sentences on why the concept matters in the lecture
-#
-#   edge fields added:
-#     reason 1–2 sentences explaining the logical / pedagogical link
-#
-# called by any pipeline that has config["enrich_graph"] = True.
-# silently returns the original graph unchanged on any error.
+# enrich_graph: 노드에 description/why_it_matters, 엣지에 reason 추가 (config["enrich_graph"]=True일 때)
 
 _GRAPH_ENRICH_SYSTEM = load_prompt("enrich_graph_system", """\
 You are improving a lecture knowledge graph for student readability.
@@ -260,7 +244,7 @@ def enrich_graph(
             if eid:  # only store if edge_id is non-empty
                 edge_enrich_map[eid] = item
 
-    # handle any edges not covered by the node batches
+    # handle any edges not covered by teh node batches
     enriched_edge_ids = set(edge_enrich_map.keys())
     remaining_edges = [e for e in edges if e.get("edge_id", "") not in enriched_edge_ids]
     if remaining_edges:
@@ -403,10 +387,7 @@ def pipeline_slide_anchored(transcript: str, config):
     soft_model = config.get("soft_model", model)
     node_temp = config.get("node_temperature", 0.1)
 
-    # ---- Step 1: Python — extract PART IDs from slide notes (no LLM call) ----
-    # parses "PART I — Title" lines to get stable slide_anchor_ids.
-    # FULL raw slide_text (Core Focus, Key Ideas, Why This Part Exists) goes
-    # directly to the node extraction LLM — nothing is parsed away.
+    # step 1: PART id 추출 (Python 정규식, no LLM)
     t0 = time.time()
     part_ids = _extract_part_ids(slide_text)
     timing["slide_parse"] = round(time.time() - t0, 3)   # near-zero, Python only
@@ -418,7 +399,7 @@ def pipeline_slide_anchored(transcript: str, config):
     sections = _extract_part_sections(slide_text)
     if not sections:
         # _extract_part_ids found some IDs but _extract_part_sections returned nothing
-        # — treat part_ids as minimal sections
+        #  treat part_ids as minimal sections
         sections = [{"section_id": p["slide_id"], "title": p["title"],
                      "core_focus": "", "key_ideas": [], "why_this_part_exists": ""}
                     for p in part_ids]
@@ -426,10 +407,10 @@ def pipeline_slide_anchored(transcript: str, config):
     valid_slide_ids = {s["section_id"] for s in sections}
     slide_title_map = {s["section_id"]: s["title"] for s in sections}
 
-    # build structured {slide_sections_text} for the prompt
+    # bild structured {slide_sections_text} for teh prompt
     slide_sections_text = _format_slide_sections_text(sections)
 
-    # ---- Step 2: COMBINED — structured slide sections + transcript → nodes ----
+    # ---- Step 2: COMBINED structured slide sections + transcript → nodes ----
     t1 = time.time()
     try:
         resp2 = client.chat.completions.create(
@@ -452,7 +433,7 @@ def pipeline_slide_anchored(transcript: str, config):
 
     raw_node_list = node_data.get("nodes", [])
 
-    # ---- Step 3: Python — validate anchors, assign node IDs, build node dicts ----
+    # ---- Step 3: Python validate anchors, assign node IDs, bild node dicts ----
     # also fuzzy-match sentence_index for each node
     transcript_sentences = _split_transcript_sentences(transcript)
 
@@ -467,7 +448,7 @@ def pipeline_slide_anchored(transcript: str, config):
 
         if not label:
             continue
-        # reject any node whose slide_anchor_id doesn't match — hallucination guard
+        # reject any node whose slide_anchor_id doesn't match halusination guard
         if anchor_id not in valid_slide_ids:
             continue
 
@@ -504,7 +485,7 @@ def pipeline_slide_anchored(transcript: str, config):
     # compute section_order and lecture_order
     nodes = _compute_ordering(nodes)
 
-    # ---- Step 4a: Edge extraction Pass 1 — Grounded/Explicit ----
+    # ---- Step 4a: Edge extraction Pass 1 Grounded/Explicit ----
     from src.extract_edges import (
         _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to,
     )
@@ -545,7 +526,7 @@ def pipeline_slide_anchored(transcript: str, config):
         return {"nodes": nodes, "edges": [], "kus": [], "timing": timing, "error": f"Edge Pass 1 failed: {e}"}
     timing["edge_pass1"] = round(time.time() - t2, 2)
 
-    # ---- Step 4b: Edge extraction Pass 2 — Soft/Inferred ----
+    # ---- Step 4b: Edge extraction Pass 2 Soft/Inferred ----
     pass1_edges_text = "\n".join(
         f"  {e.get('from')} → {e.get('edge_type')} → {e.get('to')}: {e.get('justification', '')[:80]}"
         for e in raw_pass1
@@ -575,7 +556,7 @@ def pipeline_slide_anchored(transcript: str, config):
         raw_pass2 = []  # Pass 2 failure is non-fatal
     timing["edge_pass2"] = round(time.time() - t2b, 2)
 
-    # ---- Step 5: Python — validate, assign edge_source, build edge dicts ----
+    # ---- Step 5: Python validate, assign edge_source, bild edge dicts ----
     node_ids = {n["id"] for n in nodes}
     edges = []
 
@@ -629,10 +610,7 @@ def pipeline_slide_anchored(transcript: str, config):
                 seen_edges.add(key)
                 edges.append(e)
 
-    # ---- Step 5b: Cross-PART direction validation ----
-    # "drives" edges where source PART > target PART are likely reversed.
-    # LLM often confuses "A drives B" with "A is driven by B".
-    # fix: auto-swap direction for suspicious backward "drives" edges.
+    # step 5b: drives edge 방향 자동 보정 (PART 시간순 역방향이면 swap)
     node_part_num = {}
     for n in nodes:
         sid = n.get("slide_anchor_id", "")
@@ -655,9 +633,7 @@ def pipeline_slide_anchored(transcript: str, config):
     for i, e in enumerate(edges):
         e["edge_id"] = f"edge_{i + 1:03d}"
 
-    # ---- Step 6 (optional): Enrichment pass ----
-    # adds description + why_it_matters to nodes, reason to edges.
-    # only runs when config["enrich_graph"] = True.
+    # step 6 (optional): enrichment 추가 (config["enrich_graph"]=True일때)
     if config.get("enrich_graph", False):
         t4 = time.time()
         enriched = enrich_graph(nodes, edges, transcript, config)
@@ -903,7 +879,7 @@ def pipeline_direct(transcript: str, config):
         timing["total"] = round(sum(timing.values()), 2)
         return {"nodes": nodes, "edges": [], "kus": [], "timing": timing}
 
-    # step 2: 2-pass edge extraction (reuses extract_edges from src)
+    # step 2: 2 pass edge extraction (reuses extract_edges from src)
     t1 = time.time()
     edges = extract_edges(transcript, nodes, knowledge_units=[], include_soft=True, config=config)
     timing["edge_extraction_2pass"] = round(time.time() - t1, 2)

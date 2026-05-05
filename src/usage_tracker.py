@@ -3,7 +3,7 @@ import time
 from collections import defaultdict
 
 
-# 1M 토큰당 USD (input/output 분리) — 가격은 OpenAI 페이지 참고
+# 1M 토큰당 USD (input/output 분리) 가격은 OpenAI 페이지 참고
 _PRICES_PER_M = {
     "gpt-5.2":     {"in": 1.25, "out": 10.00},
     "gpt-5.4":     {"in": 1.25, "out": 10.00},

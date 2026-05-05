@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# cLI 진입점: input/<course>/<lecture>/ 폴더의 transcript(+slides)을 읽어
+# CLI 진입점: input/<course>/<lecture>/ 폴더의 transcript(+slides)을 읽어
 # 파이프라인 돌려서 graphs/<course>_<lecture>.json 으로 저장.
 # viewer (dash_app)에서 ?graph=<name> 쿼리로 바로 띄움.
 import argparse

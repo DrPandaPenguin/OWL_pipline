@@ -1,7 +1,4 @@
-# dash 기반 그래프 viewer + 백그라운드 파이프라인 실행 UI.
-# - 좌: transcript/slide 입력 -> 파이프라인 실행 (background thread)
-# - 우: cytoscape로 KG 렌더링, 노드 클릭하면 description/edges 표시
-# 라우팅: ?graph=<id> 로 들어오면 viewer-only 레이아웃, 아니면 풀 레이아웃
+# dash builder UI
 import base64
 import json
 import os
@@ -63,7 +60,7 @@ EDGE_DISPLAY = {
 
 def _build_stylesheet() -> list[dict]:
     base = [
-        # --- Default node (support) — light fill, dark text ---
+        # --- Defult node (support) light fill, dark text ---
         {
             "selector": "node",
             "style": {
@@ -83,11 +80,7 @@ def _build_stylesheet() -> list[dict]:
                 "color": "#111827",
             },
         },
-        # --- Backbone node — light fill with dark text + bold border for emphasis ---
-        # previous design used dark fill + white text, which became hard to
-        # read when most nodes are backbone (typical: ~70%). Switching to a
-        # readable mid-tone fill with dark text and a stronger blue border
-        # keeps backbone visually distinct without sacrificing legibility.
+        # backbone node (덜 진한 fill + 굵은 border)
         {
             "selector": "node.backbone",
             "style": {
@@ -116,7 +109,7 @@ def _build_stylesheet() -> list[dict]:
                 "color": "#444",
             },
         },
-        # --- Default edge ---
+        # --- Defult edge ---
         {
             "selector": "edge",
             "style": {
@@ -131,7 +124,7 @@ def _build_stylesheet() -> list[dict]:
                 "opacity": 0.9,
             },
         },
-        # --- Inferred edge — dashed line ---
+        # --- Inferred edge dashed line ---
         {
             "selector": "edge.inferred-edge",
             "style": {
@@ -192,7 +185,7 @@ COSE_LAYOUT = {
 }
 
 
-# kG normalization + Cytoscape conversion
+# KG normalization + Cytoscape conversion
 # 파이프라인마다 schema가 살짝 달라서 viewer가 쓰기 좋게 통일하는 함수
 def normalize_kg(raw: dict) -> dict:
     nodes = []
@@ -257,21 +250,21 @@ def to_cytoscape_elements(kg: dict) -> list:
     # sort by section_id for stable ordering
     for i, sid in enumerate(sorted(part_map.keys()), start=1):
         title = part_map[sid]
-        # extract part number from sid (e.g. "part_005" → 5)
+        # extreact part number from sid (e.g. "part_005" → 5)
         part_num = int(sid.split("_")[-1]) if sid.split("_")[-1].isdigit() else i
         elements.append({
             "data": {"id": f"compound_{sid}", "label": f"PART {part_num} — {title}"},
             "classes": "compound",
         })
 
-    # build lecture_order map for backbone numbering
+    # bild lecture_order map for backbone numbering
     lecture_order_map = {}
     for n in nodes:
         lo = n.get("lecture_order")
         if lo is not None:
             lecture_order_map[n["id"]] = int(lo)
 
-    # --- Build global node numbering (by section_order then lecture_order) ---
+    # --- Bild global node numbering (by section_order then lecture_order) ---
     sorted_nodes = sorted(nodes, key=lambda n: (
         n.get("section_order") or 999,
         n.get("lecture_order") or 999,
@@ -280,7 +273,7 @@ def to_cytoscape_elements(kg: dict) -> list:
     for idx, n in enumerate(sorted_nodes, start=1):
         node_number_map[n["id"]] = idx
 
-    # --- Regular nodes (assigned to PART compound parent) ---
+    # --- Regular nodes (assigned to PART compound parente) ---
     for n in nodes:
         nid = n["id"]
         is_bb = n.get("is_backbone", False)
@@ -301,11 +294,11 @@ def to_cytoscape_elements(kg: dict) -> list:
             "lecture_order": n.get("lecture_order"),
             "section_order": n.get("section_order"),
         }
-        # assign node to its PART compound parent
+        # assign node to its PART compound parente
         sid = n.get("slide_anchor_id", "")
         if sid and f"compound_{sid}" in {el["data"]["id"] for el in elements}:
             node_data["parent"] = f"compound_{sid}"
-        # cSS classes for backbone styling
+        # CSS classes for backbone styling
         cls = "node backbone" if is_bb else "node support"
         elements.append({"data": node_data, "classes": cls})
 
@@ -384,7 +377,7 @@ def _filter_edges_by_source(elements: list, edge_mode: str) -> list:
         elif edge_mode == "inferred" and src == "inferred":
             result.append(el)
         elif edge_mode == "explicit" and src == "enriched":
-            # enriched edges are based on explicit — include them
+            # enriched edges are based on explicit include them
             result.append(el)
     return result
 
@@ -416,7 +409,7 @@ def _save_outputs(
     with open(os.path.join(out_dir, "graph.json"), "w", encoding="utf-8") as f:
         json.dump(kg, f, indent=2, ensure_ascii=False)
 
-    # save transcript for downstream features (e.g. hallucination check
+    # save transcript for downstream features (e.g. halusination check
     # in viewer mode). Stored as plain text to keep it human-inspectable.
     if transcript:
         with open(os.path.join(out_dir, "transcript.txt"), "w", encoding="utf-8") as f:
@@ -598,7 +591,7 @@ def _build_full_layout() -> html.Div:
             ),
         ], style={"display": "flex", "alignItems": "center", "marginBottom": "8px"}),
 
-        # aPI Key input (required when no server-side key is set)
+        # API Key input (required when no server-side key is set)
         html.Div([
             html.Span("🔑 API Key: ", style={"fontSize": "12px", "marginRight": "6px", "color": "#555"}),
             dcc.Input(
@@ -651,7 +644,7 @@ def _build_full_layout() -> html.Div:
             },
         ),
 
-        # slide text input — shown only when slide_structure pipeline is selected
+        # slide text input shown only when slide_structure pipeline is selected
         html.Div(
             id="slide-text-container",
             children=[
@@ -820,7 +813,7 @@ app.layout = _build_full_layout()
     prevent_initial_call=True,
 )
 def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_text, model_name, user_api_key):
-    # build 버튼 누르면 동기로 실행 — 끝날 때까지 페이지 멈춰있음
+    # bild 버튼 누르면 동기로 실행 끝날 때까지 페이지 멈춰있음
     if not transcript or not transcript.strip():
         return no_update, "empty input", no_update, no_update
     api_key = (user_api_key or "").strip() or os.getenv("OPENAI_API_KEY", "")
@@ -922,7 +915,7 @@ def update_layout(direction, _fit_clicks):
 )
 def update_inspector(node_data, edge_data, kg):
 
-    # determine which input actually fired — tapNodeData and tapEdgeData
+    # determine which input actually fired tapNodeData and tapEdgeData
     # both retain stale values, so we must check ctx.triggered_id.
     triggered = ctx.triggered_id if ctx.triggered_id else None
 
@@ -958,17 +951,15 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
     _divider = html.Hr(style={"margin": "10px 0", "border": "none", "borderTop": "1px solid #e0e0e0"})
     children: list = []
 
-    # ═══════════════════════════════════════════════════════════════
-    # bLOCK 1 — Identity: badges, label, section, parent
-    # ═══════════════════════════════════════════════════════════════
-    # extract node number from label "[N] ..." if present
+    # 1. identity (badges, label, section, parente)
+    # extreact node number from label "[N] ..." if present
     import re as _re
     num_match = _re.match(r'\[(\d+)\]\s*(.*)', label)
     node_num = num_match.group(1) if num_match else ""
     clean_label = num_match.group(2) if num_match else label
 
     badges = []
-    # node number badge — big and visible
+    # node number badge big and visible
     if node_num:
         badges.append(html.Span(
             f"#{node_num}",
@@ -1010,7 +1001,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
             html.Span(sec_text, style={"color": "#666"}),
         ], style={"fontSize": "12px", "margin": "0 0 4px 0"}))
 
-    # parent
+    # parente
     if parent_id:
         parent_lbl = node_label(kg, parent_id) if kg else parent_id
         if is_debug:
@@ -1022,9 +1013,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
             html.Span(parent_text, style={"color": "#1565C0", "fontSize": "12px"}),
         ], style={"margin": "2px 0 0 0"}))
 
-    # ═══════════════════════════════════════════════════════════════
-    # bLOCK 2 — Semantic: description, why_it_matters
-    # ═══════════════════════════════════════════════════════════════
+    # 2. semantic (description, why_it_matters)
     children.append(_divider)
 
     if description:
@@ -1041,15 +1030,11 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
             html.P(why_it_matters, style={"fontSize": "13px", "color": "#555", "lineHeight": "1.4", "margin": "0"}),
         ], style={"marginBottom": "4px", "borderLeft": "3px solid #FFA726", "paddingLeft": "8px"}))
 
-    # ═══════════════════════════════════════════════════════════════
-    # bLOCK 3 — Relations (outgoing / incoming, with fold)
-    # ═══════════════════════════════════════════════════════════════
+    # 3. relations (in/out edges)
     children.append(_divider)
     children.append(_render_node_connections(nid, kg))
 
-    # ═══════════════════════════════════════════════════════════════
-    # dEBUG panel (only in debug mode, visually separated)
-    # ═══════════════════════════════════════════════════════════════
+    # debug panel
     if is_debug:
         children.append(html.Hr(style={"margin": "10px 0", "border": "none",
                                        "borderTop": "2px dashed #ccc"}))
@@ -1197,7 +1182,7 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
         children.append(html.P("No explanation available.",
                                style={"fontSize": "12px", "color": "#aaa", "fontStyle": "italic", "marginBottom": "10px"}))
 
-    # --- Section + Confidence ---
+    # --- Section + Ocnfidnence ---
     if evidence_section:
         if is_debug:
             sec_display = f"{evidence_section} · {section_title(kg, evidence_section)}"
@@ -1208,7 +1193,7 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
             html.Strong("Section: "), sec_display,
         ], style={"fontSize": "12px", "marginBottom": "4px"}))
 
-    # general: show confidence only on inferred edges; Debug: always show
+    # general: show ocnfidnence only on inferred edges; Debug: always show
     if conf is not None and (is_inferred or is_debug):
         children.append(html.P([
             html.Strong("Confidence: "), f"{float(conf):.2f}",
@@ -1301,7 +1286,7 @@ def download_graph_json(n_clicks: int, kg, name_input):
     return dcc.send_string(json.dumps(kg, indent=2, ensure_ascii=False), filename)
 
 
-# hallucination Checker callback
+# halusination Checker callback
 
 @callback(
     Output("halluc-result", "children"),

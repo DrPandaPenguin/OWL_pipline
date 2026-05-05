@@ -26,9 +26,7 @@ _PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 _GRAPHS_DIR = os.path.join(_PROJECT_ROOT, "graphs")
 
 
-# ---------------------------------------------------------------------------
 # edge colors
-# ---------------------------------------------------------------------------
 EDGE_COLORS: dict[str, str] = {
     "defines":    "#2196F3",
     "requires":   "#FF5722",
@@ -42,9 +40,7 @@ EDGE_COLORS: dict[str, str] = {
 }
 
 
-# ---------------------------------------------------------------------------
 # stylesheet
-# ---------------------------------------------------------------------------
 def _build_stylesheet() -> list[dict]:
     base = [
         {
@@ -144,9 +140,7 @@ DAGRE_LAYOUT = {
 }
 
 
-# ---------------------------------------------------------------------------
-# kG normalization + Cytoscape conversion
-# ---------------------------------------------------------------------------
+# KG normalization + Cytoscape conversion
 def normalize_kg(raw: dict) -> dict:
     nodes = []
     for n in raw.get("nodes", []):
@@ -312,9 +306,7 @@ def _filter_edges_by_source(elements: list, edge_mode: str) -> list:
     return result
 
 
-# ---------------------------------------------------------------------------
-# kG helpers
-# ---------------------------------------------------------------------------
+# KG helpers
 def get_node_by_id(kg: dict, node_id: str) -> Optional[dict]:
     return next((n for n in kg.get("nodes", []) if n["id"] == node_id), None)
 
@@ -339,9 +331,7 @@ def section_title(kg: dict, section_id: str) -> str:
     return section_id
 
 
-# ---------------------------------------------------------------------------
 # graph loading
-# ---------------------------------------------------------------------------
 def _load_graph(graph_id: str) -> Optional[dict]:
     safe_id = re.sub(r"[^\w\-]", "_", graph_id)
     path = os.path.join(_GRAPHS_DIR, f"{safe_id}.json")
@@ -361,9 +351,7 @@ def _list_graphs() -> list[str]:
     )
 
 
-# ---------------------------------------------------------------------------
 # edge legend
-# ---------------------------------------------------------------------------
 def _edge_legend() -> html.Div:
     items = []
     for etype, color in EDGE_COLORS.items():
@@ -381,9 +369,7 @@ def _edge_legend() -> html.Div:
     })
 
 
-# ---------------------------------------------------------------------------
 # dash app
-# ---------------------------------------------------------------------------
 app = Dash(__name__, title="OWL Pipeline \u2013 Knowledge Graph Viewer")
 
 
@@ -535,7 +521,7 @@ def _viewer_page(graph_id: str) -> html.Div:
 def serve_layout():
     from flask import has_request_context, request
     if not has_request_context():
-        # dash validates layout at import time — return a placeholder
+        # dash validates layout at import time return a placeholder
         return html.Div("Loading...")
     graph_id = request.args.get("graph")
     if graph_id:
@@ -547,9 +533,7 @@ app.layout = serve_layout
 app.config.suppress_callback_exceptions = True
 
 
-# ---------------------------------------------------------------------------
 # callbacks
-# ---------------------------------------------------------------------------
 
 @callback(
     Output("cytoscape", "elements"),
@@ -628,9 +612,7 @@ def update_inspector(node_data, edge_data, kg):
                   style={"color": "#888", "fontSize": "13px"})
 
 
-# ---------------------------------------------------------------------------
 # inspector rendering
-# ---------------------------------------------------------------------------
 
 def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
     nid = node_data.get("id", "")
@@ -675,7 +657,7 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
             html.Span(sec_title or sec_id, style={"color": "#666"}),
         ], style={"fontSize": "12px", "margin": "0 0 4px 0"}))
 
-    # parent
+    # parente
     if parent_id:
         parent_lbl = node_label(kg, parent_id) if kg else parent_id
         children.append(html.P([
@@ -830,7 +812,7 @@ def _render_edge_card(edge_data: dict, kg: Optional[dict]) -> html.Div:
             html.Strong("Section: "), sec_display,
         ], style={"fontSize": "12px", "marginBottom": "4px"}))
 
-    # confidence
+    # ocnfidnence
     if conf is not None and is_inferred:
         children.append(html.P([
             html.Strong("Confidence: "), f"{float(conf):.2f}",
@@ -839,9 +821,7 @@ def _render_edge_card(edge_data: dict, kg: Optional[dict]) -> html.Div:
     return html.Div(children)
 
 
-# ---------------------------------------------------------------------------
 # run
-# ---------------------------------------------------------------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050))
     debug = os.environ.get("HF_SPACE") is None

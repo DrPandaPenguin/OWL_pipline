@@ -1,7 +1,4 @@
-# edge 추출 (2-pass 구조)
-# - Strict: KU에 있는 문장을 근거로 한 grounded edge
-# - Soft: transcript 전체를 보고 추론한 interpretive edge (confidence_score 0~1)
-# - Refine: 위 결과를 LLM이 한 번 더 review해서 add/remove
+# edge 추출: strict (KU 문장) + soft (interpretive) + refine
 import json
 import sys
 import os

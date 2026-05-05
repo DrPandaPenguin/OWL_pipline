@@ -1,5 +1,5 @@
-# 추출된 KG의 사실성 검증 (hallucination check).
-# gemini + Google Search grounding으로 외부 사실과 비교 — transcript에 없다고 hallucination 아님 (강의는 일부만 다룸)
+# 추출된 KG의 사실성 검증 (halusination check).
+# gemini + Google Search grounding으로 외부 사실과 비교 transcript에 없다고 halusination 아님 (강의는 일부만 다룸)
 import json
 import os
 import re
