@@ -23,7 +23,6 @@ if _SRC_DIR not in sys.path:
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from extract_nodes import extract_nodes_with_ku_metadata
 from extract_edges import extract_edges, extract_edges_soft
 from build_graph import build_graph as build_graph_src
 from hallucination_checker import check_hallucinations
@@ -437,45 +436,27 @@ def build_pipeline_sync(transcript, name, pipeline_name, slide_text, model_name,
 
     from src.pipelines import get_pipeline, enrich_graph, DEFAULT_CONFIG
 
-    if pipeline_name == "slide_anchored":
-        print(f"[slide_anchored] 실행 중...")
-        run_config = DEFAULT_CONFIG.copy()
-        run_config["ku_model"] = model_name
-        run_config["node_model"] = model_name
-        run_config["strict_model"] = model_name
-        run_config["soft_model"] = model_name
-        if slide_text:
-            run_config["slide_text"] = slide_text
-        run_config["enrich_graph"] = True
-        result = get_pipeline("slide_anchored")(transcript, run_config)
-        raw_nodes = result.get("nodes", [])
-        raw_edges = result.get("edges", [])
-        kus = result.get("kus", [])
-        if not raw_nodes:
-            return None, None, None
-    else:
-        # multi_stage (default): KU -> Node -> Strict + Soft edges
-        ms_config = {
-            "ku_model": model_name, "node_model": model_name,
-            "strict_model": model_name, "soft_model": model_name,
-        }
-        print("[multi_stage] node + KU 추출...")
-        meta = extract_nodes_with_ku_metadata(transcript, verbose=False, config=ms_config)
-        raw_nodes = meta["nodes"]
-        kus = meta.get("knowledge_units") or []
-        if not raw_nodes:
-            return None, None, None
-        print("[multi_stage] edge 추출...")
-        raw_edges = extract_edges(transcript, raw_nodes, knowledge_units=kus, include_soft=True, config=ms_config)
+    print(f"[{pipeline_name}] 실행 중...")
+    run_config = DEFAULT_CONFIG.copy()
+    run_config["ku_model"] = model_name
+    run_config["node_model"] = model_name
+    run_config["strict_model"] = model_name
+    run_config["soft_model"] = model_name
+    if pipeline_name == "slide_anchored" and slide_text:
+        run_config["slide_text"] = slide_text
+    run_config["enrich_graph"] = True
+    result = get_pipeline(pipeline_name)(transcript, run_config)
+    raw_nodes = result.get("nodes", [])
+    raw_edges = result.get("edges", [])
+    kus = result.get("kus", [])
+    if not raw_nodes:
+        return None, None, None
 
     # graph 조립
-    if pipeline_name == "slide_anchored":
-        kg = normalize_kg({"nodes": raw_nodes, "edges": raw_edges})
-    else:
-        kg = normalize_kg(build_graph_src(raw_nodes, raw_edges))
+    kg = normalize_kg({"nodes": raw_nodes, "edges": raw_edges})
 
-    # multi_stage 만 enrichment 추가 호출 (slide_anchored는 이미 안에 baked in)
-    if kg.get("nodes") and kg.get("edges") and pipeline_name != "slide_anchored":
+    # direct는 enrich를 별도 호출 (slide_anchored는 안에서 처리)
+    if pipeline_name == "direct" and kg.get("nodes") and kg.get("edges"):
         try:
             enrich_result = enrich_graph(kg["nodes"], kg["edges"], transcript, {
                 "node_model": model_name, "node_temperature": 0.2,
@@ -595,8 +576,8 @@ def _build_full_layout() -> html.Div:
             dcc.Dropdown(
                 id="pipeline-select",
                 options=[
-                    {"label": "Slide-Anchored (recommended, slides + transcript)", "value": "slide_anchored"},
-                    {"label": "Multi-Stage (transcript only)", "value": "multi_stage"},
+                    {"label": "Slide-Anchored (slides + transcript)", "value": "slide_anchored"},
+                    {"label": "Direct (transcript only)", "value": "direct"},
                 ],
                 value="slide_anchored",
                 clearable=False,
@@ -847,7 +828,7 @@ def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_te
         return no_update, "⚠️ No API key — enter your OpenAI key above", no_update, no_update
 
     name = (name_input or "").strip() or datetime.now().strftime("transcript_%Y%m%d_%H%M%S")
-    selected = pipeline_name or "multi_stage"
+    selected = pipeline_name or "slide_anchored"
     try:
         kg, orphan, save_path = build_pipeline_sync(
             transcript.strip(), name, selected,

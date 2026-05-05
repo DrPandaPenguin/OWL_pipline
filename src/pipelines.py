@@ -15,13 +15,6 @@ if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
 from src.prompt_loader import load_prompt
-from src.extract_nodes import (
-    extract_knowledge_units,
-    add_ids_and_timestamps,
-    construct_nodes,
-    process_nodes,
-    compute_orphan_kus,
-)
 from src.extract_edges import extract_edges, refine_edges
 
 # Registry
@@ -385,266 +378,7 @@ def _compute_ordering(nodes):
 
     return nodes
 
-@register_pipeline("multi_stage")
-def pipeline_multi_stage(transcript: str, config):
-    """Current production pipeline: KU → Node → Strict Edge → Soft Edge"""
-    timing = {}
 
-    # Phase 1: KU extraction
-    t0 = time.time()
-    raw_kus = extract_knowledge_units(transcript, config)
-    timing["phase1_ku_extraction"] = round(time.time() - t0, 2)
-
-    if not raw_kus:
-        return {"nodes": [], "edges": [], "kus": [], "timing": timing}
-
-    # Glue 1: IDs + timestamps
-    t1 = time.time()
-    kus = add_ids_and_timestamps(raw_kus, transcript, config)
-    timing["glue1_ids_timestamps"] = round(time.time() - t1, 2)
-
-    # Phase 3: Node construction
-    t2 = time.time()
-    raw_nodes = construct_nodes(kus, config)
-    timing["phase3_node_construction"] = round(time.time() - t2, 2)
-
-    # Glue 2: Node IDs + timestamps
-    t3 = time.time()
-    nodes = process_nodes(raw_nodes, kus)
-    for n in nodes:
-        n["node_id"] = n["id"]
-    timing["glue2_node_ids"] = round(time.time() - t3, 2)
-
-    if not nodes or len(nodes) < 2:
-        return {"nodes": nodes, "edges": [], "kus": kus, "timing": timing}
-
-    # Phase 4+5: Edge extraction
-    t4 = time.time()
-    edges = extract_edges(transcript, nodes, knowledge_units=kus, include_soft=True, config=config)
-    timing["phase4_5_edge_extraction"] = round(time.time() - t4, 2)
-
-    timing["total"] = round(sum(timing.values()), 2)
-    return {"nodes": nodes, "edges": edges, "kus": kus, "timing": timing}
-
-# Slide parser helpers (shared by slide_structure, slide_no_ku, slide_anchored*)
-
-def _extract_part_ids(slide_text: str):
-    """Lightweight parser — returns only {slide_id, title} for each PART section"""
-    import re as _re
-    PART_RE = _re.compile(
-        r"^PART\s+([IVXLCDM]+|\d+)\s*[—–\-]+\s*(.+)$",
-        _re.MULTILINE,
-    )
-    results = []
-    for i, m in enumerate(PART_RE.finditer(slide_text)):
-        results.append({
-            "slide_id": f"part_{i + 1:03d}",
-            "title": m.group(2).strip(),
-        })
-    return results
-
-
-def _extract_part_sections(slide_text: str):
-    """Rich Python parser for structured slide notes in the format:"""
-    import re as _re
-
-    PART_RE = _re.compile(
-        r"^PART\s+([IVXLCDM]+|\d+)\s*[—–\-]+\s*(.+)$",
-        _re.MULTILINE,
-    )
-    BULLET_RE = _re.compile(r"^[•\-\*]\s*(.+)$")
-
-    part_matches = list(PART_RE.finditer(slide_text))
-    if not part_matches:
-        return []
-
-    # Determine text boundaries between consecutive PART headers
-    boundaries = [m.start() for m in part_matches] + [len(slide_text)]
-
-    sections = []
-    for i, m in enumerate(part_matches):
-        section_id = f"part_{i + 1:03d}"
-        title = m.group(2).strip()
-        section_text = slide_text[boundaries[i]:boundaries[i + 1]]
-
-        # ---- Core Focus ----
-        core_focus = ""
-        cf = _re.search(
-            r"Core Focus[:\s]+(.+?)(?=\n(?:Key Ideas|Why This Part|PART\s|[⸻—–]{2})|$)",
-            section_text, _re.DOTALL | _re.IGNORECASE,
-        )
-        if cf:
-            core_focus = " ".join(cf.group(1).split())  # collapse whitespace
-
-        # ---- Key Ideas (bullet lines after "Key Ideas" heading) ----
-        key_ideas = []
-        ki = _re.search(
-            r"Key Ideas\s*\n((?:.+\n?)*?)(?=\n(?:Why This Part|PART\s|[⸻—–]{2})|$)",
-            section_text, _re.IGNORECASE,
-        )
-        if ki:
-            for line in ki.group(1).splitlines():
-                bm = BULLET_RE.match(line.strip())
-                if bm:
-                    key_ideas.append(bm.group(1).strip())
-
-        # ---- Why This Part Exists ----
-        why = ""
-        wy = _re.search(
-            r"Why This Part Exists\s*\n(.+?)(?=[⸻—–]{2}|PART\s|$)",
-            section_text, _re.DOTALL | _re.IGNORECASE,
-        )
-        if wy:
-            why = " ".join(wy.group(1).split())
-
-        sections.append({
-            "section_id": section_id,
-            "title": title,
-            "core_focus": core_focus,
-            "key_ideas": key_ideas,
-            "why_this_part_exists": why,
-        })
-
-    return sections
-
-
-def _format_slide_sections_text(sections) -> str:
-    """Format a list of _extract_part_sections() dicts into the structured"""
-    blocks = []
-    for sec in sections:
-        lines = [f"[{sec['section_id']}] {sec['title']}"]
-        if sec.get("core_focus"):
-            lines.append(f"  Core Focus: {sec['core_focus']}")
-        if sec.get("key_ideas"):
-            lines.append("  Key Ideas:")
-            for idea in sec["key_ideas"]:
-                lines.append(f"    • {idea}")
-        if sec.get("why_this_part_exists"):
-            lines.append(f"  Why This Part Exists: {sec['why_this_part_exists']}")
-        blocks.append("\n".join(lines))
-    return "\n\n".join(blocks)
-
-@register_pipeline("multi_stage_refined")
-def pipeline_multi_stage_refined(transcript: str, config):
-    """multi_stage + one additional LLM pass that reviews all extracted edges"""
-    timing = {}
-
-    # Run base multi_stage pipeline
-    base = pipeline_multi_stage(transcript, config)
-    timing.update(base.get("timing", {}))
-
-    nodes = base["nodes"]
-    edges = base["edges"]
-    kus = base["kus"]
-
-    if not nodes or not edges:
-        return base
-
-    # Refinement pass
-    t_refine = time.time()
-    refined_edges = refine_edges(transcript, nodes, edges, config)
-    timing["refine_pass"] = round(time.time() - t_refine, 2)
-    timing["total"] = round(sum(timing.values()), 2)
-
-    return {"nodes": nodes, "edges": refined_edges, "kus": kus, "timing": timing}
-
-_SLIDE_ANCHORED_NODE_SYSTEM = load_prompt("node_anchored_system", """\
-You are a Lecture Knowledge Graph builder.
-Your task is to extract knowledge nodes from a lecture transcript using slide sections as anchors.
-
-A NODE represents a reusable concept or explanatory idea introduced in the lecture.
-Nodes capture ideas that help a student understand the conceptual structure
-of the lecture — not transient dialogue.
-
-DO NOT create nodes for:
-    greetings, logistics, course administration, filler conversation,
-    passing remarks or one-off examples with no conceptual reuse.
-
-NODE TYPES:
-    concept   — Any idea, term, principle, rule, theorem, mental model, analogy,
-                or framework introduced in the lecture.
-    example   — A canonical example used to illustrate a concept.
-
-LABEL RULES:
-• Prefer short noun phrases (e.g. "Type Safety", "Progress Theorem")
-• Short statements are allowed when they capture a principle
-• Avoid overly generic labels, punctuation like ⇒ + :
-
-BACKBONE vs SUPPORT:
-    is_backbone: true  — main conceptual argument, essential for following the lecture.
-    is_backbone: false — supporting detail, sub-concept, or secondary illustration.
-    Any node_type can be backbone.
-
-HIERARCHY:
-    parent_id = exact label of parent node if sub-concept, otherwise null.
-
-GROUNDING:
-- Every node anchored to one slide section (slide_anchor_id).
-- source_sentence MUST be verbatim or near-verbatim from the transcript.
-- Typically 1–6 nodes per section depending on density. Quality over quantity.
-
-Return strict JSON only.\
-""")
-
-_SLIDE_ANCHORED_NODE_USER = load_prompt("node_anchored_user", """\
-SLIDE SECTIONS (ground truth):
-{slide_sections_text}
-
-Each section contains:
-  section_id           — use this as slide_anchor_id
-  title                — the topic of the section
-  core_focus           — the essential idea the lecturer wants students to grasp
-  key_ideas            — specific concepts and facts to cover
-  why_this_part_exists — pedagogical motivation for the section
-
-------------------------------------
-LECTURE TRANSCRIPT:
-{transcript}
-------------------------------------
-
-TASK
-Extract knowledge nodes grounded in the transcript.
-Use the slide sections to determine where concepts belong.
-The key_ideas are a coverage checklist, but nodes must be grounded in the transcript.
-
-------------------------------------
-OUTPUT FORMAT
-Return JSON:
-{{
-  "nodes": [
-    {{
-      "label": "...",
-      "node_type": "concept | example",
-      "slide_anchor_id": "...",
-      "source_sentence": "...",
-      "is_backbone": true,
-      "parent_id": null
-    }}
-  ]
-}}
-
-------------------------------------
-RULES
-1. slide_anchor_id MUST match a section_id listed above.
-2. source_sentence MUST come verbatim or near-verbatim from the transcript.
-3. Labels must follow the label rules in the system prompt.
-4. node_type must be "concept" or "example".
-5. is_backbone: true for main conceptual thread nodes, false for supporting nodes.
-6. parent_id: exact label of parent node if sub-concept, otherwise null.
-7. Do not invent concepts not mentioned in the transcript.
-8. Prefer nodes that represent ideas the lecturer emphasises or repeats.
-
-------------------------------------
-EXTRACTION STRATEGY
-1. Identify the core concept of the section (core_focus) — this is likely backbone.
-2. Extract key technical terms introduced or explained in the transcript.
-3. Capture reasoning, guarantees, or properties stated by the lecturer.
-4. Capture mental models or analogies if present — these are concept nodes.
-5. Capture canonical examples if they illustrate a concept — these are example nodes.
-6. For each node: does this belong under another node? If yes, set parent_id.
-
-Avoid duplicate nodes across sections unless the concept is newly explained.\
-""")
 
 @register_pipeline("slide_anchored")
 def pipeline_slide_anchored(transcript: str, config):
@@ -653,9 +387,7 @@ def pipeline_slide_anchored(transcript: str, config):
     slide_text = (config.get("slide_text") or "").strip()
 
     if not slide_text:
-        import warnings
-        warnings.warn("slide_anchored: no slide_text in config, falling back to multi_stage_refined.")
-        return pipeline_multi_stage_refined(transcript, config)
+                return {"nodes": [], "edges": [], "kus": [], "timing": {}, "error": "slide_anchored requires slide_text — use direct pipeline for transcript-only"}
 
     try:
         from openai import OpenAI
@@ -680,9 +412,7 @@ def pipeline_slide_anchored(transcript: str, config):
     timing["slide_parse"] = round(time.time() - t0, 3)   # near-zero, Python only
 
     if not part_ids:
-        import warnings
-        warnings.warn("slide_anchored: no PART headers found in slide_text, falling back to multi_stage_refined.")
-        return pipeline_multi_stage_refined(transcript, config)
+                return {"nodes": [], "edges": [], "kus": [], "timing": {}, "error": "slide_anchored requires slide_text — use direct pipeline for transcript-only"}
 
     # Upgrade to full section parse: gets core_focus, key_ideas, why_this_part_exists
     sections = _extract_part_sections(slide_text)
@@ -756,9 +486,7 @@ def pipeline_slide_anchored(transcript: str, config):
         })
 
     if len(nodes) < 2:
-        import warnings
-        warnings.warn("slide_anchored: fewer than 2 valid nodes extracted, falling back to multi_stage_refined.")
-        return pipeline_multi_stage_refined(transcript, config)
+                return {"nodes": [], "edges": [], "kus": [], "timing": {}, "error": "slide_anchored requires slide_text — use direct pipeline for transcript-only"}
 
     # Fuzzy-compute sentence_index per node
     for n in nodes:
@@ -1076,3 +804,109 @@ Return strict JSON:
 }}\
 """)
 
+
+
+# transcript-only pipeline (slides 없는 강의용)
+_DIRECT_NODE_SYSTEM = """\
+You are a knowledge graph extraction system specialising in university lectures.
+Given a lecture transcript, extract the key concepts as nodes.
+
+Each node should represent a retained knowledge unit — an academic concept, formal definition,
+principle, mental model, analogy, or key example — that a student needs after the lecture.
+
+Return strict JSON only.\
+"""
+
+_DIRECT_NODE_USER = """\
+LECTURE TRANSCRIPT:
+---
+{transcript}
+---
+
+Extract all key concepts from this lecture as nodes.
+
+Rules:
+1. Each node needs a short noun-phrase label (2-6 words).
+2. Include a source_sentence: a verbatim quote from the transcript that best supports this concept.
+3. Mark is_backbone: true for core concepts essential to following the lecture, false for supporting details.
+4. Aim for 30-80 nodes depending on lecture density.
+
+Output strict JSON:
+{{
+  "nodes": [
+    {{
+      "label": "Concept Name",
+      "source_sentence": "verbatim quote from transcript",
+      "is_backbone": true
+    }}
+  ]
+}}
+"""
+
+
+@register_pipeline("direct")
+def pipeline_direct(transcript: str, config):
+    """Direct pipeline: Transcript → Node extraction (1 LLM call) → 2-pass Edge extraction"""
+    timing = {}
+
+    try:
+        from openai import OpenAI
+    except ImportError:
+        return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": "openai not installed"}
+
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": "OPENAI_API_KEY not set"}
+
+    client = OpenAI(api_key=api_key)
+    model = config.get("node_model", "gpt-5.2")
+    temperature = config.get("node_temperature", 0.2)
+
+    # Step 1: Node extraction (single LLM call)
+    t0 = time.time()
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": _DIRECT_NODE_SYSTEM},
+                {"role": "user", "content": _DIRECT_NODE_USER.format(transcript=transcript)},
+            ],
+            response_format={"type": "json_object"},
+            temperature=temperature,
+        )
+        data = json.loads(response.choices[0].message.content)
+    except Exception as e:
+        timing["node_extraction"] = round(time.time() - t0, 2)
+        return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": str(e)}
+
+    timing["node_extraction"] = round(time.time() - t0, 2)
+
+    # Python: assign IDs
+    raw_nodes = data.get("nodes", [])
+    nodes = []
+    for i, n in enumerate(raw_nodes):
+        label = (n.get("label") or "").strip()
+        if not label:
+            continue
+        nid = f"node_{i + 1:03d}"
+        nodes.append({
+            "id": nid,
+            "node_id": nid,
+            "label": label,
+            "source_sentence": (n.get("source_sentence") or "").strip(),
+            "is_backbone": n.get("is_backbone", False),
+            "supporting_ku_ids": [],
+            "timestamp": {"method": "direct", "sentence_index": 0},
+        })
+
+    if not nodes or len(nodes) < 2:
+        timing["total"] = round(sum(timing.values()), 2)
+        return {"nodes": nodes, "edges": [], "kus": [], "timing": timing}
+
+    # Step 2: 2-pass edge extraction (reuses extract_edges from src)
+    t1 = time.time()
+    edges = extract_edges(transcript, nodes, knowledge_units=[], include_soft=True, config=config)
+    timing["edge_extraction_2pass"] = round(time.time() - t1, 2)
+
+    timing["total"] = round(sum(timing.values()), 2)
+    return {"nodes": nodes, "edges": edges, "kus": [], "timing": timing}
