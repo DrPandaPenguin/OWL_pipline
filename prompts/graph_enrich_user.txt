@@ -1,0 +1,36 @@
+LECTURE TRANSCRIPT (for context — do not invent facts outside this):
+---
+{transcript}
+---
+
+NODES TO ENRICH ({num_nodes} nodes):
+{nodes_json}
+
+EDGES TO ENRICH ({num_edges} edges):
+{edges_json}
+
+For every node, add "description" and "why_it_matters".
+For every edge, add "reason".
+
+Return strict JSON:
+{{
+  "nodes": [
+    {{
+      "id": "node_001",
+      "description": "2–3 sentence explanation of what this concept is",
+      "why_it_matters": "1–2 sentences on why this matters in the lecture context"
+    }}
+  ],
+  "edges": [
+    {{
+      "edge_id": "edge_001",
+      "reason": "1–2 sentences on why these concepts are connected this way"
+    }}
+  ]
+}}
+
+Rules:
+- Return ALL {num_nodes} node IDs and ALL {num_edges} edge IDs — do not skip any.
+- description must NOT repeat the node label or source_sentence word-for-word.
+- reason must explain the logical/pedagogical link, not just restate the justification.
+- All content must be grounded in the transcript above.

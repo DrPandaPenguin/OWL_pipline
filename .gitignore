@@ -1,0 +1,25 @@
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Outputs (재생성 가능)
+outputs/
+graphs/
+results/
+
+# Data (저작권)
+data/
+input/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store

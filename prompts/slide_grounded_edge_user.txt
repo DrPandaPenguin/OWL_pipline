@@ -1,0 +1,30 @@
+Extract GROUNDED edges between lecture nodes.
+
+Each edge must be justified by a verbatim or near-verbatim quote from the
+segment text of either the source or target node shown below.
+
+NODES and their transcript segments:
+{segments_text}
+
+EDGE TYPES (use only these {num_types}):
+{types_section}
+
+RULES:
+1. Use only node IDs listed above (exact match for "from" and "to").
+2. justification_sentence MUST be a verbatim or near-verbatim copy of text
+   from the segment of the source OR target node.
+3. One justification sentence per edge. Do NOT invent or paraphrase.
+4. Do NOT create self-loops (from == to).
+5. Only extract edges where the relationship is explicitly supported by the text.
+
+Return strict JSON:
+{{
+  "edges": [
+    {{
+      "from": "node_001",
+      "to": "node_002",
+      "edge_type": "requires",
+      "justification_sentence": "verbatim text from the relevant segment"
+    }}
+  ]
+}}

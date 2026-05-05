@@ -1,0 +1,58 @@
+SLIDE SECTIONS (ground truth):
+{slide_sections_text}
+
+Each section contains:
+  section_id           — use this as slide_anchor_id
+  title                — the topic of the section
+  core_focus           — the essential idea the lecturer wants students to grasp
+  key_ideas            — specific concepts and facts to cover
+  why_this_part_exists — pedagogical motivation for the section
+
+------------------------------------
+LECTURE TRANSCRIPT:
+{transcript}
+------------------------------------
+
+TASK
+Extract knowledge nodes grounded in the transcript.
+Use the slide sections to determine where concepts belong.
+The key_ideas are a coverage checklist, but nodes must be grounded in the transcript.
+
+------------------------------------
+OUTPUT FORMAT
+Return JSON:
+{{
+  "nodes": [
+    {{
+      "label": "...",
+      "node_type": "concept | example",
+      "slide_anchor_id": "...",
+      "source_sentence": "...",
+      "is_backbone": true,
+      "parent_id": null
+    }}
+  ]
+}}
+
+------------------------------------
+RULES
+1. slide_anchor_id MUST match a section_id listed above.
+2. source_sentence MUST come verbatim or near-verbatim from the transcript.
+3. Labels must follow the label rules in the system prompt.
+4. node_type must be "concept" or "example".
+5. is_backbone: true for main conceptual thread nodes, false for supporting nodes.
+6. parent_id: exact label of parent node if sub-concept, otherwise null.
+7. Do not invent concepts not mentioned in the transcript.
+8. Prefer nodes that represent ideas the lecturer emphasises or repeats.
+
+------------------------------------
+EXTRACTION STRATEGY
+Use this reasoning process for each slide section:
+1. Identify the core concept of the section (core_focus) — this is likely backbone.
+2. Extract key technical terms introduced or explained in the transcript.
+3. Capture reasoning, guarantees, or properties stated by the lecturer.
+4. Capture mental models or analogies if present — these are concept nodes.
+5. Capture canonical examples if they illustrate a concept — these are example nodes.
+6. For each node: does this belong under another node? If yes, set parent_id.
+
+Avoid duplicate nodes across sections unless the concept is newly explained.

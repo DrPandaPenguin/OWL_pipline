@@ -1,0 +1,42 @@
+NODES:
+{nodes_text}
+
+VALID SECTION IDs (use one of these for evidence_section):
+{section_ids}
+
+FULL LECTURE TRANSCRIPT:
+---
+{transcript}
+---
+
+EDGE TYPES (use only these {num_types}):
+{types_section}
+
+------------------------------------
+TASK — PASS 1: GROUNDED EDGES ONLY
+
+Extract relationships that are EXPLICITLY STATED in the transcript.
+The lecturer must have directly said, described, or asserted the relationship.
+
+Rules:
+1. Only use node IDs from the list above.
+2. No self-loops (from ≠ to). No duplicate edges.
+3. justification MUST be verbatim or near-verbatim from the transcript.
+4. Do NOT include confidence_score — if you are uncertain, do not include the edge.
+5. evidence_section MUST be one of the valid section IDs listed above.
+6. reason explains WHY the relationship exists — write this yourself, do not quote the transcript.
+
+------------------------------------
+Return strict JSON:
+{{
+  "edges": [
+    {{
+      "from": "node_001",
+      "to": "node_002",
+      "edge_type": "requires",
+      "justification": "near-verbatim sentence from transcript",
+      "reason": "conceptual explanation of why this relationship holds",
+      "evidence_section": "part_003"
+    }}
+  ]
+}}

@@ -1,0 +1,16 @@
+# Core LLM
+openai>=1.0.0
+
+# Hallucination checker
+google-genai>=1.0.0
+
+# Dash viewer
+dash>=2.14.0
+dash-cytoscape>=0.3.0
+
+# Static graph visualization (CLI: src/visualize_graph.py)
+networkx>=3.0
+matplotlib>=3.5.0
+
+# Optional — for .env file loading
+python-dotenv>=1.0.0

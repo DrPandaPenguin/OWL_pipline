@@ -1,0 +1,22 @@
+Parse the following lecture slides and extract their structure.
+
+Slides:
+---
+{slides}
+---
+
+Return strict JSON:
+{{
+  "sections": [
+    {{
+      "title": "Slide or section title",
+      "bullets": ["key bullet point", "another point"]
+    }}
+  ]
+}}
+
+Instructions:
+- Each "title" becomes a candidate node label — make it a short noun phrase.
+- Include only slides/sections with conceptual content (skip pure admin/logistics slides).
+- Merge near-duplicate slides into one section.
+- If no structured slides are found, return {{"sections": []}}

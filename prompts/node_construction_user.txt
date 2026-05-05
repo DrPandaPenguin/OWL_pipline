@@ -1,0 +1,20 @@
+Given the following Knowledge Units (each has an ID and text), group them into Nodes.
+Each Node should have a short label and list of supporting_ku_ids (the KU IDs that support this node).
+
+Knowledge Units (format: [id] text):
+---
+{ku_list}
+---
+
+Instructions:
+- Only promote KUs to Nodes if they contribute to conceptual understanding.
+- Prefer fewer, higher-quality nodes over many shallow ones.
+- Labels should be short noun phrases (not summaries or sentences).
+- If a KU does not fit any conceptual node, leave it unassigned.
+Output strict JSON only:
+{{
+  "nodes": [
+    {{ "label": "Short label for the node", "supporting_ku_ids": ["ku_001", "ku_005"] }},
+    {{ "label": "...", "supporting_ku_ids": ["ku_002"] }}
+  ]
+}}

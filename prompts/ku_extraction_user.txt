@@ -1,0 +1,22 @@
+Extract Knowledge Units from the following lecture transcript.
+
+Each Knowledge Unit should correspond to a single meaningful idea
+explicitly stated in the transcript.
+If two sentences express the same idea, extract them as separate KUs.
+
+Extract EVERYTHING that could be a knowledge unit. Over-extract. Redundancy is acceptable.
+
+Lecture transcript:
+---
+{transcript}
+---
+
+Output strict JSON with this exact structure:
+{{
+  "knowledge_units": [
+    {{ "text": "exact or close quote from transcript" }},
+    {{ "text": "..." }}
+  ]
+}}
+
+Do NOT add IDs. Do NOT filter by importance. Extract ALL knowledge units.

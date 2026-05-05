@@ -1,0 +1,38 @@
+You are given an extracted lecture graph.
+
+Your task is to enrich the graph by improving explanatory text only.
+
+For each node:
+- add or improve `description`
+- add or improve `why_it_matters`
+
+For each edge:
+- add or improve `reason`
+
+Do not change:
+- labels
+- IDs
+- node or edge existence
+- edge_type
+- justification
+- graph structure
+
+GRAPH:
+{graph_json}
+
+OUTPUT FORMAT:
+{{
+  "nodes": [
+    {{
+      "id": "node_001",
+      "description": "...",
+      "why_it_matters": "..."
+    }}
+  ],
+  "edges": [
+    {{
+      "edge_id": "edge_001",
+      "reason": "..."
+    }}
+  ]
+}}

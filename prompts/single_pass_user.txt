@@ -1,0 +1,27 @@
+Extract a knowledge graph from this lecture transcript.
+
+Transcript:
+---
+{transcript}
+---
+
+Instructions:
+- Nodes: key concepts, definitions, examples from the lecture. Short noun-phrase labels.
+- Edges: relationships between nodes.
+- Edge types allowed: {edge_types_str}
+- Each edge needs a justification_sentence (short quote from transcript).
+
+Output strict JSON:
+{{
+  "nodes": [
+    {{ "label": "Concept Name" }}
+  ],
+  "edges": [
+    {{
+      "from_label": "Source Concept",
+      "to_label": "Target Concept",
+      "edge_type": "requires",
+      "justification_sentence": "quote from transcript"
+    }}
+  ]
+}}

@@ -1,0 +1,41 @@
+NODES:
+{nodes_text}
+
+FULL LECTURE TRANSCRIPT:
+---
+{transcript}
+---
+
+EDGE TYPES (use only these {num_types}):
+{types_section}
+
+Extract ALL relationships between the nodes above.
+Evidence must come from the TRANSCRIPT only.
+
+Rules:
+1. Only use node IDs from the list above.
+2. No self-loops (from ≠ to). No duplicate edges.
+3. GROUNDED edge: justification is verbatim or near-verbatim from transcript.
+   Do NOT include confidence_score. Use when the relationship is explicitly stated.
+4. SOFT edge: justification is an interpretive paraphrase. MUST include confidence_score.
+   Use when the relationship is implied by the lecture's logic but not stated directly.
+5. Prefer GROUNDED when possible. Add SOFT only for additional meaningful relationships.
+
+Return strict JSON:
+{{
+  "edges": [
+    {{
+      "from": "node_001",
+      "to": "node_002",
+      "edge_type": "requires",
+      "justification": "verbatim or near-verbatim from transcript"
+    }},
+    {{
+      "from": "node_002",
+      "to": "node_003",
+      "edge_type": "explains",
+      "justification": "interpretive paraphrase grounded in lecture flow",
+      "confidence_score": 0.85
+    }}
+  ]
+}}

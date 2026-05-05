@@ -1,0 +1,29 @@
+Segment this lecture transcript by slide sections.
+
+SLIDE SECTIONS (node_id → title):
+{sections_text}
+
+TRANSCRIPT:
+---
+{transcript}
+---
+
+For each slide section, extract the portion of the transcript that most directly
+covers that section's topic. Copy sentences verbatim from the transcript.
+
+Rules:
+- segment_text should be verbatim transcript text (do NOT paraphrase)
+- A sentence belongs to the section it is most topically relevant to
+- If a section has no matching content set segment_text to ""
+- Sections may have varying length — quality over coverage
+
+Return strict JSON:
+{{
+  "segments": [
+    {{
+      "node_id": "node_001",
+      "title": "Section title",
+      "segment_text": "Verbatim transcript sentences for this section..."
+    }}
+  ]
+}}

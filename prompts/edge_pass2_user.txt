@@ -1,0 +1,50 @@
+NODES:
+{nodes_text}
+
+VALID SECTION IDs (use one of these for evidence_section):
+{section_ids}
+
+EDGES ALREADY EXTRACTED (Pass 1 — do NOT duplicate these):
+{pass1_edges_text}
+
+FULL LECTURE TRANSCRIPT:
+---
+{transcript}
+---
+
+EDGE TYPES (use only these {num_types}):
+{types_section}
+
+------------------------------------
+TASK — PASS 2: SOFT / INFERRED EDGES ONLY
+
+Extract relationships that are IMPLIED by the lecture logic but not directly stated.
+The relationship should follow naturally from how the lecture is structured or argued,
+even if the lecturer never said it explicitly.
+
+Rules:
+1. Only use node IDs from the list above.
+2. No self-loops (from ≠ to). No duplicate edges.
+3. Do NOT duplicate any edge from the Pass 1 list above.
+4. justification is an interpretive paraphrase — not a direct quote.
+5. MUST include confidence_score for every edge (0.0–1.0).
+   Use lower scores (0.5–0.7) for weaker inferences, higher (0.8–0.95) for strong ones.
+6. evidence_section MUST be one of the valid section IDs listed above.
+7. reason explains WHY the relationship exists — write this yourself.
+8. Only extract edges that add meaningful conceptual insight. Prefer quality over quantity.
+
+------------------------------------
+Return strict JSON:
+{{
+  "edges": [
+    {{
+      "from": "node_001",
+      "to": "node_003",
+      "edge_type": "drives",
+      "justification": "interpretive paraphrase from lecture reasoning",
+      "reason": "conceptual explanation of why this relationship holds",
+      "evidence_section": "part_001",
+      "confidence_score": 0.75
+    }}
+  ]
+}}

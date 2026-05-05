@@ -1,0 +1,49 @@
+Review the knowledge graph below and suggest improvements.
+
+NODES:
+{nodes_text}
+
+CURRENT EDGES:
+{edges_text}
+
+TRANSCRIPT (for context and evidence):
+---
+{transcript}
+---
+
+EDGE TYPES allowed: {edge_types_str}
+
+Your task — two parts:
+
+PART 1 — REMOVE: List edge_ids that should be removed because they are:
+  - Factually wrong (the relationship does not hold in the lecture)
+  - Hallucinated (no evidence in the transcript)
+  - Self-loop (from == to)
+  - Exact duplicate of another edge
+
+PART 2 — ADD: List edges that are clearly missing. For each:
+  - Must connect two existing node IDs (from/to)
+  - Must have a justification_span traceable to the transcript
+  - Must have confidence_score 0.0–1.0
+  - Must use one of the allowed edge types
+
+Return strict JSON:
+{{
+  "remove_edge_ids": ["edge_003", "edge_007"],
+  "add_edges": [
+    {{
+      "from": "node_002",
+      "to": "node_005",
+      "edge_type": "requires",
+      "justification_span": "Short quote or paraphrase from transcript",
+      "confidence_score": 0.88
+    }}
+  ]
+}}
+
+Rules:
+- Only reference node IDs from the NODES list above.
+- If nothing to remove, set remove_edge_ids to [].
+- If nothing to add, set add_edges to [].
+- Do NOT re-add edges that are already in CURRENT EDGES (even if unlisted in remove).
+- Be conservative: only remove when clearly wrong; only add when clearly supported.
