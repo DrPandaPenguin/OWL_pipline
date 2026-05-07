@@ -150,7 +150,6 @@ def normalize_kg(raw: dict) -> dict:
             "label": n.get("label", ""),
             "node_type": n.get("node_type", "concept"),
             "is_backbone": bool(n.get("is_backbone", False)),
-            "parent_id": n.get("parent_id") or "",
             "source_sentence": n.get("source_sentence") or n.get("label", ""),
             "slide_anchor_id": n.get("slide_anchor_id", ""),
             "slide_anchor_title": n.get("slide_anchor_title", ""),
@@ -223,7 +222,6 @@ def to_cytoscape_elements(kg: dict) -> list:
             "label": display_label,
             "node_type": n.get("node_type", "concept"),
             "is_backbone": str(is_bb).lower(),
-            "parent_id": n.get("parent_id", ""),
             "source_sentence": n.get("source_sentence", ""),
             "slide_anchor_id": n.get("slide_anchor_id", ""),
             "slide_anchor_title": n.get("slide_anchor_title", ""),
@@ -619,7 +617,6 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
     label = node_data.get("label", "")
     node_type = node_data.get("node_type", "concept")
     is_backbone = node_data.get("is_backbone", "false") == "true"
-    parent_id = node_data.get("parent_id", "")
     description = node_data.get("description", "")
     why_it_matters = node_data.get("why_it_matters", "")
 
@@ -656,14 +653,6 @@ def _render_node_card(node_data: dict, kg: Optional[dict]) -> html.Div:
             html.Span("\U0001f4cd ", style={"fontSize": "11px"}),
             html.Span(sec_title or sec_id, style={"color": "#666"}),
         ], style={"fontSize": "12px", "margin": "0 0 4px 0"}))
-
-    # parente
-    if parent_id:
-        parent_lbl = node_label(kg, parent_id) if kg else parent_id
-        children.append(html.P([
-            html.Span("\u2191 Parent: ", style={"fontWeight": "bold", "color": "#888", "fontSize": "11px"}),
-            html.Span(parent_lbl, style={"color": "#1565C0", "fontSize": "12px"}),
-        ], style={"margin": "2px 0 0 0"}))
 
     # description
     children.append(_divider)

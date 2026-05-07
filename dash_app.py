@@ -196,7 +196,6 @@ def normalize_kg(raw: dict) -> dict:
             "label": n.get("label", ""),
             "node_type": n.get("node_type", "concept"),
             "is_backbone": bool(n.get("is_backbone", False)),
-            "parent_id": n.get("parent_id") or "",
             "source_sentence": n.get("source_sentence") or n.get("label", ""),
             "slide_anchor_id": n.get("slide_anchor_id", ""),
             "slide_anchor_title": n.get("slide_anchor_title", ""),
@@ -285,7 +284,6 @@ def to_cytoscape_elements(kg: dict) -> list:
             "label": display_label,
             "node_type": n.get("node_type", "concept"),
             "is_backbone": str(is_bb).lower(),
-            "parent_id": n.get("parent_id", ""),
             "source_sentence": n.get("source_sentence", ""),
             "slide_anchor_id": n.get("slide_anchor_id", ""),
             "slide_anchor_title": n.get("slide_anchor_title", ""),
@@ -384,36 +382,26 @@ def _filter_edges_by_source(elements: list, edge_mode: str) -> list:
 
 # background pipeline
 # output saving
-def _save_outputs(
-    name: str,
-    raw_nodes: list,
-    raw_edges: list,
-    kus: list,
-    kg: dict,
-    transcript: str = "",
-) -> str:
-    """Save pipeline outputs to outputs/<name>/"""
+def _save_outputs(name, raw_nodes, raw_edges, kus, kg, transcript="", issues=None):
+    """outputs/<name>/ 에 결과 저장"""
     safe_name = re.sub(r"[^\w\-]", "_", name)[:60] or "transcript"
     out_dir = os.path.join(_OUTPUTS_DIR, safe_name)
     os.makedirs(out_dir, exist_ok=True)
 
     with open(os.path.join(out_dir, "nodes.json"), "w", encoding="utf-8") as f:
         json.dump({"nodes": raw_nodes}, f, indent=2, ensure_ascii=False)
-
     with open(os.path.join(out_dir, "edges.json"), "w", encoding="utf-8") as f:
         json.dump({"edges": raw_edges}, f, indent=2, ensure_ascii=False)
-
     with open(os.path.join(out_dir, "knowledge_units.json"), "w", encoding="utf-8") as f:
         json.dump({"knowledge_units": kus}, f, indent=2, ensure_ascii=False)
-
     with open(os.path.join(out_dir, "graph.json"), "w", encoding="utf-8") as f:
         json.dump(kg, f, indent=2, ensure_ascii=False)
-
-    # save transcript for downstream features (e.g. halusination check
-    # in viewer mode). Stored as plain text to keep it human-inspectable.
     if transcript:
         with open(os.path.join(out_dir, "transcript.txt"), "w", encoding="utf-8") as f:
             f.write(transcript)
+    if issues:
+        with open(os.path.join(out_dir, "issues.json"), "w", encoding="utf-8") as f:
+            json.dump({"issues": issues, "count": len(issues)}, f, indent=2, ensure_ascii=False)
 
     return out_dir
 
@@ -472,9 +460,13 @@ def build_pipeline_sync(transcript, name, pipeline_name, slide_text, model_name,
     }
 
     save_name = name.strip() if name and name.strip() else datetime.now().strftime("transcript_%Y%m%d_%H%M%S")
-    save_path = _save_outputs(save_name, raw_nodes, raw_edges, kus, kg, transcript=transcript)
+    pipeline_issues = result.get("issues", []) if pipeline_name == "slide_anchored" else []
+    save_path = _save_outputs(save_name, raw_nodes, raw_edges, kus, kg,
+                              transcript=transcript, issues=pipeline_issues)
 
     print(f"완료: {len(kg.get('nodes', []))} nodes, {len(kg.get('edges', []))} edges  ({time.perf_counter() - t0:.1f}s)")
+    if pipeline_issues:
+        print(f"  issues logged: {len(pipeline_issues)}")
     return kg, orphan_info, save_path
 
 
@@ -944,7 +936,6 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
     label = node_data.get("label", "")
     node_type = node_data.get("node_type", "concept")
     is_backbone = node_data.get("is_backbone", "false") == "true"
-    parent_id = node_data.get("parent_id", "")
     description = node_data.get("description", "")
     why_it_matters = node_data.get("why_it_matters", "")
 
@@ -1000,18 +991,6 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
             html.Span("📍 ", style={"fontSize": "11px"}),
             html.Span(sec_text, style={"color": "#666"}),
         ], style={"fontSize": "12px", "margin": "0 0 4px 0"}))
-
-    # parente
-    if parent_id:
-        parent_lbl = node_label(kg, parent_id) if kg else parent_id
-        if is_debug:
-            parent_text = f"{parent_id} · {parent_lbl}" if parent_lbl != parent_id else parent_id
-        else:
-            parent_text = parent_lbl
-        children.append(html.P([
-            html.Span("↑ Parent: ", style={"fontWeight": "bold", "color": "#888", "fontSize": "11px"}),
-            html.Span(parent_text, style={"color": "#1565C0", "fontSize": "12px"}),
-        ], style={"margin": "2px 0 0 0"}))
 
     # 2. semantic (description, why_it_matters)
     children.append(_divider)

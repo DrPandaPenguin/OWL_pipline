@@ -181,13 +181,6 @@ def _split_into_sentences(text):
     return [(i, s.strip()) for i, s in enumerate(sents) if s.strip()]
 
 
-def _normalize_edge_from_to(edge):
-    e = dict(edge)
-    if "from" not in e and "source_node" in e:
-        e["from"] = e["source_node"]
-    if "to" not in e and "target_node" in e:
-        e["to"] = e["target_node"]
-    return e
 
 
 def _sentence_similarity(a, b):
@@ -303,7 +296,15 @@ def _extract_strict_edges_with_llm(knowledge_units, nodes, config=None):
     node_ids = {_node_id(n) for n in nodes if _node_id(n)}
     out = []
     for i, raw in enumerate(edges):
-        e = _normalize_edge_from_to(raw)
+        e = dict(raw)
+
+        if "from" not in e and "source_node" in e:
+
+            e["from"] = e["source_node"]
+
+        if "to" not in e and "target_node" in e:
+
+            e["to"] = e["target_node"]
         if not _validate_strict_edge(e, node_ids, ku_texts, cfg):
             continue
         e.setdefault("edge_id", f"edge_{i + 1:03d}")
@@ -334,7 +335,15 @@ def _extract_soft_edges_with_llm(transcript, nodes, strict_edges, config=None):
     node_ids = {_node_id(n) for n in nodes if _node_id(n)}
     out = []
     for i, raw in enumerate(edges):
-        e = _normalize_edge_from_to(raw)
+        e = dict(raw)
+
+        if "from" not in e and "source_node" in e:
+
+            e["from"] = e["source_node"]
+
+        if "to" not in e and "target_node" in e:
+
+            e["to"] = e["target_node"]
         if not _validate_soft_edge(e, node_ids, transcript, cfg):
             continue
         e.setdefault("edge_id", f"edge_soft_{i + 1:03d}")
@@ -535,7 +544,15 @@ def refine_edges(transcript, nodes, edges, config=None):
     }
 
     for raw in add_raw:
-        e = _normalize_edge_from_to(raw)
+        e = dict(raw)
+
+        if "from" not in e and "source_node" in e:
+
+            e["from"] = e["source_node"]
+
+        if "to" not in e and "target_node" in e:
+
+            e["to"] = e["target_node"]
         fr = e.get("from")
         to = e.get("to")
         etype = e.get("edge_type", "")
