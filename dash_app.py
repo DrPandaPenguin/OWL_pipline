@@ -382,7 +382,7 @@ def _filter_edges_by_source(elements: list, edge_mode: str) -> list:
 
 # background pipeline
 # output saving
-def _save_outputs(name, raw_nodes, raw_edges, kus, kg, transcript="", issues=None):
+def _save_outputs(name, raw_nodes, raw_edges, kus, kg, transcript=""):
     """outputs/<name>/ 에 결과 저장"""
     safe_name = re.sub(r"[^\w\-]", "_", name)[:60] or "transcript"
     out_dir = os.path.join(_OUTPUTS_DIR, safe_name)
@@ -392,23 +392,18 @@ def _save_outputs(name, raw_nodes, raw_edges, kus, kg, transcript="", issues=Non
         json.dump({"nodes": raw_nodes}, f, indent=2, ensure_ascii=False)
     with open(os.path.join(out_dir, "edges.json"), "w", encoding="utf-8") as f:
         json.dump({"edges": raw_edges}, f, indent=2, ensure_ascii=False)
-    with open(os.path.join(out_dir, "knowledge_units.json"), "w", encoding="utf-8") as f:
-        json.dump({"knowledge_units": kus}, f, indent=2, ensure_ascii=False)
     with open(os.path.join(out_dir, "graph.json"), "w", encoding="utf-8") as f:
         json.dump(kg, f, indent=2, ensure_ascii=False)
     if transcript:
         with open(os.path.join(out_dir, "transcript.txt"), "w", encoding="utf-8") as f:
             f.write(transcript)
-    if issues:
-        with open(os.path.join(out_dir, "issues.json"), "w", encoding="utf-8") as f:
-            json.dump({"issues": issues, "count": len(issues)}, f, indent=2, ensure_ascii=False)
 
     return out_dir
 
 
 # 파이프라인 동기 실행 (UI는 멈췄다가 결과 한 번에 받음)
 def build_pipeline_sync(transcript, name, pipeline_name, slide_text, model_name, api_key):
-    """transcript -> KG 한 번에 실행. (kg, orphan_info, save_path) 반환. 실패하면 raise."""
+    """transcript -> KG 한 번에 실행. (kg, save_path) 반환."""
     if api_key:
         os.environ["OPENAI_API_KEY"] = api_key
 
@@ -448,26 +443,11 @@ def build_pipeline_sync(transcript, name, pipeline_name, slide_text, model_name,
         except Exception as e:
             print(f"[enrich] skip ({e})")
 
-    # orphan KU 통계
-    used_ku_ids = {kid for n in raw_nodes for kid in n.get("supporting_ku_ids", [])}
-    orphan_kus = [k for k in kus if k.get("id") not in used_ku_ids]
-    total_ku = len(kus)
-    orphan_info = {
-        "total_ku": total_ku,
-        "orphan_count": len(orphan_kus),
-        "orphan_ratio": len(orphan_kus) / total_ku if total_ku > 0 else 0.0,
-        "orphan_kus": orphan_kus,
-    }
-
     save_name = name.strip() if name and name.strip() else datetime.now().strftime("transcript_%Y%m%d_%H%M%S")
-    pipeline_issues = result.get("issues", []) if pipeline_name == "slide_anchored" else []
-    save_path = _save_outputs(save_name, raw_nodes, raw_edges, kus, kg,
-                              transcript=transcript, issues=pipeline_issues)
+    save_path = _save_outputs(save_name, raw_nodes, raw_edges, kus, kg, transcript=transcript)
 
     print(f"완료: {len(kg.get('nodes', []))} nodes, {len(kg.get('edges', []))} edges  ({time.perf_counter() - t0:.1f}s)")
-    if pipeline_issues:
-        print(f"  issues logged: {len(pipeline_issues)}")
-    return kg, orphan_info, save_path
+    return kg, save_path
 
 
 # inspector helpers
@@ -511,13 +491,6 @@ def section_title(kg: dict, section_id: str) -> str:
     return section_id
 
 
-def format_orphan_ku_log(orphan_kus: list) -> str:
-    if not orphan_kus:
-        return "(No orphan KUs)"
-    return "\n".join(
-        f"[{ku.get('id', '?')}] (sent={ku.get('sentence_index', '')}) {(ku.get('text') or '').strip()}"
-        for ku in orphan_kus
-    )
 
 
 def _edge_legend() -> html.Div:
@@ -678,7 +651,6 @@ def _build_full_layout() -> html.Div:
 
         html.Div(id="phase-log"),
         html.Div(id="halluc-result", style={"marginTop": "6px"}),
-        html.Div(id="orphan-section", style={"marginTop": "4px"}),
 
     ], style={"padding": "12px 16px", "borderBottom": "1px solid #ddd", "backgroundColor": "#fafafa"}),
 
@@ -777,7 +749,6 @@ def _build_full_layout() -> html.Div:
 
     # ---- Stores + interval ----
     dcc.Store(id="kg-store", data=None),
-    dcc.Store(id="orphan-store", data=None),
     dcc.Store(id="transcript-name", data=None),   # resolved name used for saving
 
     ], style={"fontFamily": "system-ui, -apple-system, sans-serif", "maxWidth": "1400px", "margin": "0 auto"})
@@ -793,7 +764,6 @@ app.layout = _build_full_layout()
 @callback(
     Output("kg-store", "data"),
     Output("build-status", "children"),
-    Output("orphan-store", "data"),
     Output("save-path-info", "children"),
     Input("build-btn", "n_clicks"),
     State("transcript-input", "value"),
@@ -807,15 +777,15 @@ app.layout = _build_full_layout()
 def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_text, model_name, user_api_key):
     # bild 버튼 누르면 동기로 실행 끝날 때까지 페이지 멈춰있음
     if not transcript or not transcript.strip():
-        return no_update, "empty input", no_update, no_update
+        return no_update, "empty input", no_update
     api_key = (user_api_key or "").strip() or os.getenv("OPENAI_API_KEY", "")
     if not api_key:
-        return no_update, "no API key — enter your OpenAI key above", no_update, no_update
+        return no_update, "no API key — enter your OpenAI key above", no_update
 
     name = (name_input or "").strip() or datetime.now().strftime("transcript_%Y%m%d_%H%M%S")
     selected = pipeline_name or "slide_anchored"
     try:
-        kg, orphan, save_path = build_pipeline_sync(
+        kg, save_path = build_pipeline_sync(
             transcript.strip(), name, selected,
             (slide_text or "").strip(), model_name or "gpt-5.2", api_key,
         )
@@ -823,12 +793,12 @@ def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_te
         return no_update, f"error: {e}", None, no_update
 
     if kg is None or not kg.get("nodes"):
-        return None, "pipeline produced no graph", None, no_update
+        return None, "pipeline produced no graph", no_update
 
     n, e = len(kg.get("nodes", [])), len(kg.get("edges", []))
     rel_path = os.path.relpath(save_path, _PROJECT_ROOT) if save_path else "—"
     save_info = f"saved: {rel_path}/" if save_path else ""
-    return kg, f"{n} nodes, {e} edges", orphan, save_info
+    return kg, f"{n} nodes, {e} edges", save_info
 
 
 @callback(
@@ -1196,36 +1166,6 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
 
     return html.Div(children)
 
-
-@callback(
-    Output("orphan-section", "children"),
-    Input("orphan-store", "data"),
-)
-def render_orphan_section(orphan_data):
-    if not orphan_data:
-        return None
-    total = orphan_data.get("total_ku", 0)
-    count = orphan_data.get("orphan_count", 0)
-    ratio = orphan_data.get("orphan_ratio", 0.0)
-    orphan_kus = orphan_data.get("orphan_kus", [])
-    pct = f"{ratio * 100:.1f}%"
-    color = "#c62828" if count > 0 else "#2e7d32"
-    return html.Div([
-        html.Div([
-            html.Span("KU coverage: ", style={"fontWeight": "bold"}),
-            html.Span(f"{total - count}/{total} used", style={"color": color}),
-            html.Span(f"  ({pct} orphan)", style={"color": color, "fontSize": "11px"}),
-        ], style={"fontSize": "12px"}),
-        html.Details([
-            html.Summary("View orphan KUs", style={"cursor": "pointer", "fontSize": "11px", "color": "#666"}),
-            html.Pre(format_orphan_ku_log(orphan_kus), style={
-                "fontSize": "10px", "fontFamily": "monospace", "whiteSpace": "pre-wrap",
-                "maxHeight": "160px", "overflowY": "auto",
-                "backgroundColor": "#f5f5f5", "padding": "6px",
-                "marginTop": "4px", "border": "1px solid #ddd",
-            }),
-        ]),
-    ])
 
 
 @callback(

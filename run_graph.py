@@ -131,11 +131,6 @@ def run(lec_dir, pipeline_name, enrich, model=""):
     if result.get("kus"):
         with open(os.path.join(out_dir, "knowledge_units.json"), "w", encoding="utf-8") as f:
             json.dump(result["kus"], f, indent=2, ensure_ascii=False)
-    issues = result.get("issues") or []
-    if issues:
-        with open(os.path.join(out_dir, "issues.json"), "w", encoding="utf-8") as f:
-            json.dump({"issues": issues, "count": len(issues)}, f, indent=2, ensure_ascii=False)
-        print(f"  issues logged: {len(issues)} (issues.json)")
     print(f"Saved: outputs/{output_name}/")
 
 

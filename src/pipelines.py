@@ -417,10 +417,9 @@ def pipeline_slide_anchored(transcript: str, config):
 
     raw_node_list = node_data.get("nodes", [])
 
-    # step 3: 노드 검증 + ID 부여. drop된 거는 issues에 기록
+    # step 3: 노드 검증 + ID 부여
     transcript_sentences = _split_transcript_sentences(transcript)
 
-    issues = []
     nodes = []
     for i, raw in enumerate(raw_node_list):
         label = (raw.get("label") or "").strip()
@@ -429,12 +428,9 @@ def pipeline_slide_anchored(transcript: str, config):
         node_type = (raw.get("node_type") or "concept").strip()
         is_backbone = bool(raw.get("is_backbone", False))
         if not label:
-            issues.append({"type": "node_dropped", "reason": "empty_label", "raw": raw})
             continue
         # halusination guard: invalid slide_anchor_id 면 reject
         if anchor_id not in valid_slide_ids:
-            issues.append({"type": "node_dropped", "reason": "invalid_slide_anchor",
-                           "label": label, "anchor_id": anchor_id})
             continue
 
         nid = f"node_{i + 1:03d}"
@@ -447,11 +443,7 @@ def pipeline_slide_anchored(transcript: str, config):
             "slide_anchor_id": anchor_id,
             "slide_anchor_title": slide_title_map.get(anchor_id, ""),
             "source_sentence": source_sentence,
-            "supporting_ku_ids": [],
         })
-
-    if len(nodes) < 2:
-                return {"nodes": [], "edges": [], "kus": [], "timing": {}, "error": "slide_anchored requires slide_text — use direct pipeline for transcript-only"}
 
     # fuzzy-compute sentence_index per node
     for n in nodes:
@@ -531,7 +523,7 @@ def pipeline_slide_anchored(transcript: str, config):
         raw_pass2 = []  # Pass 2 failure is non-fatal
     timing["edge_pass2"] = round(time.time() - t2b, 2)
 
-    # step 5: edge 검증 + edge_source 표시. drop된 것들은 issues에 기록
+    # step 5: edge 검증 + edge_source 표시
     node_ids = {n["id"] for n in nodes}
     edges = []
 
@@ -540,13 +532,13 @@ def pipeline_slide_anchored(transcript: str, config):
         fr = raw_e.get("from") or raw_e.get("source_node")
         to = raw_e.get("to") or raw_e.get("target_node")
         if not fr or not to:
-            return None, "missing_from_or_to"
+            return None
         if fr not in node_ids or to not in node_ids:
-            return None, "unknown_node_id"
+            return None
         if fr == to:
-            return None, "self_loop"
+            return None
         if raw_e.get("edge_type") not in edge_type_set:
-            return None, "invalid_edge_type"
+            return None
 
         ev_section = raw_e.get("evidence_section", "")
         if ev_section not in valid_slide_ids:
@@ -568,49 +560,21 @@ def pipeline_slide_anchored(transcript: str, config):
                 out["confidence_score"] = max(0.0, min(1.0, float(conf)))
             except (TypeError, ValueError):
                 pass
-        return out, None
+        return out
 
     seen_edges = set()
-    for raw_e, source_label in [(r, "explicit") for r in raw_pass1] + \
-                                [(r, "inferred") for r in raw_pass2]:
-        e, reason = _build_edge_sa(raw_e, source_label)
-        if e is None:
-            issues.append({
-                "type": "edge_dropped",
-                "reason": reason,
-                "edge_source": source_label,
-                "raw": {k: v for k, v in raw_e.items() if k in ("from", "to", "source_node", "target_node", "edge_type")},
-            })
-            continue
-        key = (e["from"], e["to"], e["edge_type"])
-        rev_key = (e["to"], e["from"], e["edge_type"])
-        if key in seen_edges or rev_key in seen_edges:
-            issues.append({"type": "edge_dropped", "reason": "duplicate", "edge_source": source_label, "raw": key})
-            continue
-        seen_edges.add(key)
-        edges.append(e)
+    for source_label, raw_list in [("explicit", raw_pass1), ("inferred", raw_pass2)]:
+        for raw_e in raw_list:
+            e = _build_edge_sa(raw_e, source_label)
+            if e is None:
+                continue
+            key = (e["from"], e["to"], e["edge_type"])
+            rev_key = (e["to"], e["from"], e["edge_type"])
+            if key in seen_edges or rev_key in seen_edges:
+                continue
+            seen_edges.add(key)
+            edges.append(e)
 
-    # step 5b: drives edge가 PART 시간 역방향이면 의심으로 로그만 (swap 안 함)
-    node_part_num = {}
-    for n in nodes:
-        sid = n.get("slide_anchor_id", "")
-        try:
-            node_part_num[n["id"]] = int(sid.split("_")[-1]) if sid else 0
-        except (ValueError, IndexError):
-            node_part_num[n["id"]] = 0
-
-    for e in edges:
-        if e["edge_type"] != "drives":
-            continue
-        src_part = node_part_num.get(e["from"], 0)
-        tgt_part = node_part_num.get(e["to"], 0)
-        if src_part > 0 and tgt_part > 0 and src_part > tgt_part:
-            issues.append({
-                "type": "drives_direction_suspicious",
-                "from": e["from"], "to": e["to"],
-                "src_part": src_part, "tgt_part": tgt_part,
-                "note": "backward drives across PART boundary — possible LLM direction error",
-            })
 
     for i, e in enumerate(edges):
         e["edge_id"] = f"edge_{i + 1:03d}"
@@ -624,7 +588,7 @@ def pipeline_slide_anchored(transcript: str, config):
         timing["enrich_pass"] = round(time.time() - t4, 2)
 
     timing["total"] = round(sum(timing.values()), 2)
-    return {"nodes": nodes, "edges": edges, "kus": [], "timing": timing, "issues": issues}
+    return {"nodes": nodes, "edges": edges, "kus": [], "timing": timing}
 
 _EDGE_PASS1_SYSTEM = load_prompt("edge_pass1_system", """\
 You are a lecture knowledge graph edge extractor — Pass 1 (Grounded).
@@ -853,13 +817,8 @@ def pipeline_direct(transcript: str, config):
             "label": label,
             "source_sentence": (n.get("source_sentence") or "").strip(),
             "is_backbone": n.get("is_backbone", False),
-            "supporting_ku_ids": [],
             "timestamp": {"method": "direct", "sentence_index": 0},
         })
-
-    if not nodes or len(nodes) < 2:
-        timing["total"] = round(sum(timing.values()), 2)
-        return {"nodes": nodes, "edges": [], "kus": [], "timing": timing}
 
     # step 2: 2 pass edge extraction (reuses extract_edges from src)
     t1 = time.time()
