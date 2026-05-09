@@ -558,7 +558,7 @@ def _build_full_layout() -> html.Div:
 
         # API Key input (required when no server-side key is set)
         html.Div([
-            html.Span("🔑 API Key: ", style={"fontSize": "12px", "marginRight": "6px", "color": "#555"}),
+            html.Span("API Key: ", style={"fontSize": "12px", "marginRight": "6px", "color": "#555"}),
             dcc.Input(
                 id="api-key-input",
                 type="password",
@@ -586,7 +586,7 @@ def _build_full_layout() -> html.Div:
             dcc.Upload(
                 id="upload-transcript",
                 children=html.Div([
-                    "📂 Upload .txt",
+                    "Upload .txt",
                     html.Br(),
                     html.Span("or drag & drop", style={"fontSize": "10px", "color": "#888"}),
                 ]),
@@ -614,7 +614,7 @@ def _build_full_layout() -> html.Div:
             id="slide-text-container",
             children=[
                 html.P(
-                    "📋 Slide text (for slide_structure pipeline)",
+                    "Slide text (for slide_structure pipeline)",
                     style={"fontSize": "12px", "color": "#555", "margin": "6px 0 2px 0"},
                 ),
                 html.P(
@@ -635,22 +635,32 @@ def _build_full_layout() -> html.Div:
         ),
 
         html.Div([
-            html.Button("🔨 Build Graph", id="build-btn", n_clicks=0,
+            html.Button("Build Graph", id="build-btn", n_clicks=0,
                         style={"padding": "6px 14px", "marginRight": "10px", "cursor": "pointer"}),
-            html.Button("⬇ Download JSON", id="download-btn", n_clicks=0,
-                        style={"padding": "6px 14px", "marginRight": "10px", "cursor": "pointer",
-                               "backgroundColor": "#f0f0f0"}),
-            html.Button("🔍 Hallucination Check", id="halluc-btn", n_clicks=0,
+            html.Button("Hallucination Check", id="halluc-btn", n_clicks=0,
                         style={"padding": "6px 14px", "marginRight": "10px", "cursor": "pointer",
                                "backgroundColor": "#FFF3E0", "border": "1px solid #FF9800"}),
             html.Span(id="build-status", style={"fontSize": "13px", "color": "#555"}),
         ], style={"marginTop": "8px", "display": "flex", "alignItems": "center"}),
 
         html.Div(id="save-path-info", style={"fontSize": "11px", "color": "#4CAF50", "marginTop": "4px"}),
-        dcc.Download(id="download-json"),
 
         html.Div(id="phase-log"),
         html.Div(id="halluc-result", style={"marginTop": "6px"}),
+
+        # load existing KG JSON (재실행 없이 그래프만 보고 싶을 때)
+        html.Details([
+            html.Summary("Load existing KG from JSON",
+                         style={"cursor": "pointer", "fontSize": "12px", "color": "#888", "marginTop": "8px"}),
+            dcc.Textarea(
+                id="kg-json-input",
+                placeholder='{"nodes": [...], "edges": [...]}',
+                style={"width": "100%", "height": "70px", "boxSizing": "border-box",
+                       "fontFamily": "monospace", "fontSize": "11px", "marginTop": "6px"},
+            ),
+            html.Button("Load KG", id="load-json-btn", n_clicks=0,
+                        style={"marginTop": "4px", "padding": "4px 10px", "cursor": "pointer"}),
+        ]),
 
     ], style={"padding": "12px 16px", "borderBottom": "1px solid #ddd", "backgroundColor": "#fafafa"}),
 
@@ -689,15 +699,6 @@ def _build_full_layout() -> html.Div:
                 # --- Compound collapse/expand + layout direction ---
                 html.Div([
                     html.Button(
-                        "Fit to Screen",
-                        id="fit-btn",
-                        n_clicks=0,
-                        style={"fontSize": "11px", "padding": "3px 8px",
-                               "cursor": "pointer", "marginRight": "6px",
-                               "backgroundColor": "#4CAF50", "color": "white",
-                               "border": "none", "borderRadius": "3px"},
-                    ),
-                    html.Button(
                         "Collapse Groups",
                         id="collapse-btn",
                         n_clicks=0,
@@ -732,7 +733,7 @@ def _build_full_layout() -> html.Div:
         # inspector panel
         html.Div([
             html.Div([
-                html.H4("🔍 Inspector", style={"margin": "0", "display": "inline-block"}),
+                html.H4("Inspector", style={"margin": "0", "display": "inline-block"}),
             ], style={"display": "flex", "alignItems": "center", "marginBottom": "8px"}),
             html.Div(
                 id="inspector-content",
@@ -766,16 +767,35 @@ app.layout = _build_full_layout()
     Output("build-status", "children"),
     Output("save-path-info", "children"),
     Input("build-btn", "n_clicks"),
+    Input("load-json-btn", "n_clicks"),
     State("transcript-input", "value"),
     State("transcript-name-input", "value"),
     State("pipeline-select", "value"),
     State("slide-text-input", "value"),
     State("model-select", "value"),
     State("api-key-input", "value"),
+    State("kg-json-input", "value"),
     prevent_initial_call=True,
 )
-def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_text, model_name, user_api_key):
-    # bild 버튼 누르면 동기로 실행 끝날 때까지 페이지 멈춰있음
+def main_state_callback(n_build, n_load, transcript, name_input, pipeline_name,
+                         slide_text, model_name, user_api_key, kg_json_str):
+    triggered = ctx.triggered_id
+
+    # load existing KG branch
+    if triggered == "load-json-btn":
+        if not kg_json_str or not kg_json_str.strip():
+            return no_update, "empty JSON", no_update
+        try:
+            raw = json.loads(kg_json_str)
+            kg = normalize_kg(raw)
+        except json.JSONDecodeError:
+            return no_update, "invalid JSON", no_update
+        if not kg.get("nodes"):
+            return no_update, "no nodes in JSON", no_update
+        n, e = len(kg["nodes"]), len(kg.get("edges", []))
+        return kg, f"loaded {n} nodes, {e} edges", ""
+
+    # build branch (동기 실행, 끝날 때까지 페이지 멈춤)
     if not transcript or not transcript.strip():
         return no_update, "empty input", no_update
     api_key = (user_api_key or "").strip() or os.getenv("OPENAI_API_KEY", "")
@@ -790,7 +810,7 @@ def main_state_callback(n_build, transcript, name_input, pipeline_name, slide_te
             (slide_text or "").strip(), model_name or "gpt-5.2", api_key,
         )
     except Exception as e:
-        return no_update, f"error: {e}", None, no_update
+        return no_update, f"error: {e}", no_update
 
     if kg is None or not kg.get("nodes"):
         return None, "pipeline produced no graph", no_update
@@ -862,10 +882,8 @@ def update_collapse_label(n_clicks):
 @callback(
     Output("cytoscape", "layout"),
     Input("layout-direction", "value"),
-    Input("fit-btn", "n_clicks"),
 )
-def update_layout(direction, _fit_clicks):
-    # re-setting layout triggers Cytoscape to re-render and fit to viewport
+def update_layout(direction):
     return {**DAGRE_LAYOUT, "rankDir": direction or "TB", "fit": True}
 
 
@@ -939,7 +957,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
     ))
     if is_backbone:
         badges.append(html.Span(
-            "⭐ backbone",
+            "backbone",
             style={"background": "#FFF3E0", "color": "#E65100",
                    "padding": "2px 8px", "borderRadius": "10px",
                    "fontSize": "11px", "marginLeft": "6px"},
@@ -958,7 +976,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
         else:
             sec_text = sec_title or sec_id
         children.append(html.P([
-            html.Span("📍 ", style={"fontSize": "11px"}),
+            # section indicator
             html.Span(sec_text, style={"color": "#666"}),
         ], style={"fontSize": "12px", "margin": "0 0 4px 0"}))
 
@@ -974,7 +992,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
 
     if why_it_matters:
         children.append(html.Div([
-            html.P("💡 Why It Matters",
+            html.P("Why It Matters",
                    style={"fontSize": "11px", "color": "#E65100", "margin": "0 0 2px 0", "fontWeight": "bold"}),
             html.P(why_it_matters, style={"fontSize": "13px", "color": "#555", "lineHeight": "1.4", "margin": "0"}),
         ], style={"marginBottom": "4px", "borderLeft": "3px solid #FFA726", "paddingLeft": "8px"}))
@@ -987,7 +1005,7 @@ def _render_node_card(node_data: dict, kg) -> html.Div:
     if is_debug:
         children.append(html.Hr(style={"margin": "10px 0", "border": "none",
                                        "borderTop": "2px dashed #ccc"}))
-        children.append(html.P("🛠 Debug Info",
+        children.append(html.P("Debug Info",
                                style={"fontSize": "11px", "color": "#888", "fontWeight": "bold",
                                       "marginBottom": "4px", "textTransform": "uppercase", "letterSpacing": "0.5px"}))
         debug_fields = [
@@ -1025,7 +1043,7 @@ def _render_node_connections(nid: str, kg) -> html.Div:
         is_inf = edge_source == "inferred"
         conf = e.get("confidence_score")
         conf_str = f"  {float(conf):.2f}" if conf is not None and is_inf else ""
-        style_tag = " ⋯" if is_inf else ""
+        style_tag = " (inferred)" if is_inf else ""
 
         item_style = {"marginBottom": "4px", "borderLeft": f"3px solid {color}", "paddingLeft": "8px"}
 
@@ -1114,7 +1132,7 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
     # --- Justification (WHERE) ---
     if justification:
         children.append(html.Div([
-            html.P("📌 Justification",
+            html.P("Justification",
                    style={"fontSize": "11px", "color": "#888", "margin": "0 0 2px 0", "fontWeight": "bold"}),
             html.P(f'"{justification}"',
                    style={"fontSize": "12px", "fontStyle": "italic", "color": "#555", "margin": "0"}),
@@ -1123,7 +1141,7 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
     # --- Reason (WHY) ---
     if reason:
         children.append(html.Div([
-            html.P("💬 Reason",
+            html.P("Reason",
                    style={"fontSize": "11px", "color": "#888", "margin": "0 0 2px 0", "fontWeight": "bold"}),
             html.P(reason, style={"fontSize": "13px", "color": "#333", "lineHeight": "1.4", "margin": "0"}),
         ], style={"marginBottom": "10px"}))
@@ -1138,7 +1156,7 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
         else:
             sec_display = section_title(kg, evidence_section)
         children.append(html.P([
-            html.Span("📍 ", style={"fontSize": "11px"}),
+            # section indicator
             html.Strong("Section: "), sec_display,
         ], style={"fontSize": "12px", "marginBottom": "4px"}))
 
@@ -1151,7 +1169,7 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
     # --- Debug Mode: extra fields ---
     if is_debug:
         children.append(html.Hr(style={"margin": "8px 0", "borderColor": "#eee"}))
-        children.append(html.P("🛠 Debug Info", style={"fontSize": "11px", "color": "#888", "fontWeight": "bold", "marginBottom": "4px"}))
+        children.append(html.P("Debug Info", style={"fontSize": "11px", "color": "#888", "fontWeight": "bold", "marginBottom": "4px"}))
         debug_fields = [
             ("edge_source", edge_source),
             ("from (ID)", src_id),
