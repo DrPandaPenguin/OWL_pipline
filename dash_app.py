@@ -208,16 +208,15 @@ def normalize_kg(raw: dict) -> dict:
         })
     edges = []
     for e in raw.get("edges", []):
-        justification = (e.get("justification")
-                         or e.get("evidence")
-                         or e.get("justification_sentence")
-                         or e.get("justification_span", ""))
+        evidence = (e.get("evidence") or e.get("justification")
+                    or e.get("justification_sentence")
+                    or e.get("justification_span", ""))
         ed = {
             "source": e.get("source") or e.get("from") or e.get("source_node", ""),
             "target": e.get("target") or e.get("to") or e.get("target_node", ""),
             "relation": e.get("relation") or e.get("edge_type", ""),
-            "justification": justification,
-            "reason": e.get("reason", ""),
+            "evidence": evidence,
+            "explanation": e.get("explanation") or e.get("reason", ""),
             "evidence_section": e.get("evidence_section", ""),
             "edge_source": e.get("edge_source", ""),  # "explicit" | "inferred"
             "edge_id": e.get("edge_id", ""),           # preserve for enrich_graph() lookup
@@ -315,8 +314,8 @@ def to_cytoscape_elements(kg: dict) -> list:
             "target": tgt,
             "label": display_rel,
             "raw_type": rel,  # keep original for color matching
-            "justification": e.get("justification", ""),
-            "reason": e.get("reason", ""),
+            "evidence": e.get("evidence") or e.get("justification", ""),
+            "explanation": e.get("explanation") or e.get("reason", ""),
             "evidence_section": e.get("evidence_section", ""),
             "edge_source": edge_source,
         }
@@ -1105,8 +1104,8 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
     tgt_id = edge_data.get("target", "")
     src_lbl = node_label(kg, src_id) if kg else src_id
     tgt_lbl = node_label(kg, tgt_id) if kg else tgt_id
-    justification = edge_data.get("justification", "")
-    reason = edge_data.get("reason", "")
+    evidence = edge_data.get("evidence") or edge_data.get("justification", "")
+    explanation = edge_data.get("explanation") or edge_data.get("reason", "")
     evidence_section = edge_data.get("evidence_section", "")
     edge_source = edge_data.get("edge_source", "")
     conf = edge_data.get("confidence_score")
@@ -1130,18 +1129,18 @@ def _render_edge_card(edge_data: dict, kg) -> html.Div:
     ], style={"fontSize": "13px", "margin": "4px 0 12px 0"}))
 
     # --- Justification (WHERE) ---
-    if justification:
+    if evidence:
         children.append(html.Div([
-            html.P("Justification",
+            html.P("Evidence",
                    style={"fontSize": "11px", "color": "#888", "margin": "0 0 2px 0", "fontWeight": "bold"}),
-            html.P(f'"{justification}"',
+            html.P(f'"{evidence}"',
                    style={"fontSize": "12px", "fontStyle": "italic", "color": "#555", "margin": "0"}),
         ], style={"marginBottom": "10px", "borderLeft": f"3px solid {color}", "paddingLeft": "8px"}))
 
     # --- Reason (WHY) ---
-    if reason:
+    if explanation:
         children.append(html.Div([
-            html.P("Reason",
+            html.P("Explanation",
                    style={"fontSize": "11px", "color": "#888", "margin": "0 0 2px 0", "fontWeight": "bold"}),
             html.P(reason, style={"fontSize": "13px", "color": "#333", "lineHeight": "1.4", "margin": "0"}),
         ], style={"marginBottom": "10px"}))

@@ -10,7 +10,7 @@ EDGES TO ENRICH ({num_edges} edges):
 {edges_json}
 
 For every node, add "description" and "why_it_matters".
-For every edge, add "reason".
+For every edge, add "explanation".
 
 Return strict JSON:
 {{
@@ -24,7 +24,7 @@ Return strict JSON:
   "edges": [
     {{
       "edge_id": "edge_001",
-      "reason": "1–2 sentences on why these concepts are connected this way"
+      "explanation": "1–2 sentences on why these concepts are connected this way"
     }}
   ]
 }}
@@ -32,5 +32,5 @@ Return strict JSON:
 Rules:
 - Return ALL {num_nodes} node IDs and ALL {num_edges} edge IDs — do not skip any.
 - description must NOT repeat the node label or source_sentence word-for-word.
-- reason must explain the logical/pedagogical link, not just restate the justification.
+- reason must explain the logical/pedagogical link, not just restate the evidence.
 - All content must be grounded in the transcript above.

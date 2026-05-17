@@ -21,10 +21,10 @@ The lecturer must have directly said, described, or asserted the relationship.
 Rules:
 1. Only use node IDs from the list above.
 2. No self-loops (from ≠ to). No duplicate edges.
-3. justification MUST be verbatim or near-verbatim from the transcript.
+3. evidence MUST be verbatim or near-verbatim from the transcript.
 4. Do NOT include confidence_score — if you are uncertain, do not include the edge.
 5. evidence_section MUST be one of the valid section IDs listed above.
-6. reason explains WHY the relationship exists — write this yourself, do not quote the transcript.
+6. explanation explains WHY the relationship exists — write this yourself, do not quote the transcript.
 
 ------------------------------------
 Return strict JSON:
@@ -34,8 +34,8 @@ Return strict JSON:
       "from": "node_001",
       "to": "node_002",
       "edge_type": "requires",
-      "justification": "near-verbatim sentence from transcript",
-      "reason": "conceptual explanation of why this relationship holds",
+      "evidence": "near-verbatim sentence from transcript",
+      "explanation": "conceptual explanation of why this relationship holds",
       "evidence_section": "part_003"
     }}
   ]

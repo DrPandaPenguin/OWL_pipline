@@ -1,302 +1,232 @@
-# Functional Graph — Pipeline Flow
+# Functional Graph — slide_anchored (최신)
 
-OWL Pipeline의 핵심 production 파이프라인 (`slide_anchored`)의 함수 호출 흐름.
+OWL Pipeline production 파이프라인 (`slide_anchored`)의 함수 흐름.
 
 ---
 
-## 1. Top-level entry
+## Top-level entry
 
 ```
-run_graph.py (CLI)
-    │
-    └─→ run(lec_dir, pipeline_name="slide_anchored", enrich=True)
-            │
-            ├─→ get_pipeline("slide_anchored")  # src/pipelines.py 등록기에서 lookup
-            │
-            └─→ pipeline_slide_anchored(transcript, config)
-                    │
-                    └─→ KG dict 반환
-```
-
-```
-dash_app.py (Web UI)
-    │
-    └─→ build_pipeline_sync(...)
-            │
-            └─→ get_pipeline("slide_anchored")(transcript, config)
-                    │
-                    └─→ pipeline_slide_anchored(transcript, config)
+run_graph.py (CLI)                  dash_app.py (Web UI)
+   │                                   │
+   └→ get_pipeline("slide_anchored")   └→ build_pipeline_sync(...)
+            └→ pipeline_slide_anchored(transcript, config)
 ```
 
 ---
 
-## 2. pipeline_slide_anchored 내부 흐름
+## pipeline_slide_anchored 흐름
 
 ```
 ENTRY: pipeline_slide_anchored(transcript, config)
 │
-├─ STEP 1 — slide parsing (Python only, no LLM)
-│   ├─ _extract_part_ids(slide_text)
-│   │   └─ regex: PART [I|II|...] — Title
-│   ├─ _extract_part_sections(slide_text)
-│   │   ├─ Core Focus 추출
-│   │   ├─ Key Ideas (bullets)
-│   │   └─ Why This Part Exists
-│   └─ _format_slide_sections_text(sections)
-│       └─ LLM 입력용 textual format
+config 검증:
+  ├ slide_text 없으면 → return error
+  └ OPENAI_API_KEY 없으면 → return error
 │
-├─ STEP 2 — node extraction (LLM, 1 call)
-│   └─ openai.chat.completions.create(
-│         system = _SLIDE_ANCHORED_NODE_SYSTEM,
-│         user   = _SLIDE_ANCHORED_NODE_USER.format(
-│                    slide_sections_text, transcript))
-│      → JSON: nodes [{label, slide_anchor_id, source_sentence,
-│                      is_backbone, parent_id}]
+▼
+STEP 1 — 슬라이드 파싱 (Python only, no LLM)
+  ─ _extract_part_ids(slide_text)
+       └ regex r"^PART\s+([IVXLCDM]+|\d+)\s*[—–-]\s*(.+)$"
+          → [{slide_id, title}, ...]
+  ─ _extract_part_sections(slide_text)
+       ├ Core Focus 추출 (regex)
+       ├ Key Ideas (bullet)
+       └ Why This Part Exists
+          → [{section_id, title, core_focus, key_ideas[],
+              why_this_part_exists}, ...]
+  ─ _format_slide_sections_text(sections)
+       └ Python dict → LLM이 읽을 textual format
+         ("[part_001] Title\n  Core Focus: ...\n  Key Ideas: ...")
 │
-├─ STEP 3 — node validation + ID 부여 (Python)
-│   ├─ _split_transcript_sentences(transcript)
-│   │   └─ re.split(r'(?<=[.!?])\s+')
-│   │
-│   ├─ for each raw node:
-│   │   ├─ slide_anchor_id ∈ valid_slide_ids 검증 (없으면 drop)
-│   │   ├─ id 부여: node_001, node_002, ...
-│   │   └─ store dict
-│   │
-│   ├─ _find_sentence_index(source_sentence, transcript_sentences)
-│   │   └─ difflib.SequenceMatcher → best fuzzy index
-│   │
-│   ├─ _resolve_parent_id(parent_label, all_nodes, threshold=0.85)
-│   │   └─ difflib → 가장 유사한 node_id (or None)
-│   │
-│   └─ _compute_ordering(nodes)
-│       ├─ section_order: PART 안에서 sentence_index 정렬 → 1, 2, 3, ...
-│       └─ lecture_order: backbone만 (PART 번호, sentence_index) 정렬 → 1, 2, ...
+▼
+STEP 2 — 노드 추출 (LLM × 1 call)
+  입력:
+    [system] _SLIDE_ANCHORED_NODE_SYSTEM
+             ("강의 노드 추출자. 각 노드를 슬라이드 섹션에 anchor")
+    [user]   slide_sections_text + transcript 전체
+  LLM 작업:
+    transcript 통째로 읽음 → 슬라이드 섹션을 ground truth로 → 섹션별 노드 후보 추출
+  LLM 출력 (JSON):
+    [
+      {label, slide_anchor_id, source_sentence, is_backbone, node_type},
+      ...
+    ]
+    ※ parent_id 없음 (제거됨)
 │
-├─ STEP 4a — grounded edge (LLM Pass 1)
-│   ├─ _DEFAULT_EDGE_TYPES (from src/extract_edges.py)
-│   ├─ _build_edge_types_section(edge_types)  # 프롬프트용
-│   └─ openai.chat.completions.create(
-│         system = _EDGE_PASS1_SYSTEM (verbatim 강제),
-│         user   = _EDGE_PASS1_USER.format(
-│                    nodes_text, section_ids, transcript, types))
-│      → JSON: edges [{from, to, edge_type, justification, reason,
-│                      evidence_section}]
+▼
+STEP 3 — 노드 검증 + ID 부여 (Python)
+  _split_transcript_sentences(transcript)
+    └ re.split(r'(?<=[.!?])\s+')
+       → [sent1, sent2, ...]
+  for each raw_node:
+    ├ label 비었으면 → drop
+    ├ slide_anchor_id ∉ valid_slide_ids → drop
+    ├ id 부여: node_001, node_002, ...
+    └ store
+  for each node:
+    _find_sentence_index(source_sentence, transcript_sentences)
+      └ SequenceMatcher fuzzy → best_idx
+    node["sentence_index"] = best_idx
+  _compute_ordering(nodes)
+    ├ slide_anchor_id로 그룹핑 → sentence_index 정렬 → section_order
+    └ is_backbone=True만 추출 → (PART#, sentence_index) 정렬 → lecture_order
 │
-├─ STEP 4b — soft edge (LLM Pass 2)
-│   └─ openai.chat.completions.create(
-│         system = _EDGE_PASS2_SYSTEM (interpretive paraphrase 허용),
-│         user   = _EDGE_PASS2_USER.format(
-│                    nodes_text, section_ids,
-│                    pass1_edges_text,           # ← 중복 방지
-│                    transcript, types))
-│      → JSON: edges [{..., confidence_score 0.0~1.0}]
+▼
+STEP 4a — Grounded Edge (LLM Pass 1)
+  입력:
+    [system] _EDGE_PASS1_SYSTEM ("verbatim from transcript")
+    [user]   nodes_text + section_ids + transcript + edge_types (7개)
+  LLM 작업:
+    각 노드 쌍 검토 → "강사가 직접 말했나?" 판단
+    말했으면 그 문장 그대로 justification에 복사
+  출력:
+    [{from, to, edge_type, justification, reason, evidence_section}, ...]
+    ※ confidence_score 없음 (확실한 것만)
 │
-├─ STEP 5 — edge validation (Python)
-│   │
-│   ├─ for each raw edge in (pass1, pass2):
-│   │   _build_edge_sa(raw_e, edge_source)
-│   │     ├─ _normalize_edge_from_to(e)  # source_node→from 등
-│   │     ├─ from/to ∈ node_ids?
-│   │     ├─ edge_type ∈ valid types?
-│   │     ├─ self-loop check (from ≠ to)
-│   │     ├─ evidence_section ∈ valid_slide_ids?
-│   │     ├─ duplicate check (from, to, edge_type)
-│   │     └─ build dict {from, to, edge_type, justification, reason,
-│   │                    evidence_section, edge_source, confidence_score}
-│   │
-│   ├─ STEP 5b — drives 방향 보정
-│   │   for each edge:
-│   │     if edge_type == "drives" and src_PART > tgt_PART:
-│   │       edge.from, edge.to = edge.to, edge.from   # auto swap
-│   │
-│   └─ edge_id 부여: edge_001, edge_002, ...
+▼
+STEP 4b — Soft Edge (LLM Pass 2)
+  입력: Pass 1 입력 + pass1_edges_text (중복 방지)
+  LLM 작업:
+    "함의된 관계가 있나?" → paraphrase로 justification + confidence 0~1
+  출력:
+    [{..., confidence_score: 0.75}, ...]
 │
-└─ STEP 6 — enrichment (LLM, optional)
-    if config["enrich_graph"]:
-      enrich_graph(nodes, edges, transcript, config)
-        ├─ batch (size 20)
-        ├─ for each batch:
-        │   _enrich_batch(batch_nodes, batch_edges)
-        │     └─ openai LLM call
-        │        system = _GRAPH_ENRICH_SYSTEM,
-        │        user   = _GRAPH_ENRICH_USER.format(graph_json)
-        │        → 각 node에 description, why_it_matters
-        │        → 각 edge에 reason
-        └─ merge enrichments back into nodes/edges
-
+▼
+STEP 5 — Edge 검증 + 통합 (Python)
+  for each raw_edge in (pass1, pass2):
+    _build_edge_sa(raw_e, edge_source) → edge | None
+      ├ from = e["from"] or e["source_node"]    ← inline (normalize 함수 없음)
+      ├ to   = e["to"]   or e["target_node"]
+      ├ from/to 없거나 unknown → None
+      ├ self-loop (from==to) → None
+      ├ edge_type 화이트리스트 외 → None
+      ├ evidence_section 유효 X → None으로 (edge는 살림)
+      └ edge dict 반환
+    edge None이면 silently drop
+    edge 있으면:
+      ├ duplicate (from, to, edge_type) → silently drop
+      └ 유효하면 edges.append
+  edge_id 부여: edge_001, edge_002, ...
+  ※ Step 5b 없음 (drives 방향 swap/log 다 제거)
+│
+▼
+STEP 6 — Enrichment (LLM, optional)
+  if config["enrich_graph"]:
+    enrich_graph(nodes, edges, transcript, config)
+      ├ 20개씩 batch
+      └ LLM call per batch:
+          → 각 node에 description, why_it_matters
+          → 각 edge에 reason
+│
 ▼
 RETURN: {
-  "nodes": [...],
-  "edges": [...],
-  "kus":   [],     # slide_anchored은 KU 안 씀
+  "nodes":  [...],
+  "edges":  [...],
+  "kus":    [],
   "timing": {step별 시간}
 }
+※ issues 필드 없음 (제거됨)
 ```
 
 ---
 
-## 3. 모듈 의존 관계
+## 호출 그래프 (depth-first)
 
 ```
-src/pipelines.py
-    │
-    ├─→ src.prompt_loader    (load_prompt — file → string)
-    │
-    ├─→ src.extract_edges
-    │       _DEFAULT_EDGE_TYPES
-    │       _build_edge_types_section
-    │       _normalize_edge_from_to
-    │
-    └─→ openai.OpenAI      (LLM client)
+pipeline_slide_anchored
+├── _extract_part_ids                    [stdlib re]
+├── _extract_part_sections               [stdlib re]
+├── _format_slide_sections_text          [no deps]
+├── openai.chat.completions.create       [STEP 2: 노드 추출]
+├── _split_transcript_sentences          [stdlib re]
+├── _find_sentence_index                 [difflib]
+├── _compute_ordering                    [collections]
+├── _DEFAULT_EDGE_TYPES                  [from src/extract_edges]
+├── _build_edge_types_section            [from src/extract_edges]
+├── openai.chat.completions.create       [STEP 4a: grounded]
+├── openai.chat.completions.create       [STEP 4b: soft]
+├── _build_edge_sa (local)               [no deps]
+└── enrich_graph (optional)              [STEP 6]
+    └── openai.chat.completions.create
+```
 
+---
+
+## Output Schema
+
+### Node
+```python
+{
+  "id":                   "node_001",
+  "node_id":              "node_001",
+  "label":                "Type Safety",
+  "node_type":            "concept" | "example",
+  "is_backbone":          True | False,
+  "slide_anchor_id":      "part_002",
+  "slide_anchor_title":   "Designing the Business Model",
+  "source_sentence":      "transcript에서 인용",
+  "sentence_index":       23,
+  "section_order":        1,
+  "lecture_order":        5 | None,     # backbone만
+  "description":          "..." (enrichment),
+  "why_it_matters":       "..." (enrichment),
+}
+# 제거됨: parent_id, supporting_ku_ids, timestamp
+```
+
+### Edge
+```python
+{
+  "edge_id":           "edge_001",
+  "from":              "node_001",
+  "to":                "node_005",
+  "edge_type":         "requires",  # 7가지 중
+  "justification":     "...",       # 증거 (transcript)
+  "reason":            "...",       # 왜 (LLM 해석, enrichment)
+  "evidence_section":  "part_002" | None,
+  "edge_source":       "explicit" | "inferred",
+  "confidence_score":  None | 0.0~1.0
+}
+# 제거됨: _direction_swapped
+```
+
+---
+
+## 모듈 의존
+
+```
+src/pipelines.py  (production 메인)
+   │
+   ├ src.prompt_loader      → load_prompt
+   ├ src.extract_edges      → _DEFAULT_EDGE_TYPES, _build_edge_types_section,
+   │                          extract_edges (direct에서만)
+   └ openai                 → LLM client
 
 src/build_graph.py
-    └─→ build_graph(nodes, edges) → dict   # post-pipeline assembly용 (slide_anchored은 직접 호출 안 함)
+   └ build_graph(nodes, edges) → dict
 
+src/hallucination_checker.py
+   └ google.genai (Gemini + Search grounding)
 
-src/hallucination_checker.py     # post-pipeline, 사용자 트리거
-    └─→ google.genai           (Gemini + Search grounding)
+dash_app.py / viewer.py
+   └ dash, dash-cytoscape
 
-
-src/visualize_graph.py             # CLI용 정적 PNG
-    ├─→ networkx
-    └─→ matplotlib
-
-
-dash_app.py                         # Web UI
-    ├─→ dash, dash-cytoscape       (UI framework)
-    ├─→ src.pipelines              (get_pipeline, enrich_graph, DEFAULT_CONFIG)
-    ├─→ extract_edges              (extract_edges, extract_edges_soft)
-    ├─→ build_graph                (assembly)
-    └─→ hallucination_checker      (Gemini check 버튼)
-
-
-run_graph.py                       # CLI
-    ├─→ src.pipelines              (get_pipeline, list_pipelines, DEFAULT_CONFIG)
-    └─→ src.usage_tracker          (install, reset, snapshot, report)
-
-
-viewer.py (read-only, AI-built)
-    ├─→ dash, dash-cytoscape
-    └─→ (no pipeline imports — 단순히 graphs/ JSON 로드해서 표시)
+run_graph.py
+   ├ src.pipelines (get_pipeline, DEFAULT_CONFIG)
+   └ src.usage_tracker
 ```
 
 ---
 
-## 4. 데이터 흐름 (input → output)
-
-```
-INPUT
-  transcript.txt (Panopto)         ────┐
-  slides.txt (pptx2md)             ────┤
-                                       ▼
-                             [pipeline_slide_anchored]
-                                       │
-                                       ▼
-INTERMEDIATE (in-memory)
-  parsed_sections                       ── PART id, title, key_ideas
-  raw_nodes (LLM out)                   ── label, slide_anchor_id, source_sentence
-  validated_nodes                       ── id, sentence_index, parent_id, *_order
-  raw_edges_pass1 (LLM out)             ── grounded edges
-  raw_edges_pass2 (LLM out)             ── soft edges + confidence
-  validated_edges                       ── edge_id, edge_source, ...
-
-                                       ▼
-OUTPUT (KG.json)
-  {
-    "nodes": [
-      {
-        "id": "node_001",
-        "label": "Type Safety",
-        "node_type": "concept",
-        "is_backbone": true,
-        "parent_id": null,
-        "slide_anchor_id": "part_002",
-        "slide_anchor_title": "...",
-        "source_sentence": "...",
-        "sentence_index": 23,
-        "section_order": 1,
-        "lecture_order": 5,
-        "description": "..." (enrichment),
-        "why_it_matters": "..." (enrichment)
-      }, ...
-    ],
-    "edges": [
-      {
-        "edge_id": "edge_001",
-        "from": "node_001",
-        "to": "node_005",
-        "edge_type": "requires",
-        "justification": "...",
-        "reason": "..." (enrichment),
-        "evidence_section": "part_002",
-        "edge_source": "explicit",   # or "inferred"
-        "confidence_score": null     # null for explicit, 0~1 for inferred
-      }, ...
-    ]
-  }
-
-                                       ▼
-DOWNSTREAM
-  graphs/<lecture>.json          → Cytoscape viewer (dash_app, viewer.py)
-  outputs/<lecture>/             → 전체 자료 (kg + transcript + usage)
-  hallucination check (선택)     → Gemini + Google Search → issues.json
-```
-
----
-
-## 5. 함수 / 변수 schema 요약
-
-### Node schema
-```python
-{
-  "id": str,                    # node_001 (Python 부여)
-  "node_id": str,               # 동일 (호환성)
-  "label": str,                 # LLM 추출
-  "node_type": "concept" | "example",
-  "is_backbone": bool,          # 핵심 vs 보조
-  "parent_id": str | None,      # sub-concept면 부모 node_id
-  "slide_anchor_id": str,       # part_001 등 (LLM이 정함)
-  "slide_anchor_title": str,    # PART 제목
-  "source_sentence": str,       # transcript 인용
-  "sentence_index": int,        # transcript 안 위치
-  "section_order": int,         # PART 안 순서 (1부터)
-  "lecture_order": int | None,  # backbone만, 강의 전체 흐름 순서
-  "description": str,           # enrichment
-  "why_it_matters": str,        # enrichment
-  "supporting_ku_ids": [],      # slide_anchored은 항상 빈 리스트
-  "timestamp": {                # transcript 타임스탬프
-    "method": str,
-    "sentence_index": int
-  }
-}
-```
-
-### Edge schema
-```python
-{
-  "edge_id": str,               # edge_001
-  "from": str,                  # source node_id
-  "to": str,                    # target node_id
-  "edge_type": str,             # defines/requires/explains/details/example_of/contrasts/drives
-  "justification": str,         # explicit: verbatim from transcript
-                                # inferred: paraphrase
-  "reason": str,                # enrichment
-  "evidence_section": str,      # PART id (어느 PART에서 온 evidence인지)
-  "edge_source": "explicit" | "inferred",
-  "confidence_score": float | None  # explicit: None, inferred: 0.0~1.0
-}
-```
-
----
-
-## 6. 핵심 디자인 결정
+## 핵심 디자인 결정
 
 | 결정 | 이유 |
 |---|---|
-| ID는 Python이 부여 | LLM이 부여하면 일관성 안 보장 + JSON 깨질 위험 |
-| Node anchor를 slide ID로 | Lecturer 직접 작성 = KU(LLM 추출)보다 신뢰 가능 |
-| Edge 2-pass (grounded vs soft) | precision vs recall trade-off 분리 |
-| Edge 검증 fuzzy match (>=0.8) | LLM이 "near-verbatim" 못 지킬 때 보호 |
-| 추출과 enrichment 분리 | 추출은 grounded, 설명은 별도 LLM call로 audit 가능 |
-| Hallucination check 별도 (Gemini) | 같은 모델이 self-check하면 같은 hallucination 못 잡음 |
+| ID는 Python이 부여 | LLM이 ID 부여하면 일관성 안 보장 |
+| Slide를 ground truth로 | Lecturer 직접 작성, 신뢰 가능 |
+| Edge 2-pass (grounded vs soft) | precision vs recall 분리 |
+| Edge fuzzy match | LLM "near-verbatim" 못 지킬 때 보호 |
+| 추출 vs enrichment 분리 | 추출은 grounded, 설명은 별도 LLM call |
+| Hallucination check 별도 (Gemini) | 같은 모델 self-check 안 함 |
+| Drop된 거 silently | 학생 코드답게 — 검증 layer 단순화 |

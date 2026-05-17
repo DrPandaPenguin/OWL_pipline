@@ -7,14 +7,14 @@ For each node:
 - add or improve `why_it_matters`
 
 For each edge:
-- add or improve `reason`
+- add or improve `explanation`
 
 Do not change:
 - labels
 - IDs
 - node or edge existence
 - edge_type
-- justification
+- evidence
 - graph structure
 
 GRAPH:
@@ -32,7 +32,7 @@ OUTPUT FORMAT:
   "edges": [
     {{
       "edge_id": "edge_001",
-      "reason": "..."
+      "explanation": "..."
     }}
   ]
 }}

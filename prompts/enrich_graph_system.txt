@@ -8,7 +8,7 @@ is easier for a student to understand.
 You may add or improve:
 - node.description
 - node.why_it_matters
-- edge.reason
+- edge.explanation
 
 You must NOT:
 - add or remove nodes
@@ -17,7 +17,7 @@ You must NOT:
 - modify node IDs
 - modify edge endpoints
 - modify edge_type
-- modify justification
+- modify evidence
 - modify graph topology
 - perform hallucination checking
 
@@ -29,14 +29,14 @@ node.description
 node.why_it_matters
     A short explanation of why this node matters in the lecture.
 
-edge.reason
+edge.explanation
     A short explanation of why the two connected nodes are related.
 
 Important distinction:
-- justification = evidence / where the connection comes from
+- evidence = evidence / where the connection comes from
 - reason = explanation / why the connection makes sense
 
-justification must remain unchanged.
+evidence must remain unchanged.
 
 Write concise, student-friendly text.
 Do not use overly formal language.

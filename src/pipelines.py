@@ -71,7 +71,7 @@ DEFAULT_CONFIG = {
 }
 
 
-# enrich_graph: 노드에 description/why_it_matters, 엣지에 reason 추가 (config["enrich_graph"]=True일 때)
+# enrich_graph: 노드에 description/why_it_matters, 엣지에 explanation 추가 (config["enrich_graph"]=True일 때)
 
 _GRAPH_ENRICH_SYSTEM = load_prompt("enrich_graph_system", """\
 You are improving a lecture knowledge graph for student readability.
@@ -84,22 +84,22 @@ is easier for a student to understand.
 You may add or improve:
 - node.description
 - node.why_it_matters
-- edge.reason
+- edge.explanation
 
 You must NOT:
 - add or remove nodes or edges
-- modify node labels, IDs, edge endpoints, edge_type, or justification
+- modify node labels, IDs, edge endpoints, edge_type, or evidence
 - modify graph topology
 - perform hallucination checking
 
 Definitions:
   node.description     A short explanation of what the node is.
   node.why_it_matters  A short explanation of why this node matters in the lecture.
-  edge.reason          A short explanation of why the two connected nodes are related.
+  edge.explanation     A short explanation of why the two connected nodes are related.
 
 Important distinction:
-- justification = evidence / where the connection comes from (must remain unchanged)
-- reason = explanation / why the connection makes sense (may be added/refined)
+- evidence    = where the connection comes from (transcript text — must remain unchanged)
+- explanation = why the connection makes sense (interpretive — may be added/refined)
 
 Write concise, student-friendly text. Do not introduce new concepts
 that are not supported by the graph context.
@@ -117,14 +117,14 @@ For each node:
 - add or improve `why_it_matters`
 
 For each edge:
-- add or improve `reason`
+- add or improve `explanation`
 
 Do not change:
 - labels
 - IDs
 - node or edge existence
 - edge_type
-- justification
+- evidence
 - graph structure
 
 GRAPH:
@@ -142,7 +142,7 @@ OUTPUT FORMAT:
   "edges": [
     {{
       "edge_id": "edge_001",
-      "reason": "..."
+      "explanation": "..."
     }}
   ]
 }}\
@@ -197,7 +197,7 @@ def enrich_graph(
         edge_summaries = [
             {"edge_id": e.get("edge_id", ""), "from": _edge_from(e),
              "to": _edge_to(e), "edge_type": _edge_type(e),
-             "justification": e.get("justification", "")}
+             "evidence": e.get("evidence", "")}
             for e in batch_edges
         ]
         graph_json = json.dumps(
@@ -284,8 +284,8 @@ def enrich_graph(
                  if (v.get("from"), v.get("to"), v.get("edge_type")) == fallback_key),
                 {}
             )
-        if "reason" in enrich:
-            edge_copy["reason"] = enrich["reason"]
+        if "explanation" in enrich:
+            edge_copy["explanation"] = enrich["explanation"]
         enriched_edges.append(edge_copy)
 
     return {"nodes": enriched_nodes, "edges": enriched_edges}
@@ -495,7 +495,7 @@ def pipeline_slide_anchored(transcript: str, config):
 
     # ---- Step 4b: Edge extraction Pass 2 Soft/Inferred ----
     pass1_edges_text = "\n".join(
-        f"  {e.get('from')} → {e.get('edge_type')} → {e.get('to')}: {e.get('justification', '')[:80]}"
+        f"  {e.get('from')} → {e.get('edge_type')} → {e.get('to')}: {e.get('evidence', '')[:80]}"
         for e in raw_pass1
     ) or "  (none)"
 
@@ -548,8 +548,8 @@ def pipeline_slide_anchored(transcript: str, config):
             "from": fr,
             "to": to,
             "edge_type": raw_e["edge_type"],
-            "justification": raw_e.get("justification") or "",
-            "reason": raw_e.get("reason") or "",
+            "evidence": raw_e.get("evidence") or raw_e.get("evidence") or "",
+            "explanation": raw_e.get("explanation") or raw_e.get("explanation") or "",
             "evidence_section": ev_section,
             "edge_source": edge_source,
             "confidence_score": None,
@@ -597,13 +597,13 @@ Your task is to extract ONLY relationships that are explicitly stated in the lec
 A relationship is explicit when the lecturer directly describes, connects, or asserts it in words.
 
 GROUNDED edge rules:
-• justification MUST be verbatim or near-verbatim from the transcript.
+• evidence MUST be verbatim or near-verbatim from the transcript.
 • Do NOT include confidence_score.
 • Do NOT extract inferred or implied relationships — those belong in Pass 2.
 • When in doubt whether a relationship is stated or inferred, leave it out.
 
 Each edge MUST include:
-    from, to, edge_type, justification, reason, evidence_section.
+    from, to, edge_type, evidence, reason, evidence_section.
 
 Return strict JSON only.\
 """)
@@ -632,10 +632,10 @@ The lecturer must have directly said, described, or asserted the relationship.
 Rules:
 1. Only use node IDs from the list above.
 2. No self-loops (from ≠ to). No duplicate edges.
-3. justification MUST be verbatim or near-verbatim from the transcript.
+3. evidence MUST be verbatim or near-verbatim from the transcript.
 4. Do NOT include confidence_score — if you are uncertain, do not include the edge.
 5. evidence_section MUST be one of the valid section IDs listed above.
-6. reason explains WHY the relationship exists — write this yourself, do not quote the transcript.
+6. explanation explains WHY the relationship exists — write this yourself, do not quote the transcript.
 
 ------------------------------------
 Return strict JSON:
@@ -645,8 +645,8 @@ Return strict JSON:
       "from": "node_001",
       "to": "node_002",
       "edge_type": "requires",
-      "justification": "near-verbatim sentence from transcript",
-      "reason": "conceptual explanation of why this relationship holds",
+      "evidence": "near-verbatim sentence from transcript",
+      "explanation": "conceptual explanation of why this relationship holds",
       "evidence_section": "PART_3"
     }}
   ]
@@ -661,14 +661,14 @@ Your task is to extract ONLY relationships that are implied by the lecture logic
 explicitly stated in the transcript.
 
 SOFT edge rules:
-• justification is an interpretive paraphrase — it summarises the lecture reasoning.
+• evidence is an interpretive paraphrase — it summarises the lecture reasoning.
 • MUST include confidence_score (0.0–1.0) reflecting your certainty.
 • Do NOT duplicate any edge already in the Pass 1 edges list.
 • Do NOT extract relationships that are explicitly stated — those were handled in Pass 1.
 • Only extract relationships where the conceptual connection adds meaningful insight.
 
 Each edge MUST include:
-    from, to, edge_type, justification, reason, evidence_section, confidence_score.
+    from, to, edge_type, evidence, reason, evidence_section, confidence_score.
 
 Return strict JSON only.\
 """)
@@ -702,11 +702,11 @@ Rules:
 1. Only use node IDs from the list above.
 2. No self-loops (from ≠ to). No duplicate edges.
 3. Do NOT duplicate any edge from the Pass 1 list above.
-4. justification is an interpretive paraphrase — not a direct quote.
+4. evidence is an interpretive paraphrase — not a direct quote.
 5. MUST include confidence_score for every edge (0.0–1.0).
    Use lower scores (0.5–0.7) for weaker inferences, higher (0.8–0.95) for strong ones.
 6. evidence_section MUST be one of the valid section IDs listed above.
-7. reason explains WHY the relationship exists — write this yourself.
+7. explanation explains WHY the relationship exists — write this yourself.
 8. Only extract edges that add meaningful conceptual insight. Prefer quality over quantity.
 
 ------------------------------------
@@ -717,8 +717,8 @@ Return strict JSON:
       "from": "node_001",
       "to": "node_003",
       "edge_type": "drives",
-      "justification": "interpretive paraphrase from lecture reasoning",
-      "reason": "conceptual explanation of why this relationship holds",
+      "evidence": "interpretive paraphrase from lecture reasoning",
+      "explanation": "conceptual explanation of why this relationship holds",
       "evidence_section": "PART_1",
       "confidence_score": 0.75
     }}

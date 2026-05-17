@@ -4,7 +4,7 @@ Your task is to extract ONLY relationships that are explicitly stated in the lec
 A relationship is explicit when the lecturer directly describes, connects, or asserts it in words.
 
 GROUNDED edge rules:
-• justification MUST be verbatim or near-verbatim from the transcript.
+• evidence MUST be verbatim or near-verbatim from the transcript.
 • Do NOT include confidence_score.
 • Do NOT extract inferred or implied relationships — those belong in Pass 2.
 • When in doubt whether a relationship is stated or inferred, leave it out.
@@ -13,7 +13,7 @@ Each edge MUST include:
     from              — source node ID
     to                — target node ID
     edge_type         — one of the allowed types
-    justification     — near-verbatim transcript sentence (WHERE the relationship appears)
+    evidence     — near-verbatim transcript sentence (WHERE the relationship appears)
     reason            — 1–2 sentences explaining WHY this relationship exists conceptually
                         (your explanation, not a transcript quote)
     evidence_section  — the section_id where the relationship appears (e.g. part_003)

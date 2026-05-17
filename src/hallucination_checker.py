@@ -215,7 +215,7 @@ def _format_kg_for_prompt(nodes, edges):
     soft = [e for e in edges if not _edge_is_grounded(e)]
 
     lines.append("\n### Edges — Grounded (explicit)")
-    lines.append("(relation_type / justification = extracted; reason = enrichment LLM)")
+    lines.append("(relation_type / evidence = extracted; reason = enrichment LLM)")
     if not grounded:
         lines.append("(none)")
     for e in grounded:
@@ -235,12 +235,12 @@ def _format_edge(e):
     src = e.get("source") or e.get("source_id") or e.get("from") or "?"
     tgt = e.get("target") or e.get("target_id") or e.get("to") or "?"
     rel = e.get("relation") or e.get("relation_type") or e.get("edge_type") or "?"
-    reason = e.get("reason") or ""
+    explanation = e.get("explanation") or e.get("reason") or ""
     conf = e.get("confidence_score")
 
     head = f"- {src} --[{rel}]--> {tgt}"
     if conf is not None:
         head += f"  (confidence: {conf})"
-    if reason:
-        head += f"\n  [enrichment] reason: {reason}"
+    if explanation:
+        head += f"\n  [enrichment] explanation: {explanation}"
     return head
