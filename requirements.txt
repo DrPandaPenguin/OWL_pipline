@@ -15,3 +15,5 @@ matplotlib>=3.5.0
 # Optional — for .env file loading
 python-dotenv>=1.0.0
 
+# Stats (Welch t-test in experiments/aggregate_stability.py; has stdlib fallback)
+scipy>=1.10.0

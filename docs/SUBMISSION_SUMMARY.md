@@ -104,10 +104,11 @@ the dissertation (§4) are reproducible.
 
 | Library | Where | Purpose |
 |---|---|---|
-| openai | src + experiments | LLM calls (GPT) |
+| openai | src + experiments | LLM calls (GPT) + embeddings (text-embedding-3-small, §4.7 semantic cross-check) |
 | google-genai | src | Gemini hallucination check |
 | dash, dash-cytoscape | dash_app, viewer | interactive graph UI |
 | networkx, matplotlib | visualize_graph | static PNG (CLI) |
+| scipy | experiments/aggregate_stability | Welch's t-test (§4.3, §4.8); stdlib fallback included |
 | Python stdlib (re, difflib, json, collections) | everywhere | parsing, fuzzy match |
 
 No LLM framework (langchain, llama-index, instructor) — pipeline is plain Python.
