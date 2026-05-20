@@ -16,7 +16,7 @@ from experiments.extract_nodes import (
     process_nodes,
     compute_orphan_kus,
 )
-from experiments.extract_edges import extract_edges, refine_edges
+from experiments.extract_edges import extract_edges
 
 # Registry
 _PIPELINES = {}

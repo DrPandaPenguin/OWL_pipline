@@ -75,14 +75,6 @@ EXPERIMENTS = {
     },
 
  # Exp 2: KU Method
-    "exp2_atomic": {
-        "ku_method": "atomic",
-        "group": "exp2_ku_method",
-    },
-    "exp2_sentence": {
-        "ku_method": "sentence",
-        "group": "exp2_ku_method",
-    },
 
  # Exp 3: Strict/Soft combination
     "exp3_strict_only": {
@@ -102,34 +94,10 @@ EXPERIMENTS = {
     },
 
  # Exp 4: Edge Types
-    "exp4_7types": {
-        "edge_types": [
-            "defines", "requires", "explains", "details",
-            "example_of", "contrasts", "drives",
-        ],
-        "group": "exp4_edge_types",
-    },
-    "exp4_8types": {
-        "edge_types": [
-            "defines", "requires", "explains", "details",
-            "example_of", "contrasts", "drives", "precedes",
-        ],
-        "group": "exp4_edge_types",
-    },
-    "exp4_4types": {
-        "edge_types": [
-            "defines", "requires", "explains", "example_of",
-        ],
-        "group": "exp4_edge_types",
-    },
 
  # Exp 5: Slide structure (requires slide_text override at runtime)
  # Run with: python -m experiments.run_experiment exp5_slide_structure
  # (slide_text must be injected via config override or set here)
-    "exp5_multi_stage": {
-        "pipeline": "multi_stage",
-        "group": "exp5_pipeline_variants",
-    },
 
  # Exp 6: Slide grounding vs KU grounding comparison
  # Research question: does slide-segment grounding outperform KU-sentence grounding?
@@ -147,33 +115,11 @@ EXPERIMENTS = {
     },
 
  # General: Temperature variations
-    "temp_low": {
-        "ku_temperature": 0.0,
-        "node_temperature": 0.0,
-        "strict_temperature": 0.0,
-        "soft_temperature": 0.0,
-        "group": "temperature",
-    },
-    "temp_default": {
-        "group": "temperature",
-    },
-    "temp_high": {
-        "ku_temperature": 0.5,
-        "node_temperature": 0.5,
-        "strict_temperature": 0.3,
-        "soft_temperature": 0.5,
-        "group": "temperature",
-    },
 
  # Exp 7: Segmentation method comparison
  # Research question: which transcript segmentation method produces the best mini-graphs?
  # All use merge strategy "c" (Python dedup + cross-PART LLM) to isolate segmentation effect.
  # Baseline: slide_anchored (no segmentation, full transcript)
-    "exp7_baseline": {
-        "pipeline": "slide_anchored",
-        "slide_text": None,
-        "group": "exp7_segmentation",
-    },
 
  # Exp 9: Model comparison
  # Research question: does the choice of GPT model affect graph quality?
