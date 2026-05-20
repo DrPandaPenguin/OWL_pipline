@@ -14,7 +14,7 @@ Each edge MUST include:
     to                — target node ID
     edge_type         — one of the allowed types
     evidence     — near-verbatim transcript sentence (WHERE the relationship appears)
-    reason            — 1–2 sentences explaining WHY this relationship exists conceptually
+    explanation       — 1–2 sentences explaining WHY this relationship exists conceptually
                         (your explanation, not a transcript quote)
     evidence_section  — the section_id where the relationship appears (e.g. part_003)
                         MUST match one of the valid section IDs provided. Choose the section
