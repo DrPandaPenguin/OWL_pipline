@@ -12,7 +12,7 @@ if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
 from src.prompt_loader import load_prompt
-from src.extract_edges import extract_edges, refine_edges
+from src.extract_edges import extract_edges
 
 # registry
 _PIPELINES = {}
@@ -40,25 +40,15 @@ def list_pipelines():
 # 파이프라인 기본 설정
 DEFAULT_CONFIG = {
     "pipeline": "slide_anchored",
-    # kU extraction
-    "ku_model": "gpt-5.2",
-    "ku_temperature": 0.1,
-    "ku_match_threshold": 0.5,
-    # node construction
+    # node extraction
     "node_model": "gpt-5.2",
     "node_temperature": 0.2,
-    # strict edges
+    # edge extraction
     "strict_model": "gpt-5.2",
-    "strict_temperature": 0.1,
-    "strict_similarity_threshold": 0.8,
-    "include_strict": True,
-    # soft edges
     "soft_model": "gpt-5.2",
     "soft_temperature": 0.2,
     "soft_default_confidence": 0.7,
-    "include_soft": True,
-    # refinement
-    "refine_temperature": 0.1,
+    "edge_temperature": 0.1,
     # slide
     "slide_text": None,
     # enrichment

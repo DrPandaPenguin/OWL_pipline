@@ -20,7 +20,7 @@ if _SRC_DIR not in sys.path:
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from extract_edges import extract_edges, extract_edges_soft
+from extract_edges import extract_edges
 from build_graph import build_graph as build_graph_src
 from hallucination_checker import check_hallucinations
 
