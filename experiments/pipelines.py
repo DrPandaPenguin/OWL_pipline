@@ -828,9 +828,7 @@ def pipeline_slide_anchored(transcript: str, config):
     slide_text = (config.get("slide_text") or "").strip()
 
     if not slide_text:
-        import warnings
-        warnings.warn("slide_anchored: no slide_text in config, falling back to multi_stage.")
-        return pipeline_multi_stage(transcript, config)
+        return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": "slide_anchored requires slide_text"}
 
     try:
         from openai import OpenAI
@@ -855,9 +853,7 @@ def pipeline_slide_anchored(transcript: str, config):
     timing["slide_parse"] = round(time.time() - t0, 3)   # near-zero, Python only
 
     if not part_ids:
-        import warnings
-        warnings.warn("slide_anchored: no PART headers found in slide_text, falling back to multi_stage.")
-        return pipeline_multi_stage(transcript, config)
+        return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": "no PART headers in slide_text"}
 
  # Upgrade to full section parse: gets core_focus, key_ideas, why_this_part_exists
     sections = _extract_part_sections(slide_text)
@@ -931,9 +927,7 @@ def pipeline_slide_anchored(transcript: str, config):
         })
 
     if len(nodes) < 2:
-        import warnings
-        warnings.warn("slide_anchored: fewer than 2 valid nodes extracted, falling back to multi_stage.")
-        return pipeline_multi_stage(transcript, config)
+        return {"nodes": nodes, "edges": [], "kus": [], "timing": timing, "error": "fewer than 2 valid nodes"}
 
  # Fuzzy-compute sentence_index per node
     for n in nodes:

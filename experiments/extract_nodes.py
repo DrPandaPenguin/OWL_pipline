@@ -319,12 +319,6 @@ def extract_nodes(transcript, verbose=False, config=None):
     return nodes
 
 
-def extract_knowledge_units_full(transcript, verbose=False, config=None):
-    raw_kus = extract_knowledge_units(transcript, config)
-    if not raw_kus:
-        return []
-    return add_ids_and_timestamps(raw_kus, transcript, config)
-
 
 def compute_orphan_kus(kus_with_ids, nodes):
     used = set()

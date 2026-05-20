@@ -15,5 +15,3 @@ def load_prompt(name, default=""):
     return default
 
 
-def prompts_dir():
-    return _PROMPTS_DIR
