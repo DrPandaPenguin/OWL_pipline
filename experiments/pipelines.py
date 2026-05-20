@@ -43,15 +43,15 @@ def list_pipelines():
 
 # Shared helper: enrich_graph
 #
-# Post-extraction enrichment step.  Adds student-facing explanations to
+# Post-extraction enrichment step. Adds student-facing explanations to
 # every node and edge in the graph:
 #
-#   Node fields added:
-#     description     2–3 sentences explaining the concept for revision
-#     why_it_matters  1–2 sentences on why the concept matters in the lecture
+# Node fields added:
+# description 2 3 sentences explaining the concept for revision
+# why_it_matters 1 2 sentences on why the concept matters in the lecture
 #
-#   Edge fields added:
-#     reason          1–2 sentences explaining the logical / pedagogical link
+# Edge fields added:
+# reason 1 2 sentences explaining the logical / pedagogical link
 #
 # Called by any pipeline that has config["enrich_graph"] = True.
 # Silently returns the original graph unchanged on any error.
@@ -154,7 +154,7 @@ def enrich_graph(
     model = config.get("node_model", "gpt-5.2")
     temperature = config.get("node_temperature", 0.2)
 
-    # Batch size: max items per LLM call to avoid context overload
+ # Batch size: max items per LLM call to avoid context overload
     BATCH_SIZE = 20
 
     def _edge_from(e):
@@ -202,17 +202,17 @@ def enrich_graph(
         except Exception:
             return {"nodes": [], "edges": []}
 
-    # --- Split into batches and collect enrichments ---
+ # --- Split into batches and collect enrichments ---
     node_enrich_map = {}
     edge_enrich_map = {}
 
-    # Batch nodes
+ # Batch nodes
     for i in range(0, max(len(nodes), 1), BATCH_SIZE):
         batch_n = nodes[i:i + BATCH_SIZE]
-        # Find edges connected to this batch of nodes
+ # Find edges connected to this batch of nodes
         batch_node_ids = {n.get("id") for n in batch_n}
         batch_e = [e for e in edges if _edge_from(e) in batch_node_ids or _edge_to(e) in batch_node_ids]
-        # Cap edges per batch too
+ # Cap edges per batch too
         batch_e = batch_e[:BATCH_SIZE]
 
         result = _enrich_batch(batch_n, batch_e)
@@ -227,7 +227,7 @@ def enrich_graph(
             if eid:  # only store if edge_id is non-empty
                 edge_enrich_map[eid] = item
 
-    # Handle any edges not covered by the node batches
+ # Handle any edges not covered by the node batches
     enriched_edge_ids = set(edge_enrich_map.keys())
     remaining_edges = [e for e in edges if e.get("edge_id", "") not in enriched_edge_ids]
     if remaining_edges:
@@ -241,7 +241,7 @@ def enrich_graph(
                 if eid:
                     edge_enrich_map[eid] = item
 
-    # --- Merge enrichments ---
+ # --- Merge enrichments ---
     enriched_nodes = []
     for n in nodes:
         node_copy = dict(n)
@@ -255,12 +255,12 @@ def enrich_graph(
     enriched_edges = []
     for e in edges:
         edge_copy = dict(e)
-        # Use edge_id as primary key; fall back to (from, to, edge_type) tuple
+ # Use edge_id as primary key; fall back to (from, to, edge_type) tuple
         eid = e.get("edge_id", "")
         if eid and eid in edge_enrich_map:
             enrich = edge_enrich_map[eid]
         else:
-            # Fallback: match by endpoint+type for edges that lost their edge_id
+ # Fallback: match by endpoint+type for edges that lost their edge_id
             fallback_key = (_edge_from(e), _edge_to(e), _edge_type(e))
             enrich = next(
                 (v for v in edge_enrich_map.values()
@@ -319,7 +319,7 @@ def _compute_ordering(nodes):
     """Compute section_order and lecture_order for each node in-place"""
     from collections import defaultdict
 
-    # --- section_order: rank within section by sentence_index ---
+ # --- section_order: rank within section by sentence_index ---
     by_section = defaultdict(list)
     for n in nodes:
         by_section[n.get("slide_anchor_id", "")].append(n)
@@ -329,7 +329,7 @@ def _compute_ordering(nodes):
         for rank, n in enumerate(sorted_nodes, 1):
             n["section_order"] = rank
 
-    # --- lecture_order: backbone nodes sorted by (PART number, sentence_index) ---
+ # --- lecture_order: backbone nodes sorted by (PART number, sentence_index) ---
     def _part_num(n) -> int:
         anchor = n.get("slide_anchor_id", "PART_0")
         import re
@@ -341,7 +341,7 @@ def _compute_ordering(nodes):
     for rank, n in enumerate(backbone_sorted, 1):
         n["lecture_order"] = rank
 
-    # Non-backbone nodes get None
+ # Non-backbone nodes get None
     for n in nodes:
         if "lecture_order" not in n:
             n["lecture_order"] = None
@@ -355,7 +355,7 @@ def pipeline_multi_stage(transcript: str, config):
     """Current production pipeline: KU → Node → Strict Edge → Soft Edge"""
     timing = {}
 
-    # Phase 1: KU extraction
+ # Phase 1: KU extraction
     t0 = time.time()
     raw_kus = extract_knowledge_units(transcript, config)
     timing["phase1_ku_extraction"] = round(time.time() - t0, 2)
@@ -363,17 +363,17 @@ def pipeline_multi_stage(transcript: str, config):
     if not raw_kus:
         return {"nodes": [], "edges": [], "kus": [], "timing": timing}
 
-    # Glue 1: IDs + timestamps
+ # Glue 1: IDs + timestamps
     t1 = time.time()
     kus = add_ids_and_timestamps(raw_kus, transcript, config)
     timing["glue1_ids_timestamps"] = round(time.time() - t1, 2)
 
-    # Phase 3: Node construction
+ # Phase 3: Node construction
     t2 = time.time()
     raw_nodes = construct_nodes(kus, config)
     timing["phase3_node_construction"] = round(time.time() - t2, 2)
 
-    # Glue 2: Node IDs + timestamps
+ # Glue 2: Node IDs + timestamps
     t3 = time.time()
     nodes = process_nodes(raw_nodes, kus)
     for n in nodes:
@@ -383,7 +383,7 @@ def pipeline_multi_stage(transcript: str, config):
     if not nodes or len(nodes) < 2:
         return {"nodes": nodes, "edges": [], "kus": kus, "timing": timing}
 
-    # Phase 4+5: Edge extraction
+ # Phase 4+5: Edge extraction
     t4 = time.time()
     edges = extract_edges(transcript, nodes, knowledge_units=kus, include_soft=True, config=config)
     timing["phase4_5_edge_extraction"] = round(time.time() - t4, 2)
@@ -392,7 +392,7 @@ def pipeline_multi_stage(transcript: str, config):
     return {"nodes": nodes, "edges": edges, "kus": kus, "timing": timing}
 
 
-# Pipeline 2: single_pass (baseline — no KU, one LLM call)
+# Pipeline 2: single_pass (baseline no KU, one LLM call)
 
 _SINGLE_PASS_SYSTEM = load_prompt("single_pass_system", """\
 You are a knowledge graph extraction system.
@@ -437,7 +437,7 @@ def pipeline_single_pass(transcript: str, config):
     """Baseline: single LLM call produces nodes + edges together. No KU step"""
     timing = {}
 
-    # Import OpenAI client
+ # Import OpenAI client
     try:
         from openai import OpenAI
     except ImportError:
@@ -474,7 +474,7 @@ def pipeline_single_pass(transcript: str, config):
 
     timing["single_pass_llm"] = round(time.time() - t0, 2)
 
-    # Python: assign node IDs, map label→ID
+ # Python: assign node IDs, map label→ID
     raw_nodes = data.get("nodes", [])
     label_to_id = {}
     nodes = []
@@ -492,7 +492,7 @@ def pipeline_single_pass(transcript: str, config):
             "timestamp": {"method": "single_pass", "sentence_index": 0},
         })
 
-    # Python: assign edge IDs, resolve labels to IDs
+ # Python: assign edge IDs, resolve labels to IDs
     raw_edges = data.get("edges", [])
     edges = []
     valid_types = set(edge_types)
@@ -518,7 +518,7 @@ def pipeline_single_pass(transcript: str, config):
     return {"nodes": nodes, "edges": edges, "kus": [], "timing": timing}
 
 
-# Pipeline 2b: direct (no KU, no slides — Node extraction → 2-pass Edge extraction)
+# Pipeline 2b: direct (no KU, no slides Node extraction → 2-pass Edge extraction)
 
 _DIRECT_NODE_SYSTEM = """\
 You are a knowledge graph extraction system specialising in university lectures.
@@ -575,7 +575,7 @@ def pipeline_direct(transcript: str, config):
     model = config.get("node_model", "gpt-5.2")
     temperature = config.get("node_temperature", 0.2)
 
-    # Step 1: Node extraction (single LLM call)
+ # Step 1: Node extraction (single LLM call)
     t0 = time.time()
     try:
         response = client.chat.completions.create(
@@ -594,7 +594,7 @@ def pipeline_direct(transcript: str, config):
 
     timing["node_extraction"] = round(time.time() - t0, 2)
 
-    # Python: assign IDs
+ # Python: assign IDs
     raw_nodes = data.get("nodes", [])
     nodes = []
     for i, n in enumerate(raw_nodes):
@@ -616,7 +616,7 @@ def pipeline_direct(transcript: str, config):
         timing["total"] = round(sum(timing.values()), 2)
         return {"nodes": nodes, "edges": [], "kus": [], "timing": timing}
 
-    # Step 2: 2-pass edge extraction (reuses extract_edges from src)
+ # Step 2: 2-pass edge extraction (reuses extract_edges from src)
     t1 = time.time()
     edges = extract_edges(transcript, nodes, knowledge_units=[], include_soft=True, config=config)
     timing["edge_extraction_2pass"] = round(time.time() - t1, 2)
@@ -657,7 +657,7 @@ def _extract_part_sections(slide_text: str):
     if not part_matches:
         return []
 
-    # Determine text boundaries between consecutive PART headers
+ # Determine text boundaries between consecutive PART headers
     boundaries = [m.start() for m in part_matches] + [len(slide_text)]
 
     sections = []
@@ -666,7 +666,7 @@ def _extract_part_sections(slide_text: str):
         title = m.group(2).strip()
         section_text = slide_text[boundaries[i]:boundaries[i + 1]]
 
-        # ---- Core Focus ----
+ # ---- Core Focus ----
         core_focus = ""
         cf = _re.search(
             r"Core Focus[:\s]+(.+?)(?=\n(?:Key Ideas|Why This Part|PART\s|[⸻—–]{2})|$)",
@@ -675,7 +675,7 @@ def _extract_part_sections(slide_text: str):
         if cf:
             core_focus = " ".join(cf.group(1).split())  # collapse whitespace
 
-        # ---- Key Ideas (bullet lines after "Key Ideas" heading) ----
+ # ---- Key Ideas (bullet lines after "Key Ideas" heading) ----
         key_ideas = []
         ki = _re.search(
             r"Key Ideas\s*\n((?:.+\n?)*?)(?=\n(?:Why This Part|PART\s|[⸻—–]{2})|$)",
@@ -687,7 +687,7 @@ def _extract_part_sections(slide_text: str):
                 if bm:
                     key_ideas.append(bm.group(1).strip())
 
-        # ---- Why This Part Exists ----
+ # ---- Why This Part Exists ----
         why = ""
         wy = _re.search(
             r"Why This Part Exists\s*\n(.+?)(?=[⸻—–]{2}|PART\s|$)",
@@ -765,11 +765,11 @@ def _parse_slides_python(slide_text: str):
             bullet = _re.sub(r"^[-*•\d.]+\s*", "", line).strip()
             if bullet:
                 current_bullets.append(bullet)
-        # non-header, non-bullet lines are ignored (slide body text / page numbers)
+ # non-header, non-bullet lines are ignored (slide body text / page numbers)
 
     _flush()
 
-    # Fallback: no headers found — treat each non-empty line as a section title
+ # Fallback: no headers found treat each non-empty line as a section title
     if not sections:
         for raw_line in slide_text.splitlines():
             line = raw_line.strip()
@@ -790,7 +790,7 @@ def _get_slide_sections(
     if config.get("skip_slide_parse", False):
         return _parse_slides_python(slide_text)
 
-    # LLM parse path
+ # LLM parse path
     try:
         resp = client.chat.completions.create(
             model=model,
@@ -848,7 +848,7 @@ def pipeline_slide_structure(transcript: str, config):
     slide_text = (config.get("slide_text") or "").strip()
 
     if not slide_text:
-        # No slides provided — fall back gracefully
+ # No slides provided fall back gracefully
         import warnings
         warnings.warn("slide_structure: no slide_text in config, falling back to multi_stage.")
         return pipeline_multi_stage(transcript, config)
@@ -866,16 +866,16 @@ def pipeline_slide_structure(transcript: str, config):
     model = config.get("node_model", "gpt-5.2")
     temperature = config.get("node_temperature", 0.1)
 
-    # Step 1: Parse slides → section titles (LLM or Python depending on config)
+ # Step 1: Parse slides → section titles (LLM or Python depending on config)
     t0 = time.time()
     sections = _get_slide_sections(slide_text, client, model, temperature, config)
     timing["slide_parse"] = round(time.time() - t0, 2)
 
     if not sections:
-        # Slides parsed but empty — fall back
+ # Slides parsed but empty fall back
         return pipeline_multi_stage(transcript, config)
 
-    # Step 2: Python — seed nodes from slide sections
+ # Step 2: Python seed nodes from slide sections
     nodes = []
     for i, sec in enumerate(sections):
         title = (sec.get("title") or "").strip()
@@ -894,7 +894,7 @@ def pipeline_slide_structure(transcript: str, config):
     if not nodes:
         return pipeline_multi_stage(transcript, config)
 
-    # Step 3: KU extraction from transcript (Phase 1)
+ # Step 3: KU extraction from transcript (Phase 1)
     t1 = time.time()
     raw_kus = extract_knowledge_units(transcript, config)
     timing["phase1_ku_extraction"] = round(time.time() - t1, 2)
@@ -905,7 +905,7 @@ def pipeline_slide_structure(transcript: str, config):
         kus = add_ids_and_timestamps(raw_kus, transcript, config)
         timing["glue1_ids_timestamps"] = round(time.time() - t2, 2)
 
-    # Step 4: Edge extraction using slide-seeded nodes
+ # Step 4: Edge extraction using slide-seeded nodes
     if len(nodes) < 2:
         timing["total"] = round(sum(timing.values()), 2)
         return {"nodes": nodes, "edges": [], "kus": kus, "timing": timing}
@@ -929,7 +929,7 @@ def pipeline_multi_stage_refined(transcript: str, config):
     """multi_stage + one additional LLM pass that reviews all extracted edges"""
     timing = {}
 
-    # Run base multi_stage pipeline
+ # Run base multi_stage pipeline
     base = pipeline_multi_stage(transcript, config)
     timing.update(base.get("timing", {}))
 
@@ -940,7 +940,7 @@ def pipeline_multi_stage_refined(transcript: str, config):
     if not nodes or not edges:
         return base
 
-    # Refinement pass
+ # Refinement pass
     t_refine = time.time()
     refined_edges = refine_edges(transcript, nodes, edges, config)
     timing["refine_pass"] = round(time.time() - t_refine, 2)
@@ -952,27 +952,27 @@ def pipeline_multi_stage_refined(transcript: str, config):
 # Pipeline 5: slide_no_ku
 #
 # Design question this pipeline answers:
-#   "Can slide sections replace KUs as the grounding unit for edge extraction?"
+# "Can slide sections replace KUs as the grounding unit for edge extraction?"
 #
 # KU role in multi_stage:
-#   1. Content segmentation — breaks transcript into atomic evidence units
-#   2. Evidence grounding  — strict edge justification_sentence comes from KU text
+# 1. Content segmentation breaks transcript into atomic evidence units
+# 2. Evidence grounding strict edge justification_sentence comes from KU text
 #
 # This pipeline replaces both roles with slide-aligned transcript segments:
-#   1. Slide sections divide the transcript into topically coherent chunks
-#      (preserves lecture flow within each section; doesn't shatter sentences)
-#   2. Segment text is used as evidence for grounded edges (same strictness
-#      as KU-grounded edges but with paragraph-level rather than sentence-level context)
+# 1. Slide sections divide the transcript into topically coherent chunks
+# (preserves lecture flow within each section; doesn't shatter sentences)
+# 2. Segment text is used as evidence for grounded edges (same strictness
+# as KU-grounded edges but with paragraph-level rather than sentence-level context)
 #
 # Flow:
-#   Step 1  (LLM)    Parse slide_text → section titles → node list
-#   Step 2  (Python) Assign node IDs
-#   Step 3  (LLM)    Segment transcript by slide sections → {node_id, segment_text}
-#   Step 4  (LLM)    Extract grounded edges from segments (replaces strict pass)
-#   Step 5  (LLM)    Extract soft edges from full transcript
-#   Step 6  (LLM)    Refine pass (optional, enabled by default)
+# Step 1 (LLM) Parse slide_text → section titles → node list
+# Step 2 (Python) Assign node IDs
+# Step 3 (LLM) Segment transcript by slide sections → {node_id, segment_text}
+# Step 4 (LLM) Extract grounded edges from segments (replaces strict pass)
+# Step 5 (LLM) Extract soft edges from full transcript
+# Step 6 (LLM) Refine pass (optional, enabled by default)
 #
-# Requires: config["slide_text"] — falls back to multi_stage_refined if empty.
+# Requires: config["slide_text"] falls back to multi_stage_refined if empty.
 
 _SEGMENT_TRANSCRIPT_SYSTEM = load_prompt("slide_segment_system", (
     "You are a lecture transcript segmentation assistant. "
@@ -1082,7 +1082,7 @@ def pipeline_slide_no_ku(transcript: str, config):
     node_temp = config.get("node_temperature", 0.1)
     strict_temp = config.get("strict_temperature", 0.1)
 
-    # ---- Step 1: Parse slides → section titles (LLM or Python) ----
+ # ---- Step 1: Parse slides → section titles (LLM or Python) ----
     t0 = time.time()
     sections = _get_slide_sections(slide_text, client, model, node_temp, config)
     timing["slide_parse"] = round(time.time() - t0, 2)
@@ -1092,7 +1092,7 @@ def pipeline_slide_no_ku(transcript: str, config):
         warnings.warn("slide_no_ku: slide parse produced no sections, falling back to multi_stage_refined.")
         return pipeline_multi_stage_refined(transcript, config)
 
-    # ---- Step 2: Python — seed nodes from slide sections ----
+ # ---- Step 2: Python seed nodes from slide sections ----
     nodes = []
     for i, sec in enumerate(sections):
         title = (sec.get("title") or "").strip()
@@ -1114,7 +1114,7 @@ def pipeline_slide_no_ku(transcript: str, config):
         warnings.warn("slide_no_ku: fewer than 2 nodes from slides, falling back to multi_stage_refined.")
         return pipeline_multi_stage_refined(transcript, config)
 
-    # ---- Step 3: LLM segments transcript by slide section ----
+ # ---- Step 3: LLM segments transcript by slide section ----
     sections_text = "\n".join(f"  {n['id']}: {n['label']}" for n in nodes)
     t1 = time.time()
     try:
@@ -1136,7 +1136,7 @@ def pipeline_slide_no_ku(transcript: str, config):
         return {"nodes": nodes, "edges": [], "kus": [], "timing": timing, "error": f"Segmentation failed: {e}"}
     timing["transcript_segmentation"] = round(time.time() - t1, 2)
 
-    # Build segment index: node_id → segment_text
+ # Build segment index: node_id → segment_text
     raw_segments = seg_data.get("segments", [])
     segment_map = {
         seg["node_id"]: (seg.get("segment_text") or "").strip()
@@ -1144,13 +1144,13 @@ def pipeline_slide_no_ku(transcript: str, config):
         if seg.get("node_id") and seg.get("segment_text", "").strip()
     }
 
-    # ---- Step 4: Grounded edge extraction from slide segments ----
+ # ---- Step 4: Grounded edge extraction from slide segments ----
     from experiments.extract_edges import _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to
 
     edge_types = config.get("edge_types", _DEFAULT_EDGE_TYPES)
     types_section = _build_edge_types_section(edge_types)
 
-    # Build the segments_text block: each node with its transcript segment
+ # Build the segments_text block: each node with its transcript segment
     seg_lines = []
     for n in nodes:
         nid = n["id"]
@@ -1187,15 +1187,15 @@ def pipeline_slide_no_ku(transcript: str, config):
                     grounded_edges.append(e)
     except Exception as e:
         timing["grounded_edge_extraction"] = round(time.time() - t2, 2)
-        # Non-fatal — continue with soft edges
+ # Non-fatal continue with soft edges
     timing["grounded_edge_extraction"] = round(time.time() - t2, 2)
 
-    # ---- Step 5: Soft edge extraction from full transcript ----
+ # ---- Step 5: Soft edge extraction from full transcript ----
     from experiments.extract_edges import extract_edges_soft
 
     t3 = time.time()
     soft_edges = extract_edges_soft(transcript, nodes, grounded_edges, config)
-    # Deduplicate: don't add soft edges that duplicate grounded ones
+ # Deduplicate: don't add soft edges that duplicate grounded ones
     grounded_keys = {
         (e.get("from"), e.get("to"), e.get("edge_type")) for e in grounded_edges
     }
@@ -1205,47 +1205,47 @@ def pipeline_slide_no_ku(transcript: str, config):
     ]
     timing["soft_edge_extraction"] = round(time.time() - t3, 2)
 
-    # Combine + assign edge IDs (Python, never LLM)
+ # Combine + assign edge IDs (Python, never LLM)
     all_edges = grounded_edges + soft_edges
     for i, e in enumerate(all_edges):
         e["edge_id"] = f"edge_{i + 1:03d}"
 
-    # ---- Step 6: Refinement pass ----
+ # ---- Step 6: Refinement pass ----
     t4 = time.time()
     all_edges = refine_edges(transcript, nodes, all_edges, config)
     timing["refine_pass"] = round(time.time() - t4, 2)
 
     timing["total"] = round(sum(timing.values()), 2)
-    # kus=[] — this pipeline intentionally produces no KUs (that's the point)
+ # kus=[] this pipeline intentionally produces no KUs (that's the point)
     return {"nodes": nodes, "edges": all_edges, "kus": [], "timing": timing}
 
 
 # Pipeline 6: slide_anchored
 #
 # Core design principle:
-#   Slides = ground truth minimum coverage guarantee.
-#     Every slide section must map to at least one node — the slide is the
-#     traceability anchor and hallucination guard.  If a concept doesn't appear
-#     on a slide, it cannot be a node (prevents transcript hallucination).
+# Slides = ground truth minimum coverage guarantee.
+# Every slide section must map to at least one node the slide is the
+# traceability anchor and hallucination guard. If a concept doesn't appear
+# on a slide, it cannot be a node (prevents transcript hallucination).
 #
-#   Transcript = source of memorable content.
-#     The *label* of each node, its source_sentence, and its memorable insight
-#     all come from what the lecturer actually *said* — not from the slide header.
-#     "Introduction to Objects" is NOT a node.  The principle the lecturer
-#     expressed about objects IN the transcript is the node.
+# Transcript = source of memorable content.
+# The *label* of each node, its source_sentence, and its memorable insight
+# all come from what the lecturer actually *said* not from the slide header.
+# "Introduction to Objects" is NOT a node. The principle the lecturer
+# expressed about objects IN the transcript is the node.
 #
-#   KU problem avoided:
-#     KUs fragment the transcript into isolated sentences with no ground truth.
-#     Making KUs bigger (2-3 sentences) is just LLM segmentation with no anchor.
-#     Slides give free, structured, ground-truth segmentation instead.
+# KU problem avoided:
+# KUs fragment the transcript into isolated sentences with no ground truth.
+# Making KUs bigger (2-3 sentences) is just LLM segmentation with no anchor.
+# Slides give free, structured, ground-truth segmentation instead.
 #
 # Flow:
-#   Step 1  (LLM)     Parse slides → section list with IDs [slide_001, …]
-#   Step 2  (LLM)     COMBINED call: full slide sections + full transcript →
-#                     nodes with {label, slide_anchor_id, source_sentence}
-#   Step 3  (Python)  Assign node_ids, validate anchors, attach slide_bullets
-#   Step 4  (LLM)     Soft edge extraction from full transcript
-#   Step 5  (LLM)     Refinement pass
+# Step 1 (LLM) Parse slides → section list with IDs [slide_001, …]
+# Step 2 (LLM) COMBINED call: full slide sections + full transcript →
+# nodes with {label, slide_anchor_id, source_sentence}
+# Step 3 (Python) Assign node_ids, validate anchors, attach slide_bullets
+# Step 4 (LLM) Soft edge extraction from full transcript
+# Step 5 (LLM) Refinement pass
 #
 # Node data structure includes slide_anchor_id for full traceability.
 # Falls back to multi_stage_refined if no slide_text provided.
@@ -1374,10 +1374,10 @@ def pipeline_slide_anchored(transcript: str, config):
     soft_model = config.get("soft_model", model)
     node_temp = config.get("node_temperature", 0.1)
 
-    # ---- Step 1: Python — extract PART IDs from slide notes (no LLM call) ----
-    # Parses "PART I — Title" lines to get stable slide_anchor_ids.
-    # The FULL raw slide_text (Core Focus, Key Ideas, Why This Part Exists) goes
-    # directly to the node extraction LLM — nothing is parsed away.
+ # ---- Step 1: Python extract PART IDs from slide notes (no LLM call) ----
+ # Parses "PART I Title" lines to get stable slide_anchor_ids.
+ # The FULL raw slide_text (Core Focus, Key Ideas, Why This Part Exists) goes
+ # directly to the node extraction LLM nothing is parsed away.
     t0 = time.time()
     part_ids = _extract_part_ids(slide_text)
     timing["slide_parse"] = round(time.time() - t0, 3)   # near-zero, Python only
@@ -1387,11 +1387,11 @@ def pipeline_slide_anchored(transcript: str, config):
         warnings.warn("slide_anchored: no PART headers found in slide_text, falling back to multi_stage_refined.")
         return pipeline_multi_stage_refined(transcript, config)
 
-    # Upgrade to full section parse: gets core_focus, key_ideas, why_this_part_exists
+ # Upgrade to full section parse: gets core_focus, key_ideas, why_this_part_exists
     sections = _extract_part_sections(slide_text)
     if not sections:
-        # _extract_part_ids found some IDs but _extract_part_sections returned nothing
-        # — treat part_ids as minimal sections
+ # _extract_part_ids found some IDs but _extract_part_sections returned nothing
+ # treat part_ids as minimal sections
         sections = [{"section_id": p["slide_id"], "title": p["title"],
                      "core_focus": "", "key_ideas": [], "why_this_part_exists": ""}
                     for p in part_ids]
@@ -1399,10 +1399,10 @@ def pipeline_slide_anchored(transcript: str, config):
     valid_slide_ids = {s["section_id"] for s in sections}
     slide_title_map = {s["section_id"]: s["title"] for s in sections}
 
-    # Build structured {slide_sections_text} for the prompt
+ # Build structured {slide_sections_text} for the prompt
     slide_sections_text = _format_slide_sections_text(sections)
 
-    # ---- Step 2: COMBINED — structured slide sections + transcript → nodes ----
+ # ---- Step 2: COMBINED structured slide sections + transcript → nodes ----
     t1 = time.time()
     try:
         resp2 = client.chat.completions.create(
@@ -1425,8 +1425,8 @@ def pipeline_slide_anchored(transcript: str, config):
 
     raw_node_list = node_data.get("nodes", [])
 
-    # ---- Step 3: Python — validate anchors, assign node IDs, build node dicts ----
-    # Also fuzzy-match sentence_index for each node
+ # ---- Step 3: Python validate anchors, assign node IDs, build node dicts ----
+ # Also fuzzy-match sentence_index for each node
     transcript_sentences = _split_transcript_sentences(transcript)
 
     nodes = []
@@ -1440,7 +1440,7 @@ def pipeline_slide_anchored(transcript: str, config):
 
         if not label:
             continue
-        # Reject any node whose slide_anchor_id doesn't match — hallucination guard
+ # Reject any node whose slide_anchor_id doesn't match hallucination guard
         if anchor_id not in valid_slide_ids:
             continue
 
@@ -1463,11 +1463,11 @@ def pipeline_slide_anchored(transcript: str, config):
         warnings.warn("slide_anchored: fewer than 2 valid nodes extracted, falling back to multi_stage_refined.")
         return pipeline_multi_stage_refined(transcript, config)
 
-    # Fuzzy-compute sentence_index per node
+ # Fuzzy-compute sentence_index per node
     for n in nodes:
         n["sentence_index"] = _find_sentence_index(n["source_sentence"], transcript_sentences)
 
-    # Resolve parent_id: label → node ID
+ # Resolve parent_id: label → node ID
     for n in nodes:
         parent_label = n.pop("_parent_label", "")
         if parent_label:
@@ -1476,10 +1476,10 @@ def pipeline_slide_anchored(transcript: str, config):
         else:
             n["parent_id"] = None
 
-    # Compute section_order and lecture_order
+ # Compute section_order and lecture_order
     nodes = _compute_ordering(nodes)
 
-    # ---- Step 4a: Edge extraction Pass 1 — Grounded/Explicit ----
+ # ---- Step 4a: Edge extraction Pass 1 Grounded/Explicit ----
     from experiments.extract_edges import (
         _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to,
     )
@@ -1489,7 +1489,7 @@ def pipeline_slide_anchored(transcript: str, config):
     types_section = _build_edge_types_section(edge_types)
     edge_type_set = set(edge_types)
 
-    # Include slide_anchor_id so LLM knows which section each node belongs to
+ # Include slide_anchor_id so LLM knows which section each node belongs to
     nodes_text = "\n".join(
         f"  {n['id']}: {n['label']}  [section: {n.get('slide_anchor_id', '?')}]"
         for n in nodes
@@ -1520,7 +1520,7 @@ def pipeline_slide_anchored(transcript: str, config):
         return {"nodes": nodes, "edges": [], "kus": [], "timing": timing, "error": f"Edge Pass 1 failed: {e}"}
     timing["edge_pass1"] = round(time.time() - t2, 2)
 
-    # ---- Step 4b: Edge extraction Pass 2 — Soft/Inferred ----
+ # ---- Step 4b: Edge extraction Pass 2 Soft/Inferred ----
     pass1_edges_text = "\n".join(
         f"  {e.get('from')} → {e.get('edge_type')} → {e.get('to')}: {e.get('justification', '')[:80]}"
         for e in raw_pass1
@@ -1550,7 +1550,7 @@ def pipeline_slide_anchored(transcript: str, config):
         raw_pass2 = []  # Pass 2 failure is non-fatal
     timing["edge_pass2"] = round(time.time() - t2b, 2)
 
-    # ---- Step 5: Python — validate, assign edge_source, build edge dicts ----
+ # ---- Step 5: Python validate, assign edge_source, build edge dicts ----
     node_ids = {n["id"] for n in nodes}
     edges = []
 
@@ -1604,10 +1604,10 @@ def pipeline_slide_anchored(transcript: str, config):
                 seen_edges.add(key)
                 edges.append(e)
 
-    # ---- Step 5b: Cross-PART direction validation ----
-    # "drives" edges where source PART > target PART are likely reversed.
-    # The LLM often confuses "A drives B" with "A is driven by B".
-    # Fix: auto-swap direction for suspicious backward "drives" edges.
+ # ---- Step 5b: Cross-PART direction validation ----
+ # "drives" edges where source PART > target PART are likely reversed.
+ # The LLM often confuses "A drives B" with "A is driven by B".
+ # Fix: auto-swap direction for suspicious backward "drives" edges.
     node_part_num = {}
     for n in nodes:
         sid = n.get("slide_anchor_id", "")
@@ -1623,16 +1623,16 @@ def pipeline_slide_anchored(transcript: str, config):
         src_part = node_part_num.get(e["from"], 0)
         tgt_part = node_part_num.get(e["to"], 0)
         if src_part > 0 and tgt_part > 0 and src_part > tgt_part:
-            # Swap direction: "A drives B" where A is later → flip to B drives A
+ # Swap direction: "A drives B" where A is later → flip to B drives A
             e["from"], e["to"] = e["to"], e["from"]
             e["_direction_swapped"] = True
 
     for i, e in enumerate(edges):
         e["edge_id"] = f"edge_{i + 1:03d}"
 
-    # ---- Step 6 (optional): Enrichment pass ----
-    # Adds description + why_it_matters to nodes, reason to edges.
-    # Only runs when config["enrich_graph"] = True.
+ # ---- Step 6 (optional): Enrichment pass ----
+ # Adds description + why_it_matters to nodes, reason to edges.
+ # Only runs when config["enrich_graph"] = True.
     if config.get("enrich_graph", False):
         t4 = time.time()
         enriched = enrich_graph(nodes, edges, transcript, config)
@@ -1650,24 +1650,24 @@ def pipeline_slide_anchored(transcript: str, config):
 # slide structure + transcript together as dual evidence sources.
 #
 # Why slides for edges too?
-#   Slide structure encodes relationships explicitly:
-#     - Bullets within a section: sub-concepts of the section heading
-#     - Section ordering: pedagogical prerequisite / motivation flow
-#     - Co-occurrence in a section: concepts the lecturer grouped together
-#   These structural relationships are MORE reliable than transcript inference
-#   because they represent the lecturer's deliberately prepared connections.
-#   Transcript ALSO adds verbal explanations not visible from slides alone.
+# Slide structure encodes relationships explicitly:
+# - Bullets within a section: sub-concepts of the section heading
+# - Section ordering: pedagogical prerequisite / motivation flow
+# - Co-occurrence in a section: concepts the lecturer grouped together
+# These structural relationships are MORE reliable than transcript inference
+# because they represent the lecturer's deliberately prepared connections.
+# Transcript ALSO adds verbal explanations not visible from slides alone.
 #
 # Evidence source field on each edge:
-#   evidence_source="slide"      → no confidence_score → solid line (strict-like)
-#   evidence_source="transcript" → confidence_score    → dashed line (soft-like)
+# evidence_source="slide" → no confidence_score → solid line (strict-like)
+# evidence_source="transcript" → confidence_score → dashed line (soft-like)
 #
 # Flow:
-#   Step 1  (LLM)     Parse slides → section list
-#   Step 2  (LLM)     COMBINED: slides + transcript → nodes  (same as slide_anchored)
-#   Step 3  (LLM)     COMBINED: nodes (with anchor bullets) + transcript → edges
-#   Step 4  (Python)  Validate, assign edge IDs, split strict-like/soft-like
-#   Step 5  (LLM)     Refine pass
+# Step 1 (LLM) Parse slides → section list
+# Step 2 (LLM) COMBINED: slides + transcript → nodes (same as slide_anchored)
+# Step 3 (LLM) COMBINED: nodes (with anchor bullets) + transcript → edges
+# Step 4 (Python) Validate, assign edge IDs, split strict-like/soft-like
+# Step 5 (LLM) Refine pass
 
 _SLIDE_ANCHORED_FULL_EDGE_SYSTEM = load_prompt("edge_anchored_full_system", """\
 You are a lecture knowledge graph edge extractor.
@@ -1897,9 +1897,9 @@ def pipeline_slide_anchored_full(transcript: str, config):
     node_temp = config.get("node_temperature", 0.1)
     edge_temp = config.get("soft_temperature", 0.2)
 
-    # ---- Step 1: Python — parse slide notes into structured sections (no LLM) ----
-    # _extract_part_sections() pulls section_id, title, core_focus,
-    # key_ideas, why_this_part_exists for each PART — nothing lost.
+ # ---- Step 1: Python parse slide notes into structured sections (no LLM) ----
+ # _extract_part_sections() pulls section_id, title, core_focus,
+ # key_ideas, why_this_part_exists for each PART nothing lost.
     t0 = time.time()
     sections = _extract_part_sections(slide_text)
     timing["slide_parse"] = round(time.time() - t0, 3)   # near-zero, Python only
@@ -1912,10 +1912,10 @@ def pipeline_slide_anchored_full(transcript: str, config):
     valid_slide_ids = {s["section_id"] for s in sections}
     slide_title_map = {s["section_id"]: s["title"] for s in sections}
 
-    # Build structured slide_sections_text for the prompt
+ # Build structured slide_sections_text for the prompt
     slide_sections_text = _format_slide_sections_text(sections)
 
-    # ---- Step 2: COMBINED nodes — structured slide sections + transcript ----
+ # ---- Step 2: COMBINED nodes structured slide sections + transcript ----
     t1 = time.time()
     try:
         resp2 = client.chat.completions.create(
@@ -1936,7 +1936,7 @@ def pipeline_slide_anchored_full(transcript: str, config):
         return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": f"Node extraction failed: {e}"}
     timing["node_extraction"] = round(time.time() - t1, 2)
 
-    # ---- Step 2b: Python — assign IDs, new fields, post-process nodes ----
+ # ---- Step 2b: Python assign IDs, new fields, post-process nodes ----
     transcript_sentences = _split_transcript_sentences(transcript)
 
     nodes = []
@@ -1970,11 +1970,11 @@ def pipeline_slide_anchored_full(transcript: str, config):
         warnings.warn("slide_anchored_full: fewer than 2 nodes, falling back to slide_anchored.")
         return pipeline_slide_anchored(transcript, config)
 
-    # Fuzzy-compute sentence_index per node
+ # Fuzzy-compute sentence_index per node
     for n in nodes:
         n["sentence_index"] = _find_sentence_index(n["source_sentence"], transcript_sentences)
 
-    # Resolve parent_id: label → node ID
+ # Resolve parent_id: label → node ID
     for n in nodes:
         parent_label = n.pop("_parent_label", "")
         if parent_label:
@@ -1983,10 +1983,10 @@ def pipeline_slide_anchored_full(transcript: str, config):
         else:
             n["parent_id"] = None
 
-    # Compute section_order and lecture_order
+ # Compute section_order and lecture_order
     nodes = _compute_ordering(nodes)
 
-    # ---- Step 3a: Edge extraction Pass 1 — Grounded/Strict ----
+ # ---- Step 3a: Edge extraction Pass 1 Grounded/Strict ----
     from experiments.extract_edges import (
         _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to,
     )
@@ -1994,7 +1994,7 @@ def pipeline_slide_anchored_full(transcript: str, config):
     types_section = _build_edge_types_section(edge_types)
     edge_type_set = set(edge_types)
 
-    # Include slide_anchor_id so LLM knows which section each node belongs to
+ # Include slide_anchor_id so LLM knows which section each node belongs to
     nodes_text = "\n".join(
         f"  {n['id']}: {n['label']}  [section: {n.get('slide_anchor_id', '?')}]"
         for n in nodes
@@ -2025,8 +2025,8 @@ def pipeline_slide_anchored_full(transcript: str, config):
         return {"nodes": nodes, "edges": [], "kus": [], "timing": timing, "error": f"Edge Pass 1 failed: {e}"}
     timing["edge_pass1"] = round(time.time() - t2, 2)
 
-    # ---- Step 3b: Edge extraction Pass 2 — Soft/Inferred ----
-    # Pass 1 edge summary for deduplication
+ # ---- Step 3b: Edge extraction Pass 2 Soft/Inferred ----
+ # Pass 1 edge summary for deduplication
     pass1_edges_text = "\n".join(
         f"  {e.get('from')} → {e.get('edge_type')} → {e.get('to')}: {e.get('justification', '')[:80]}"
         for e in raw_pass1
@@ -2054,11 +2054,11 @@ def pipeline_slide_anchored_full(transcript: str, config):
         raw_pass2 = json.loads(resp_p2.choices[0].message.content).get("edges", [])
     except Exception as e:
         timing["edge_pass2"] = round(time.time() - t2b, 2)
-        # Pass 2 failure is non-fatal — continue with Pass 1 edges only
+ # Pass 2 failure is non-fatal continue with Pass 1 edges only
         raw_pass2 = []
     timing["edge_pass2"] = round(time.time() - t2b, 2)
 
-    # ---- Step 4: Python — validate, assign edge_source, build edge dicts ----
+ # ---- Step 4: Python validate, assign edge_source, build edge dicts ----
     node_ids = {n["id"] for n in nodes}
     valid_section_ids = {s["section_id"] for s in sections}
     edges = []
@@ -2094,7 +2094,7 @@ def pipeline_slide_anchored_full(transcript: str, config):
                 pass
         return out
 
-    # Dedup key: (from, to, edge_type)
+ # Dedup key: (from, to, edge_type)
     seen_edges: set = set()
 
     for raw_e in raw_pass1:
@@ -2116,7 +2116,7 @@ def pipeline_slide_anchored_full(transcript: str, config):
     for i, e in enumerate(edges):
         e["edge_id"] = f"edge_{i + 1:03d}"
 
-    # ---- Step 5 (optional): Enrichment pass ----
+ # ---- Step 5 (optional): Enrichment pass ----
     if config.get("enrich_graph", False):
         t4 = time.time()
         enriched = enrich_graph(nodes, edges, transcript, config)
@@ -2128,9 +2128,7 @@ def pipeline_slide_anchored_full(transcript: str, config):
     return {"nodes": nodes, "edges": edges, "kus": [], "timing": timing}
 
 
-# ===========================================================================
 # Segmented pipelines: extract per-PART mini-graphs, then merge
-# ===========================================================================
 
 # Transcript segmentation helpers
 
@@ -2242,7 +2240,7 @@ def _segment_transcript_fuzzy(
     from difflib import SequenceMatcher
     from collections import defaultdict
 
-    # Parse paragraphs (same logic as TF-IDF)
+ # Parse paragraphs (same logic as TF-IDF)
     lines = transcript.split("\n")
     paragraphs = []
     current_text_lines = []
@@ -2268,13 +2266,13 @@ def _segment_transcript_fuzzy(
     if not paragraphs:
         return {sections[0]["section_id"]: transcript} if sections else {}
 
-    # Build reference texts per PART from key_ideas + core_focus
+ # Build reference texts per PART from key_ideas + core_focus
     part_refs = []
     for sec in sections:
         ref = " ".join([sec.get("title", ""), sec.get("core_focus", "")] + sec.get("key_ideas", []))
         part_refs.append(ref.lower())
 
-    # Assign each paragraph to best-matching PART
+ # Assign each paragraph to best-matching PART
     assignments = []
     for para in paragraphs:
         para_lower = para["text"].lower()
@@ -2300,7 +2298,7 @@ def _segment_transcript_embedding(
     import re
     from collections import defaultdict
 
-    # Parse paragraphs
+ # Parse paragraphs
     lines = transcript.split("\n")
     paragraphs = []
     current_text_lines = []
@@ -2326,7 +2324,7 @@ def _segment_transcript_embedding(
     if not paragraphs:
         return {sections[0]["section_id"]: transcript} if sections else {}
 
-    # Build PART reference texts
+ # Build PART reference texts
     part_refs = []
     for sec in sections:
         ref = " ".join([sec.get("title", ""), sec.get("core_focus", "")] + sec.get("key_ideas", []))
@@ -2342,15 +2340,15 @@ def _segment_transcript_embedding(
         part_embeddings = model.encode(part_refs, show_progress_bar=False)
         para_embeddings = model.encode(para_texts, show_progress_bar=False)
 
-        # Cosine similarity
-        # Normalize
+ # Cosine similarity
+ # Normalize
         part_norm = part_embeddings / np.linalg.norm(part_embeddings, axis=1, keepdims=True)
         para_norm = para_embeddings / np.linalg.norm(para_embeddings, axis=1, keepdims=True)
         sim_matrix = para_norm @ part_norm.T  # (n_para, n_parts)
         assignments = np.argmax(sim_matrix, axis=1)
 
     except ImportError:
-        # Fallback to TF-IDF
+ # Fallback to TF-IDF
         return _segment_transcript_tfidf(transcript, sections)
 
     part_paragraphs = defaultdict(list)
@@ -2741,7 +2739,7 @@ def _pipeline_segmented(
     if not sections:
         return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": "No PART sections"}
 
-    # ---- Step 2: Segment transcript ----
+ # ---- Step 2: Segment transcript ----
     t0 = time.time()
     if seg_method == "llm":
         transcript_segments = _segment_transcript_llm(transcript, sections, client, model)
@@ -2753,7 +2751,7 @@ def _pipeline_segmented(
         transcript_segments = _segment_transcript_tfidf(transcript, sections)
     timing["segmentation"] = round(time.time() - t0, 2)
 
-    # ---- Step 3: Extract mini-graphs per PART ----
+ # ---- Step 3: Extract mini-graphs per PART ----
     t1 = time.time()
     mini_graphs = []
     for sec in sections:
@@ -2769,24 +2767,24 @@ def _pipeline_segmented(
     if not mini_graphs:
         return {"nodes": [], "edges": [], "kus": [], "timing": timing, "error": "No mini-graphs"}
 
-    # ---- Step 4: Merge ----
+ # ---- Step 4: Merge ----
     t2 = time.time()
     base = _merge_python_dedup(mini_graphs, sections)
     if merge_strategy == "a":
-        # A: cross-PART edges via LLM WITH full transcript
+ # A: cross-PART edges via LLM WITH full transcript
         merged = _add_cross_part_edges_llm(base["nodes"], base["edges"], transcript, sections, client, config)
     elif merge_strategy == "b":
-        # B: cross-PART edges via LLM WITHOUT transcript (nodes only)
+ # B: cross-PART edges via LLM WITHOUT transcript (nodes only)
         merged = _add_cross_part_edges_llm(base["nodes"], base["edges"], None, sections, client, config)
     else:
-        # C: no cross-PART LLM call — Python dedup only, cheapest
+ # C: no cross-PART LLM call Python dedup only, cheapest
         merged = base
     timing["merge"] = round(time.time() - t2, 2)
 
     nodes = merged["nodes"]
     edges = merged["edges"]
 
-    # ---- Step 5: Post-processing ----
+ # ---- Step 5: Post-processing ----
     transcript_sentences = _split_transcript_sentences(transcript)
     for n in nodes:
         n["sentence_index"] = _find_sentence_index(n["source_sentence"], transcript_sentences)

@@ -2,10 +2,10 @@ import copy
 
 
 DEFAULT_CONFIG = {
-    # --- Pipeline method ---
+ # --- Pipeline method ---
     "pipeline": "multi_stage",          # "multi_stage" | "single_pass" | "slide_structure" | "multi_stage_refined"
 
-    # --- Phase 1: KU extraction ---
+ # --- Phase 1: KU extraction ---
     "ku_model": "gpt-5.2",
     "ku_temperature": 0.1,
     "ku_system_prompt": None,           # None = use PHASE1_SYSTEM from extract_nodes.py
@@ -13,46 +13,46 @@ DEFAULT_CONFIG = {
     "ku_method": "atomic",             # "atomic" | "discourse" | "sentence"
     "ku_match_threshold": 0.5,         # fuzzy match for KU-to-sentence mapping
 
-    # --- Phase 3: Node construction ---
+ # --- Phase 3: Node construction ---
     "node_model": "gpt-5.2",
     "node_temperature": 0.2,
     "node_system_prompt": None,        # None = use PHASE3_SYSTEM
     "node_user_template": None,        # None = use PHASE3_USER_TEMPLATE
 
-    # --- Phase 4: Strict edges ---
+ # --- Phase 4: Strict edges ---
     "strict_model": "gpt-5.2",
     "strict_temperature": 0.1,
     "strict_system_prompt": None,      # None = use default
     "strict_similarity_threshold": 0.8,
     "include_strict": True,
 
-    # --- Phase 5: Soft edges ---
+ # --- Phase 5: Soft edges ---
     "soft_model": "gpt-5.2",
     "soft_temperature": 0.2,
     "soft_system_prompt": None,
     "soft_default_confidence": 0.7,
     "include_soft": True,
 
-    # --- Edge Refinement pass (multi_stage_refined pipeline) ---
+ # --- Edge Refinement pass (multi_stage_refined pipeline) ---
     "refine_temperature": 0.1,         # temperature for the refinement LLM call
 
-    # --- Slide structure (slide_structure / slide_anchored* pipelines) ---
+ # --- Slide structure (slide_structure / slide_anchored* pipelines) ---
     "slide_text": None,                # raw slide text; if None falls back to multi_stage
     "skip_slide_parse": False,         # True = use Python markdown parser (no LLM call);
-                                       # False = use LLM to parse slide structure (default)
+ # False = use LLM to parse slide structure (default)
 
-    # --- Graph enrichment pass (optional post-extraction step) ---
+ # --- Graph enrichment pass (optional post-extraction step) ---
     "enrich_graph": False,             # True = run enrich_graph() after pipeline completes;
-                                       # adds description + why_it_matters to nodes,
-                                       # adds reason to edges. Off by default (extra LLM call).
+ # adds description + why_it_matters to nodes,
+ # adds reason to edges. Off by default (extra LLM call).
 
-    # --- Edge types ---
+ # --- Edge types ---
     "edge_types": [
         "defines", "requires", "explains", "details",
         "example_of", "contrasts", "drives",
     ],
 
-    # --- Experiment control ---
+ # --- Experiment control ---
     "num_runs": 3,                     # repeat count for variance
     "transcript_paths": [
         "data/Test_transcript_lec4_Ecom",
@@ -64,7 +64,7 @@ DEFAULT_CONFIG = {
 # EXPERIMENTS: 각 항목이 DEFAULT_CONFIG 위에 덮어씀
 EXPERIMENTS = {
 
-    # Exp 1: single-pass vs multi-stage vs refined
+ # Exp 1: single-pass vs multi-stage vs refined
     "exp1_multi_stage": {
         "pipeline": "multi_stage",
         "group": "exp1_single_vs_multi",
@@ -78,7 +78,7 @@ EXPERIMENTS = {
         "group": "exp1_single_vs_multi",
     },
 
-    # Exp 2: KU Method
+ # Exp 2: KU Method
     "exp2_atomic": {
         "ku_method": "atomic",
         "group": "exp2_ku_method",
@@ -88,7 +88,7 @@ EXPERIMENTS = {
         "group": "exp2_ku_method",
     },
 
-    # Exp 3: Strict/Soft combination
+ # Exp 3: Strict/Soft combination
     "exp3_strict_only": {
         "include_strict": True,
         "include_soft": False,
@@ -105,7 +105,7 @@ EXPERIMENTS = {
         "group": "exp3_strict_soft",
     },
 
-    # Exp 4: Edge Types
+ # Exp 4: Edge Types
     "exp4_7types": {
         "edge_types": [
             "defines", "requires", "explains", "details",
@@ -127,9 +127,9 @@ EXPERIMENTS = {
         "group": "exp4_edge_types",
     },
 
-    # Exp 5: Slide structure (requires slide_text override at runtime)
-    # Run with: python -m experiments.run_experiment exp5_slide_structure
-    # (slide_text must be injected via config override or set here)
+ # Exp 5: Slide structure (requires slide_text override at runtime)
+ # Run with: python -m experiments.run_experiment exp5_slide_structure
+ # (slide_text must be injected via config override or set here)
     "exp5_slide_structure": {
         "pipeline": "slide_structure",
         "slide_text": None,            # set to actual slide content at runtime
@@ -144,11 +144,11 @@ EXPERIMENTS = {
         "group": "exp5_pipeline_variants",
     },
 
-    # Exp 6: Slide grounding vs KU grounding comparison
-    # Research question: does slide-segment grounding outperform KU-sentence grounding?
-    # All four conditions require slide_text to be set at runtime for slide_* pipelines.
-    #
-    # Run: python -m experiments.run_experiment --group exp6_slide_vs_ku --runs 3
+ # Exp 6: Slide grounding vs KU grounding comparison
+ # Research question: does slide-segment grounding outperform KU-sentence grounding?
+ # All four conditions require slide_text to be set at runtime for slide_* pipelines.
+ #
+ # Run: python -m experiments.run_experiment --group exp6_slide_vs_ku --runs 3
     "exp6_multi_stage": {
         "pipeline": "multi_stage",
         "group": "exp6_slide_vs_ku",
@@ -178,7 +178,7 @@ EXPERIMENTS = {
         "group": "exp6_slide_vs_ku",
     },
 
-    # General: Temperature variations
+ # General: Temperature variations
     "temp_low": {
         "ku_temperature": 0.0,
         "node_temperature": 0.0,
@@ -197,10 +197,10 @@ EXPERIMENTS = {
         "group": "temperature",
     },
 
-    # Exp 7: Segmentation method comparison
-    # Research question: which transcript segmentation method produces the best mini-graphs?
-    # All use merge strategy "c" (Python dedup + cross-PART LLM) to isolate segmentation effect.
-    # Baseline: slide_anchored (no segmentation, full transcript)
+ # Exp 7: Segmentation method comparison
+ # Research question: which transcript segmentation method produces the best mini-graphs?
+ # All use merge strategy "c" (Python dedup + cross-PART LLM) to isolate segmentation effect.
+ # Baseline: slide_anchored (no segmentation, full transcript)
     "exp7_baseline": {
         "pipeline": "slide_anchored",
         "slide_text": None,
@@ -227,9 +227,9 @@ EXPERIMENTS = {
         "group": "exp7_segmentation",
     },
 
-    # Exp 9: Model comparison
-    # Research question: does the choice of GPT model affect graph quality?
-    # Fixed pipeline: slide_anchored (current best). 1 run each to compare.
+ # Exp 9: Model comparison
+ # Research question: does the choice of GPT model affect graph quality?
+ # Fixed pipeline: slide_anchored (current best). 1 run each to compare.
     "exp9_gpt5.2": {
         "pipeline": "slide_anchored",
         "ku_model": "gpt-5.2",
@@ -285,8 +285,8 @@ EXPERIMENTS = {
         "group": "exp9_model_comparison",
     },
 
-    # Exp 9b: Model comparison (transcript-only, multi_stage pipeline)
-    # Same models as exp9, but WITHOUT slides — tests model capability on unstructured input.
+ # Exp 9b: Model comparison (transcript-only, multi_stage pipeline)
+ # Same models as exp9, but WITHOUT slides tests model capability on unstructured input.
     "exp9b_gpt5.2_transcript": {
         "pipeline": "multi_stage",
         "ku_model": "gpt-5.2",
@@ -328,7 +328,7 @@ EXPERIMENTS = {
         "group": "exp9b_model_transcript",
     },
 
-    # Exp 9c: Model comparison (DirectExtract — no KU, no slides)
+ # Exp 9c: Model comparison (DirectExtract no KU, no slides)
     "exp9c_gpt5.2_direct": {
         "pipeline": "direct",
         "ku_model": "gpt-5.2", "node_model": "gpt-5.2",
@@ -360,9 +360,9 @@ EXPERIMENTS = {
         "group": "exp9c_model_direct",
     },
 
-    # Exp 8: Merge strategy comparison
-    # Research question: which merge strategy produces better cross-PART edges?
-    # Fixed segmentation: TF-IDF (cheapest, no LLM call for segmentation).
+ # Exp 8: Merge strategy comparison
+ # Research question: which merge strategy produces better cross-PART edges?
+ # Fixed segmentation: TF-IDF (cheapest, no LLM call for segmentation).
     "exp8_merge_a": {
         "pipeline": "segmented_tfidf_a",
         "slide_text": None,
