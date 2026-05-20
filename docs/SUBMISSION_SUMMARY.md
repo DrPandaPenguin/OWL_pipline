@@ -95,7 +95,7 @@ Output: typed knowledge graph (JSON). Optional post-pipeline Gemini hallucinatio
 | V2 multi_stage | KU → Node → Edge | F1 41–53%, high variance | global meaning lost |
 | **V3 slide_anchored** | slide deck as anchor | stable, backbone visible | **adopted (production)** |
 
-The experiments/ folder contains all variants so the comparison numbers cited in
+The experiments/ folder contains the cited variants so the comparison numbers cited in
 the dissertation (§4) are reproducible.
 
 ---
@@ -108,7 +108,6 @@ the dissertation (§4) are reproducible.
 | google-genai | src | Gemini hallucination check |
 | dash, dash-cytoscape | dash_app, viewer | interactive graph UI |
 | networkx, matplotlib | visualize_graph | static PNG (CLI) |
-| scikit-learn, sentence-transformers, numpy | experiments | segmentation variants only |
 | Python stdlib (re, difflib, json, collections) | everywhere | parsing, fuzzy match |
 
 No LLM framework (langchain, llama-index, instructor) — pipeline is plain Python.
