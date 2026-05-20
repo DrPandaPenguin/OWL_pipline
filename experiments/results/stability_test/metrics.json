@@ -1,0 +1,1357 @@
+{
+  "lecture": "ecommerce/lec4",
+  "per_condition": {
+    "direct": {
+      "n_runs": 15,
+      "metrics": {
+        "n_nodes": {
+          "n": 15,
+          "mean": 114.4667,
+          "sd": 10.3707,
+          "min": 90,
+          "max": 137,
+          "range": 47
+        },
+        "n_edges": {
+          "n": 15,
+          "mean": 79.8,
+          "sd": 5.4929,
+          "min": 66,
+          "max": 88,
+          "range": 22
+        },
+        "n_components": {
+          "n": 15,
+          "mean": 35.0,
+          "sd": 6.6332,
+          "min": 24,
+          "max": 53,
+          "range": 29
+        },
+        "n_orphans": {
+          "n": 15,
+          "mean": 4.0667,
+          "sd": 2.5486,
+          "min": 0,
+          "max": 9,
+          "range": 9
+        },
+        "orphan_pct": {
+          "n": 15,
+          "mean": 0.0346,
+          "sd": 0.0206,
+          "min": 0.0,
+          "max": 0.0796,
+          "range": 0.0796
+        },
+        "p_at_45": {
+          "n": 15,
+          "mean": 0.3708,
+          "sd": 0.0322,
+          "min": 0.3246,
+          "max": 0.4298,
+          "range": 0.1052
+        },
+        "r_at_45": {
+          "n": 15,
+          "mean": 0.5921,
+          "sd": 0.0432,
+          "min": 0.5147,
+          "max": 0.6765,
+          "range": 0.1618
+        },
+        "f1_at_45": {
+          "n": 15,
+          "mean": 0.4549,
+          "sd": 0.0281,
+          "min": 0.4066,
+          "max": 0.4969,
+          "range": 0.0903
+        },
+        "backbone_recall": {
+          "n": 15,
+          "mean": 0.4285,
+          "sd": 0.0388,
+          "min": 0.3824,
+          "max": 0.5294,
+          "range": 0.147
+        },
+        "backbone_f1": {
+          "n": 15,
+          "mean": 0.4488,
+          "sd": 0.0255,
+          "min": 0.4135,
+          "max": 0.4874,
+          "range": 0.0739
+        },
+        "edge_type_diversity": {
+          "n": 15,
+          "mean": 6.5333,
+          "sd": 0.5164,
+          "min": 6,
+          "max": 7,
+          "range": 1
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 105,
+          "mean": 0.2301,
+          "sd": 0.053,
+          "min": 0.1148,
+          "max": 0.3554
+        },
+        "backbone_overlap": {
+          "n_pairs": 105,
+          "mean": 0.2393,
+          "sd": 0.066,
+          "min": 0.11,
+          "max": 0.3974
+        },
+        "edge_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0466,
+          "sd": 0.0246,
+          "min": 0.0065,
+          "max": 0.1216
+        },
+        "explicit_overlap": {
+          "n_pairs": 105,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "inferred_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0466,
+          "sd": 0.0246,
+          "min": 0.0065,
+          "max": 0.1216
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 9,
+          "items": [
+            "ai agent refunds and liability",
+            "bias in existing datasets",
+            "customer adoption curve",
+            "differential pricing",
+            "hyperscaler capex acceleration",
+            "more data does not mean better decisions",
+            "price before product",
+            "technological revolutions and financial bubbles come in pairs",
+            "translation is not word substitution"
+          ]
+        },
+        "backbone": {
+          "size": 4,
+          "items": [
+            "ai agent refunds and liability",
+            "bias in existing datasets",
+            "more data does not mean better decisions",
+            "price before product"
+          ]
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 15,
+        "mean": 195.3387,
+        "sd": 64.1244,
+        "min": 133.3,
+        "max": 417.15,
+        "range": 283.85
+      },
+      "cost_usd": {
+        "n": 15,
+        "mean": 0.2039,
+        "sd": 0.0119,
+        "min": 0.1725,
+        "max": 0.2233,
+        "range": 0.0508
+      },
+      "tokens_in": {
+        "n": 15,
+        "mean": 33852.5333,
+        "sd": 139.9652,
+        "min": 33543,
+        "max": 34147,
+        "range": 604
+      },
+      "tokens_out": {
+        "n": 15,
+        "mean": 16154.8,
+        "sd": 1170.3153,
+        "min": 13061,
+        "max": 18057,
+        "range": 4996
+      },
+      "semantic": {
+        "semantic_vs_gt": {
+          "0.65": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0415,
+              "sd": 0.0115,
+              "min": 0.0242,
+              "max": 0.0609,
+              "range": 0.0367
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0696,
+              "sd": 0.0196,
+              "min": 0.0441,
+              "max": 0.1029,
+              "range": 0.0588
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0519,
+              "sd": 0.0144,
+              "min": 0.0312,
+              "max": 0.0765,
+              "range": 0.0453
+            }
+          },
+          "0.70": {
+            "precision": {
+              "n": 15,
+              "mean": 0.013,
+              "sd": 0.0105,
+              "min": 0.0,
+              "max": 0.0364,
+              "range": 0.0364
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0216,
+              "sd": 0.0175,
+              "min": 0.0,
+              "max": 0.0588,
+              "range": 0.0588
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0162,
+              "sd": 0.0131,
+              "min": 0.0,
+              "max": 0.0449,
+              "range": 0.0449
+            }
+          },
+          "0.75": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0052,
+              "sd": 0.0055,
+              "min": 0.0,
+              "max": 0.0174,
+              "range": 0.0174
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0088,
+              "sd": 0.0093,
+              "min": 0.0,
+              "max": 0.0294,
+              "range": 0.0294
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0066,
+              "sd": 0.0069,
+              "min": 0.0,
+              "max": 0.0219,
+              "range": 0.0219
+            }
+          },
+          "0.80": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0017,
+              "sd": 0.0035,
+              "min": 0.0,
+              "max": 0.0091,
+              "range": 0.0091
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0029,
+              "sd": 0.0061,
+              "min": 0.0,
+              "max": 0.0147,
+              "range": 0.0147
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0021,
+              "sd": 0.0044,
+              "min": 0.0,
+              "max": 0.0112,
+              "range": 0.0112
+            }
+          }
+        },
+        "pairwise_semantic_node_overlap": {
+          "0.65": {
+            "n_pairs": 105,
+            "mean": 0.6643,
+            "sd": 0.0564,
+            "min": 0.4837,
+            "max": 0.7863
+          },
+          "0.70": {
+            "n_pairs": 105,
+            "mean": 0.6016,
+            "sd": 0.0624,
+            "min": 0.4188,
+            "max": 0.7323
+          },
+          "0.75": {
+            "n_pairs": 105,
+            "mean": 0.5159,
+            "sd": 0.0632,
+            "min": 0.3571,
+            "max": 0.6544
+          },
+          "0.80": {
+            "n_pairs": 105,
+            "mean": 0.445,
+            "sd": 0.0581,
+            "min": 0.2994,
+            "max": 0.5775
+          }
+        },
+        "pairwise_semantic_backbone_overlap": {
+          "0.65": {
+            "n_pairs": 105,
+            "mean": 0.6289,
+            "sd": 0.0573,
+            "min": 0.5,
+            "max": 0.7619
+          },
+          "0.70": {
+            "n_pairs": 105,
+            "mean": 0.5717,
+            "sd": 0.0667,
+            "min": 0.4024,
+            "max": 0.7424
+          },
+          "0.75": {
+            "n_pairs": 105,
+            "mean": 0.4937,
+            "sd": 0.0725,
+            "min": 0.3333,
+            "max": 0.6912
+          },
+          "0.80": {
+            "n_pairs": 105,
+            "mean": 0.4294,
+            "sd": 0.0636,
+            "min": 0.2874,
+            "max": 0.5882
+          }
+        }
+      }
+    },
+    "multi_stage": {
+      "n_runs": 15,
+      "metrics": {
+        "n_nodes": {
+          "n": 15,
+          "mean": 42.2667,
+          "sd": 7.4111,
+          "min": 28,
+          "max": 55,
+          "range": 27
+        },
+        "n_edges": {
+          "n": 15,
+          "mean": 74.1333,
+          "sd": 11.9216,
+          "min": 50,
+          "max": 91,
+          "range": 41
+        },
+        "n_components": {
+          "n": 15,
+          "mean": 6.8667,
+          "sd": 3.2704,
+          "min": 1,
+          "max": 11,
+          "range": 10
+        },
+        "n_orphans": {
+          "n": 15,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0,
+          "max": 0,
+          "range": 0
+        },
+        "orphan_pct": {
+          "n": 15,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "p_at_45": {
+          "n": 15,
+          "mean": 0.5665,
+          "sd": 0.0576,
+          "min": 0.4545,
+          "max": 0.6579,
+          "range": 0.2034
+        },
+        "r_at_45": {
+          "n": 15,
+          "mean": 0.3765,
+          "sd": 0.0619,
+          "min": 0.2353,
+          "max": 0.4706,
+          "range": 0.2353
+        },
+        "f1_at_45": {
+          "n": 15,
+          "mean": 0.4498,
+          "sd": 0.0557,
+          "min": 0.327,
+          "max": 0.5195,
+          "range": 0.1925
+        },
+        "backbone_recall": {
+          "n": 15,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "backbone_f1": {
+          "n": 15,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "edge_type_diversity": {
+          "n": 15,
+          "mean": 6.8667,
+          "sd": 0.3519,
+          "min": 6,
+          "max": 7,
+          "range": 1
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0722,
+          "sd": 0.0524,
+          "min": 0.0,
+          "max": 0.1972
+        },
+        "backbone_overlap": {
+          "n_pairs": 105,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "edge_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0199,
+          "sd": 0.0198,
+          "min": 0.0,
+          "max": 0.0701
+        },
+        "explicit_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0272,
+          "sd": 0.0287,
+          "min": 0.0,
+          "max": 0.1047
+        },
+        "inferred_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0086,
+          "sd": 0.0117,
+          "min": 0.0,
+          "max": 0.0469
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 0,
+          "items": []
+        },
+        "backbone": {
+          "size": 0,
+          "items": []
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 15,
+        "mean": 326.112,
+        "sd": 60.9263,
+        "min": 271.69,
+        "max": 534.85,
+        "range": 263.16
+      },
+      "cost_usd": {
+        "n": 15,
+        "mean": 0.3425,
+        "sd": 0.0169,
+        "min": 0.3077,
+        "max": 0.3692,
+        "range": 0.0615
+      },
+      "tokens_in": {
+        "n": 15,
+        "mean": 63829.8,
+        "sd": 1677.6187,
+        "min": 60902,
+        "max": 66869,
+        "range": 5967
+      },
+      "tokens_out": {
+        "n": 15,
+        "mean": 26267.5333,
+        "sd": 1527.1881,
+        "min": 22987,
+        "max": 28675,
+        "range": 5688
+      },
+      "semantic": {
+        "semantic_vs_gt": {
+          "0.65": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0697,
+              "sd": 0.0257,
+              "min": 0.0303,
+              "max": 0.1143,
+              "range": 0.084
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0431,
+              "sd": 0.0152,
+              "min": 0.0147,
+              "max": 0.0588,
+              "range": 0.0441
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.053,
+              "sd": 0.0188,
+              "min": 0.0198,
+              "max": 0.0777,
+              "range": 0.0579
+            }
+          },
+          "0.70": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0062,
+              "sd": 0.0108,
+              "min": 0.0,
+              "max": 0.0263,
+              "range": 0.0263
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0039,
+              "sd": 0.0067,
+              "min": 0.0,
+              "max": 0.0147,
+              "range": 0.0147
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0048,
+              "sd": 0.0082,
+              "min": 0.0,
+              "max": 0.0189,
+              "range": 0.0189
+            }
+          },
+          "0.75": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0012,
+              "sd": 0.0047,
+              "min": 0.0,
+              "max": 0.0182,
+              "range": 0.0182
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.001,
+              "sd": 0.0038,
+              "min": 0.0,
+              "max": 0.0147,
+              "range": 0.0147
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0011,
+              "sd": 0.0042,
+              "min": 0.0,
+              "max": 0.0163,
+              "range": 0.0163
+            }
+          },
+          "0.80": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0012,
+              "sd": 0.0047,
+              "min": 0.0,
+              "max": 0.0182,
+              "range": 0.0182
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.001,
+              "sd": 0.0038,
+              "min": 0.0,
+              "max": 0.0147,
+              "range": 0.0147
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0011,
+              "sd": 0.0042,
+              "min": 0.0,
+              "max": 0.0163,
+              "range": 0.0163
+            }
+          }
+        },
+        "pairwise_semantic_node_overlap": {
+          "0.65": {
+            "n_pairs": 105,
+            "mean": 0.5336,
+            "sd": 0.0775,
+            "min": 0.375,
+            "max": 0.7347
+          },
+          "0.70": {
+            "n_pairs": 105,
+            "mean": 0.4304,
+            "sd": 0.0768,
+            "min": 0.2206,
+            "max": 0.6346
+          },
+          "0.75": {
+            "n_pairs": 105,
+            "mean": 0.3258,
+            "sd": 0.0761,
+            "min": 0.1216,
+            "max": 0.52
+          },
+          "0.80": {
+            "n_pairs": 105,
+            "mean": 0.2587,
+            "sd": 0.0671,
+            "min": 0.1067,
+            "max": 0.434
+          }
+        },
+        "pairwise_semantic_backbone_overlap": {
+          "0.65": {
+            "n_pairs": 105,
+            "mean": 1.0,
+            "sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "0.70": {
+            "n_pairs": 105,
+            "mean": 1.0,
+            "sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "0.75": {
+            "n_pairs": 105,
+            "mean": 1.0,
+            "sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "0.80": {
+            "n_pairs": 105,
+            "mean": 1.0,
+            "sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          }
+        }
+      }
+    },
+    "slide_anchored": {
+      "n_runs": 15,
+      "metrics": {
+        "n_nodes": {
+          "n": 15,
+          "mean": 50.8,
+          "sd": 4.6012,
+          "min": 42,
+          "max": 63,
+          "range": 21
+        },
+        "n_edges": {
+          "n": 15,
+          "mean": 57.0667,
+          "sd": 5.7998,
+          "min": 49,
+          "max": 73,
+          "range": 24
+        },
+        "n_components": {
+          "n": 15,
+          "mean": 3.6667,
+          "sd": 1.4475,
+          "min": 1,
+          "max": 7,
+          "range": 6
+        },
+        "n_orphans": {
+          "n": 15,
+          "mean": 0.0667,
+          "sd": 0.2582,
+          "min": 0,
+          "max": 1,
+          "range": 1
+        },
+        "orphan_pct": {
+          "n": 15,
+          "mean": 0.0011,
+          "sd": 0.0041,
+          "min": 0.0,
+          "max": 0.0159,
+          "range": 0.0159
+        },
+        "p_at_45": {
+          "n": 15,
+          "mean": 0.5262,
+          "sd": 0.0534,
+          "min": 0.4615,
+          "max": 0.625,
+          "range": 0.1635
+        },
+        "r_at_45": {
+          "n": 15,
+          "mean": 0.4206,
+          "sd": 0.0454,
+          "min": 0.3529,
+          "max": 0.4853,
+          "range": 0.1324
+        },
+        "f1_at_45": {
+          "n": 15,
+          "mean": 0.4666,
+          "sd": 0.044,
+          "min": 0.4005,
+          "max": 0.5464,
+          "range": 0.1459
+        },
+        "backbone_recall": {
+          "n": 15,
+          "mean": 0.3647,
+          "sd": 0.0489,
+          "min": 0.2794,
+          "max": 0.4265,
+          "range": 0.1471
+        },
+        "backbone_f1": {
+          "n": 15,
+          "mean": 0.4681,
+          "sd": 0.0515,
+          "min": 0.3753,
+          "max": 0.5481,
+          "range": 0.1728
+        },
+        "edge_type_diversity": {
+          "n": 15,
+          "mean": 6.0,
+          "sd": 0.378,
+          "min": 5,
+          "max": 7,
+          "range": 2
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 105,
+          "mean": 0.2109,
+          "sd": 0.0573,
+          "min": 0.0753,
+          "max": 0.375
+        },
+        "backbone_overlap": {
+          "n_pairs": 105,
+          "mean": 0.2236,
+          "sd": 0.0681,
+          "min": 0.0606,
+          "max": 0.375
+        },
+        "edge_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0246,
+          "sd": 0.0188,
+          "min": 0.0,
+          "max": 0.0833
+        },
+        "explicit_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0301,
+          "sd": 0.0242,
+          "min": 0.0,
+          "max": 0.1029
+        },
+        "inferred_overlap": {
+          "n_pairs": 105,
+          "mean": 0.0094,
+          "sd": 0.0173,
+          "min": 0.0,
+          "max": 0.0769
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 3,
+          "items": [
+            "price before product",
+            "tax compliance risk in payment systems",
+            "translation is not word substitution"
+          ]
+        },
+        "backbone": {
+          "size": 2,
+          "items": [
+            "price before product",
+            "tax compliance risk in payment systems"
+          ]
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 15,
+        "mean": 138.3173,
+        "sd": 17.6561,
+        "min": 116.95,
+        "max": 183.69,
+        "range": 66.74
+      },
+      "cost_usd": {
+        "n": 15,
+        "mean": 0.1792,
+        "sd": 0.0099,
+        "min": 0.1646,
+        "max": 0.2054,
+        "range": 0.0408
+      },
+      "tokens_in": {
+        "n": 15,
+        "mean": 54971.4667,
+        "sd": 243.3351,
+        "min": 54520,
+        "max": 55553,
+        "range": 1033
+      },
+      "tokens_out": {
+        "n": 15,
+        "mean": 11052.8,
+        "sd": 963.8789,
+        "min": 9616,
+        "max": 13594,
+        "range": 3978
+      },
+      "semantic": {
+        "semantic_vs_gt": {
+          "0.65": {
+            "precision": {
+              "n": 15,
+              "mean": 0.1277,
+              "sd": 0.024,
+              "min": 0.0833,
+              "max": 0.1875,
+              "range": 0.1042
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0951,
+              "sd": 0.0175,
+              "min": 0.0588,
+              "max": 0.1324,
+              "range": 0.0736
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.1088,
+              "sd": 0.0197,
+              "min": 0.069,
+              "max": 0.1552,
+              "range": 0.0862
+            }
+          },
+          "0.70": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0646,
+              "sd": 0.0288,
+              "min": 0.0185,
+              "max": 0.1224,
+              "range": 0.1039
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.048,
+              "sd": 0.0211,
+              "min": 0.0147,
+              "max": 0.0882,
+              "range": 0.0735
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.055,
+              "sd": 0.0242,
+              "min": 0.0164,
+              "max": 0.1026,
+              "range": 0.0862
+            }
+          },
+          "0.75": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0277,
+              "sd": 0.0127,
+              "min": 0.0159,
+              "max": 0.0612,
+              "range": 0.0453
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0206,
+              "sd": 0.0093,
+              "min": 0.0147,
+              "max": 0.0441,
+              "range": 0.0294
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0236,
+              "sd": 0.0107,
+              "min": 0.0153,
+              "max": 0.0513,
+              "range": 0.036
+            }
+          },
+          "0.80": {
+            "precision": {
+              "n": 15,
+              "mean": 0.0229,
+              "sd": 0.0133,
+              "min": 0.0,
+              "max": 0.0612,
+              "range": 0.0612
+            },
+            "recall": {
+              "n": 15,
+              "mean": 0.0167,
+              "sd": 0.0094,
+              "min": 0.0,
+              "max": 0.0441,
+              "range": 0.0441
+            },
+            "f1": {
+              "n": 15,
+              "mean": 0.0193,
+              "sd": 0.011,
+              "min": 0.0,
+              "max": 0.0513,
+              "range": 0.0513
+            }
+          }
+        },
+        "pairwise_semantic_node_overlap": {
+          "0.65": {
+            "n_pairs": 105,
+            "mean": 0.648,
+            "sd": 0.0802,
+            "min": 0.4737,
+            "max": 0.8276
+          },
+          "0.70": {
+            "n_pairs": 105,
+            "mean": 0.585,
+            "sd": 0.08,
+            "min": 0.4286,
+            "max": 0.7797
+          },
+          "0.75": {
+            "n_pairs": 105,
+            "mean": 0.5233,
+            "sd": 0.0753,
+            "min": 0.3846,
+            "max": 0.7377
+          },
+          "0.80": {
+            "n_pairs": 105,
+            "mean": 0.4404,
+            "sd": 0.0742,
+            "min": 0.2658,
+            "max": 0.6308
+          }
+        },
+        "pairwise_semantic_backbone_overlap": {
+          "0.65": {
+            "n_pairs": 105,
+            "mean": 0.6316,
+            "sd": 0.0669,
+            "min": 0.4773,
+            "max": 0.8378
+          },
+          "0.70": {
+            "n_pairs": 105,
+            "mean": 0.5565,
+            "sd": 0.0673,
+            "min": 0.4286,
+            "max": 0.7895
+          },
+          "0.75": {
+            "n_pairs": 105,
+            "mean": 0.508,
+            "sd": 0.0652,
+            "min": 0.3913,
+            "max": 0.7436
+          },
+          "0.80": {
+            "n_pairs": 105,
+            "mean": 0.4436,
+            "sd": 0.0726,
+            "min": 0.2941,
+            "max": 0.7
+          }
+        }
+      }
+    }
+  },
+  "between": {
+    "direct_vs_multi_stage": {
+      "welch_t_F1": {
+        "t": 0.3179,
+        "df": 20.71,
+        "p_two_sided": 0.75376
+      },
+      "f_test_F1_variances": {
+        "F": 3.9197,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.01537,
+        "var_a": 0.000791,
+        "var_b": 0.003101
+      },
+      "mean_F1_a": 0.4549,
+      "mean_F1_b": 0.4498,
+      "sd_F1_a": 0.0281,
+      "sd_F1_b": 0.0557
+    },
+    "direct_vs_slide_anchored": {
+      "welch_t_F1": {
+        "t": -0.8664,
+        "df": 23.81,
+        "p_two_sided": 0.39491
+      },
+      "f_test_F1_variances": {
+        "F": 2.4462,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.10562,
+        "var_a": 0.000791,
+        "var_b": 0.001935
+      },
+      "mean_F1_a": 0.4549,
+      "mean_F1_b": 0.4666,
+      "sd_F1_a": 0.0281,
+      "sd_F1_b": 0.044
+    },
+    "multi_stage_vs_slide_anchored": {
+      "welch_t_F1": {
+        "t": -0.9169,
+        "df": 26.58,
+        "p_two_sided": 0.36743
+      },
+      "f_test_F1_variances": {
+        "F": 1.6023,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.38839,
+        "var_a": 0.003101,
+        "var_b": 0.001935
+      },
+      "mean_F1_a": 0.4498,
+      "mean_F1_b": 0.4666,
+      "sd_F1_a": 0.0557,
+      "sd_F1_b": 0.044
+    }
+  },
+  "between_semantic": {
+    "direct_vs_multi_stage__sem0.65": {
+      "welch_t_F1": {
+        "t": -0.1863,
+        "df": 26.17,
+        "p_two_sided": 0.85363
+      },
+      "f_test_F1_variances": {
+        "F": 1.7203,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.32167,
+        "var_a": 0.000206,
+        "var_b": 0.000355
+      },
+      "mean_F1_a": 0.0519,
+      "mean_F1_b": 0.053
+    },
+    "direct_vs_slide_anchored__sem0.65": {
+      "welch_t_F1": {
+        "t": -9.0561,
+        "df": 25.63,
+        "p_two_sided": 0.0
+      },
+      "f_test_F1_variances": {
+        "F": 1.8726,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.25269,
+        "var_a": 0.000206,
+        "var_b": 0.000387
+      },
+      "mean_F1_a": 0.0519,
+      "mean_F1_b": 0.1088
+    },
+    "multi_stage_vs_slide_anchored__sem0.65": {
+      "welch_t_F1": {
+        "t": -7.9355,
+        "df": 27.95,
+        "p_two_sided": 0.0
+      },
+      "f_test_F1_variances": {
+        "F": 1.0886,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.87607,
+        "var_a": 0.000355,
+        "var_b": 0.000387
+      },
+      "mean_F1_a": 0.053,
+      "mean_F1_b": 0.1088
+    },
+    "direct_vs_multi_stage__sem0.70": {
+      "welch_t_F1": {
+        "t": 2.8589,
+        "df": 23.56,
+        "p_two_sided": 0.00875
+      },
+      "f_test_F1_variances": {
+        "F": 2.5351,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.09283,
+        "var_a": 0.000172,
+        "var_b": 6.8e-05
+      },
+      "mean_F1_a": 0.0162,
+      "mean_F1_b": 0.0048
+    },
+    "direct_vs_slide_anchored__sem0.70": {
+      "welch_t_F1": {
+        "t": -5.4632,
+        "df": 21.58,
+        "p_two_sided": 2e-05
+      },
+      "f_test_F1_variances": {
+        "F": 3.4013,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.02881,
+        "var_a": 0.000172,
+        "var_b": 0.000584
+      },
+      "mean_F1_a": 0.0162,
+      "mean_F1_b": 0.055
+    },
+    "multi_stage_vs_slide_anchored__sem0.70": {
+      "welch_t_F1": {
+        "t": -7.6156,
+        "df": 17.2,
+        "p_two_sided": 0.0
+      },
+      "f_test_F1_variances": {
+        "F": 8.6227,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.00025,
+        "var_a": 6.8e-05,
+        "var_b": 0.000584
+      },
+      "mean_F1_a": 0.0048,
+      "mean_F1_b": 0.055
+    },
+    "direct_vs_multi_stage__sem0.75": {
+      "welch_t_F1": {
+        "t": 2.6131,
+        "df": 23.1,
+        "p_two_sided": 0.01551
+      },
+      "f_test_F1_variances": {
+        "F": 2.7062,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.07275,
+        "var_a": 4.8e-05,
+        "var_b": 1.8e-05
+      },
+      "mean_F1_a": 0.0066,
+      "mean_F1_b": 0.0011
+    },
+    "direct_vs_slide_anchored__sem0.75": {
+      "welch_t_F1": {
+        "t": -5.1699,
+        "df": 23.94,
+        "p_two_sided": 3e-05
+      },
+      "f_test_F1_variances": {
+        "F": 2.3996,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.1131,
+        "var_a": 4.8e-05,
+        "var_b": 0.000115
+      },
+      "mean_F1_a": 0.0066,
+      "mean_F1_b": 0.0236
+    },
+    "multi_stage_vs_slide_anchored__sem0.75": {
+      "welch_t_F1": {
+        "t": -7.566,
+        "df": 18.21,
+        "p_two_sided": 0.0
+      },
+      "f_test_F1_variances": {
+        "F": 6.4938,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.00123,
+        "var_a": 1.8e-05,
+        "var_b": 0.000115
+      },
+      "mean_F1_a": 0.0011,
+      "mean_F1_b": 0.0236
+    },
+    "direct_vs_multi_stage__sem0.80": {
+      "welch_t_F1": {
+        "t": 0.6606,
+        "df": 27.94,
+        "p_two_sided": 0.51426
+      },
+      "f_test_F1_variances": {
+        "F": 1.0987,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.86271,
+        "var_a": 1.9e-05,
+        "var_b": 1.8e-05
+      },
+      "mean_F1_a": 0.0021,
+      "mean_F1_b": 0.0011
+    },
+    "direct_vs_slide_anchored__sem0.80": {
+      "welch_t_F1": {
+        "t": -5.5961,
+        "df": 18.38,
+        "p_two_sided": 2e-05
+      },
+      "f_test_F1_variances": {
+        "F": 6.2309,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.00154,
+        "var_a": 1.9e-05,
+        "var_b": 0.000121
+      },
+      "mean_F1_a": 0.0021,
+      "mean_F1_b": 0.0193
+    },
+    "multi_stage_vs_slide_anchored__sem0.80": {
+      "welch_t_F1": {
+        "t": -5.9728,
+        "df": 18.0,
+        "p_two_sided": 1e-05
+      },
+      "f_test_F1_variances": {
+        "F": 6.8458,
+        "df1": 14,
+        "df2": 14,
+        "p_two_sided": 0.00093,
+        "var_a": 1.8e-05,
+        "var_b": 0.000121
+      },
+      "mean_F1_a": 0.0011,
+      "mean_F1_b": 0.0193
+    }
+  },
+  "lex_sem_agreement_at_0.75": {
+    "direct": {
+      "n": 15,
+      "mean": 0.0083,
+      "sd": 0.0156,
+      "min": 0.0,
+      "max": 0.0513,
+      "range": 0.0513
+    },
+    "multi_stage": {
+      "n": 15,
+      "mean": 0.0025,
+      "sd": 0.0096,
+      "min": 0.0,
+      "max": 0.037,
+      "range": 0.037
+    },
+    "slide_anchored": {
+      "n": 15,
+      "mean": 0.0495,
+      "sd": 0.0223,
+      "min": 0.0312,
+      "max": 0.0938,
+      "range": 0.0625
+    }
+  },
+  "semantic_model": "text-embedding-3-small",
+  "semantic_thresholds": [
+    0.65,
+    0.7,
+    0.75,
+    0.8
+  ]
+}

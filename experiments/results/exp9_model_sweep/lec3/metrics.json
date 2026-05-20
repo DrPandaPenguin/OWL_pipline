@@ -1,0 +1,1337 @@
+{
+  "experiment_root": "experiments/exp9_model_sweep/lec3",
+  "lecture": "ecommerce/lec4",
+  "per_condition": {
+    "sa_gpt4_turbo": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 11.3333,
+          "sd": 1.5275,
+          "min": 10,
+          "max": 13,
+          "range": 3
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 1.3333,
+          "sd": 2.3094,
+          "min": 0,
+          "max": 4,
+          "range": 4
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 10.0,
+          "sd": 3.0,
+          "min": 7,
+          "max": 13,
+          "range": 6
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 9.6667,
+          "sd": 3.5119,
+          "min": 6,
+          "max": 13,
+          "range": 7
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.8485,
+          "sd": 0.2624,
+          "min": 0.5455,
+          "max": 1.0,
+          "range": 0.4545
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.6655,
+          "sd": 0.1449,
+          "min": 0.5,
+          "max": 0.7692,
+          "range": 0.2692
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.4074,
+          "sd": 0.1425,
+          "min": 0.25,
+          "max": 0.5278,
+          "range": 0.2778
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.5037,
+          "sd": 0.1521,
+          "min": 0.3333,
+          "max": 0.626,
+          "range": 0.2927
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.3611,
+          "sd": 0.0962,
+          "min": 0.25,
+          "max": 0.4167,
+          "range": 0.1667
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.4594,
+          "sd": 0.1092,
+          "min": 0.3333,
+          "max": 0.5224,
+          "range": 0.1891
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 0.3333,
+          "sd": 0.5774,
+          "min": 0,
+          "max": 1,
+          "range": 1
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.3867,
+          "sd": 0.284,
+          "min": 0.2105,
+          "max": 0.7143
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.4394,
+          "sd": 0.328,
+          "min": 0.25,
+          "max": 0.8182
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.3333,
+          "sd": 0.5774,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.3333,
+          "sd": 0.5774,
+          "min": 0.0,
+          "max": 1.0
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 4,
+          "items": [
+            "cloud computing",
+            "domain name system (dns)",
+            "integration of digital infrastructure",
+            "web hosting services"
+          ]
+        },
+        "backbone": {
+          "size": 4,
+          "items": [
+            "cloud computing",
+            "domain name system (dns)",
+            "integration of digital infrastructure",
+            "web hosting services"
+          ]
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 44.8167,
+        "sd": 10.493,
+        "min": 35.08,
+        "max": 55.93,
+        "range": 20.85
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.5215,
+        "sd": 0.0092,
+        "min": 0.5129,
+        "max": 0.5312,
+        "range": 0.0183
+      }
+    },
+    "sa_gpt4o": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 11.0,
+          "sd": 1.7321,
+          "min": 9,
+          "max": 12,
+          "range": 3
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 6.0,
+          "sd": 2.6458,
+          "min": 4,
+          "max": 9,
+          "range": 5
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 5.0,
+          "sd": 2.0,
+          "min": 3,
+          "max": 7,
+          "range": 4
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 1.6667,
+          "sd": 1.5275,
+          "min": 0,
+          "max": 3,
+          "range": 3
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.1667,
+          "sd": 0.1667,
+          "min": 0.0,
+          "max": 0.3333,
+          "range": 0.3333
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.5648,
+          "sd": 0.1123,
+          "min": 0.4444,
+          "max": 0.6667,
+          "range": 0.2223
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.2778,
+          "sd": 0.1001,
+          "min": 0.1667,
+          "max": 0.3611,
+          "range": 0.1944
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.3706,
+          "sd": 0.1161,
+          "min": 0.2424,
+          "max": 0.4685,
+          "range": 0.2261
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.1759,
+          "sd": 0.0424,
+          "min": 0.1389,
+          "max": 0.2222,
+          "range": 0.0833
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.2497,
+          "sd": 0.0468,
+          "min": 0.2027,
+          "max": 0.2963,
+          "range": 0.0936
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 2.6667,
+          "sd": 1.1547,
+          "min": 2,
+          "max": 4,
+          "range": 2
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.5385,
+          "sd": 0.0666,
+          "min": 0.5,
+          "max": 0.6154
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.6744,
+          "sd": 0.1183,
+          "min": 0.5455,
+          "max": 0.7778
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0417,
+          "sd": 0.0722,
+          "min": 0.0,
+          "max": 0.125
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.3333,
+          "sd": 0.5774,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0417,
+          "sd": 0.0722,
+          "min": 0.0,
+          "max": 0.125
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 6,
+          "items": [
+            "cloud computing",
+            "content delivery networks",
+            "domain name system (dns)",
+            "internet as e-commerce infrastructure",
+            "web hosting services",
+            "website architecture"
+          ]
+        },
+        "backbone": {
+          "size": 6,
+          "items": [
+            "cloud computing",
+            "content delivery networks",
+            "domain name system (dns)",
+            "internet as e-commerce infrastructure",
+            "web hosting services",
+            "website architecture"
+          ]
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 39.8233,
+        "sd": 11.9558,
+        "min": 32.5,
+        "max": 53.62,
+        "range": 21.12
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.1351,
+        "sd": 0.0038,
+        "min": 0.1315,
+        "max": 0.1391,
+        "range": 0.0076
+      }
+    },
+    "sa_gpt4o_mini": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 24.3333,
+          "sd": 7.5056,
+          "min": 20,
+          "max": 33,
+          "range": 13
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 15.0,
+          "sd": 1.0,
+          "min": 14,
+          "max": 16,
+          "range": 2
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 11.0,
+          "sd": 5.1962,
+          "min": 8,
+          "max": 17,
+          "range": 9
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 2.6667,
+          "sd": 4.6188,
+          "min": 0,
+          "max": 8,
+          "range": 8
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0808,
+          "sd": 0.1399,
+          "min": 0.0,
+          "max": 0.2424,
+          "range": 0.2424
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.6121,
+          "sd": 0.021,
+          "min": 0.6,
+          "max": 0.6364,
+          "range": 0.0364
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.5555,
+          "sd": 0.169,
+          "min": 0.4444,
+          "max": 0.75,
+          "range": 0.3056
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.5759,
+          "sd": 0.098,
+          "min": 0.5106,
+          "max": 0.6885,
+          "range": 0.1779
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.1667,
+          "sd": 0.0,
+          "min": 0.1667,
+          "max": 0.1667,
+          "range": 0.0
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.2357,
+          "sd": 0.0117,
+          "min": 0.2222,
+          "max": 0.2424,
+          "range": 0.0202
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 5.3333,
+          "sd": 0.5774,
+          "min": 5,
+          "max": 6,
+          "range": 1
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.3777,
+          "sd": 0.0958,
+          "min": 0.2927,
+          "max": 0.4815
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.5,
+          "sd": 0.0,
+          "min": 0.5,
+          "max": 0.5
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.1001,
+          "sd": 0.0519,
+          "min": 0.069,
+          "max": 0.16
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0826,
+          "sd": 0.031,
+          "min": 0.0588,
+          "max": 0.1176
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.1349,
+          "sd": 0.0998,
+          "min": 0.0714,
+          "max": 0.25
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 10,
+          "items": [
+            "cloud computing",
+            "content delivery networks",
+            "distributed network architecture",
+            "domain name system",
+            "global internet connectivity",
+            "infrastructure-as-a-service",
+            "internet as infrastructure",
+            "ip addresses",
+            "secure communication protocols",
+            "website architecture"
+          ]
+        },
+        "backbone": {
+          "size": 5,
+          "items": [
+            "cloud computing",
+            "content delivery networks",
+            "domain name system",
+            "internet as infrastructure",
+            "website architecture"
+          ]
+        },
+        "edge": {
+          "size": 2,
+          "items": [
+            [
+              "internet as infrastructure",
+              "distributed network architecture",
+              "drives"
+            ],
+            [
+              "internet as infrastructure",
+              "global internet connectivity",
+              "requires"
+            ]
+          ]
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 123.4,
+        "sd": 16.0018,
+        "min": 105.58,
+        "max": 136.54,
+        "range": 30.96
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.0091,
+        "sd": 0.0003,
+        "min": 0.0089,
+        "max": 0.0095,
+        "range": 0.0006
+      }
+    },
+    "sa_gpt5_1": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 127.0,
+          "sd": 16.7033,
+          "min": 112,
+          "max": 145,
+          "range": 33
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 163.6667,
+          "sd": 25.1064,
+          "min": 136,
+          "max": 185,
+          "range": 49
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 11.6667,
+          "sd": 2.5166,
+          "min": 9,
+          "max": 14,
+          "range": 5
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 0.6667,
+          "sd": 0.5774,
+          "min": 0,
+          "max": 1,
+          "range": 1
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0057,
+          "sd": 0.0049,
+          "min": 0.0,
+          "max": 0.0089,
+          "range": 0.0089
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.2884,
+          "sd": 0.0565,
+          "min": 0.2276,
+          "max": 0.3393,
+          "range": 0.1117
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.7407,
+          "sd": 0.0425,
+          "min": 0.6944,
+          "max": 0.7778,
+          "range": 0.0834
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.4121,
+          "sd": 0.0559,
+          "min": 0.3492,
+          "max": 0.4559,
+          "range": 0.1067
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.5926,
+          "sd": 0.0578,
+          "min": 0.5278,
+          "max": 0.6389,
+          "range": 0.1111
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.4496,
+          "sd": 0.0906,
+          "min": 0.3476,
+          "max": 0.5209,
+          "range": 0.1733
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 6.0,
+          "sd": 0.0,
+          "min": 6,
+          "max": 6,
+          "range": 0
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0925,
+          "sd": 0.0212,
+          "min": 0.0708,
+          "max": 0.1132
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.087,
+          "sd": 0.0229,
+          "min": 0.0606,
+          "max": 0.1013
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0079,
+          "sd": 0.0081,
+          "min": 0.0031,
+          "max": 0.0172
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0081,
+          "sd": 0.0141,
+          "min": 0.0,
+          "max": 0.0244
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0031,
+          "sd": 0.0054,
+          "min": 0.0,
+          "max": 0.0094
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 7,
+          "items": [
+            "binding arbitration in online platforms",
+            "common web design mistakes",
+            "cookies as identity proxies",
+            "custom interconnects by hyperscalers",
+            "dyson vacuum airline promotion failure",
+            "helpdesk as product feedback channel",
+            "mystery meat websites"
+          ]
+        },
+        "backbone": {
+          "size": 2,
+          "items": [
+            "common web design mistakes",
+            "helpdesk as product feedback channel"
+          ]
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 365.8433,
+        "sd": 98.1717,
+        "min": 296.82,
+        "max": 478.23,
+        "range": 181.41
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.3995,
+        "sd": 0.0348,
+        "min": 0.3622,
+        "max": 0.431,
+        "range": 0.0688
+      }
+    },
+    "sa_gpt5_2": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 30.0,
+          "sd": 9.5394,
+          "min": 24,
+          "max": 41,
+          "range": 17
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 32.3333,
+          "sd": 6.6583,
+          "min": 28,
+          "max": 40,
+          "range": 12
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 3.6667,
+          "sd": 2.0817,
+          "min": 2,
+          "max": 6,
+          "range": 4
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0,
+          "max": 0,
+          "range": 0
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.3113,
+          "sd": 0.1085,
+          "min": 0.2,
+          "max": 0.4167,
+          "range": 0.2167
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.4167,
+          "sd": 0.1273,
+          "min": 0.2778,
+          "max": 0.5278,
+          "range": 0.25
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.353,
+          "sd": 0.1056,
+          "min": 0.2326,
+          "max": 0.4301,
+          "range": 0.1975
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.3148,
+          "sd": 0.1052,
+          "min": 0.1944,
+          "max": 0.3889,
+          "range": 0.1945
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.3252,
+          "sd": 0.1149,
+          "min": 0.1972,
+          "max": 0.4194,
+          "range": 0.2222
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 6.0,
+          "sd": 1.0,
+          "min": 5,
+          "max": 7,
+          "range": 2
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0321,
+          "sd": 0.0287,
+          "min": 0.0154,
+          "max": 0.0652
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0312,
+          "sd": 0.0039,
+          "min": 0.0286,
+          "max": 0.0357
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 0,
+          "items": []
+        },
+        "backbone": {
+          "size": 0,
+          "items": []
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 90.3733,
+        "sd": 23.5098,
+        "min": 72.89,
+        "max": 117.1,
+        "range": 44.21
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.1279,
+        "sd": 0.0184,
+        "min": 0.1147,
+        "max": 0.1489,
+        "range": 0.0342
+      }
+    },
+    "sa_gpt5_4": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 34.3333,
+          "sd": 5.5076,
+          "min": 28,
+          "max": 38,
+          "range": 10
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 37.3333,
+          "sd": 4.1633,
+          "min": 34,
+          "max": 42,
+          "range": 8
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 3.6667,
+          "sd": 1.1547,
+          "min": 3,
+          "max": 5,
+          "range": 2
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0,
+          "max": 0,
+          "range": 0
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.4952,
+          "sd": 0.1144,
+          "min": 0.3784,
+          "max": 0.6071,
+          "range": 0.2287
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.6018,
+          "sd": 0.1123,
+          "min": 0.5,
+          "max": 0.7222,
+          "range": 0.2222
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.5389,
+          "sd": 0.0936,
+          "min": 0.4308,
+          "max": 0.595,
+          "range": 0.1642
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.4722,
+          "sd": 0.147,
+          "min": 0.3611,
+          "max": 0.6389,
+          "range": 0.2778
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.5259,
+          "sd": 0.1344,
+          "min": 0.3848,
+          "max": 0.6525,
+          "range": 0.2677
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 6.0,
+          "sd": 0.0,
+          "min": 6,
+          "max": 6,
+          "range": 0
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.1026,
+          "sd": 0.0379,
+          "min": 0.0645,
+          "max": 0.1404
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.1119,
+          "sd": 0.0707,
+          "min": 0.0303,
+          "max": 0.1538
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0088,
+          "sd": 0.0152,
+          "min": 0.0,
+          "max": 0.0263
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0133,
+          "sd": 0.0231,
+          "min": 0.0,
+          "max": 0.04
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 3,
+          "items": [
+            "encryption increases compute requirements",
+            "fallback and rollback planning",
+            "the internet is infrastructure for digital business"
+          ]
+        },
+        "backbone": {
+          "size": 1,
+          "items": [
+            "the internet is infrastructure for digital business"
+          ]
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 90.0867,
+        "sd": 9.7622,
+        "min": 78.83,
+        "max": 96.23,
+        "range": 17.4
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.1299,
+        "sd": 0.0087,
+        "min": 0.1202,
+        "max": 0.1371,
+        "range": 0.0169
+      }
+    },
+    "sa_gpt5_5": {
+      "n_runs": 0,
+      "n_failed": 3,
+      "failed_files": [
+        "run01_FAILED.json",
+        "run02_FAILED.json",
+        "run03_FAILED.json"
+      ]
+    }
+  },
+  "between": {
+    "sa_gpt4_turbo_vs_sa_gpt4o": {
+      "welch_t_F1": {
+        "t": 1.2041,
+        "df": 3.74,
+        "p_two_sided": 0.2992
+      },
+      "f_test_F1_variances": {
+        "F": 1.7183,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.73575,
+        "var_a": 0.023149,
+        "var_b": 0.013472
+      },
+      "mean_F1_a": 0.5037,
+      "mean_F1_b": 0.3706,
+      "sd_F1_a": 0.1521,
+      "sd_F1_b": 0.1161
+    },
+    "sa_gpt4_turbo_vs_sa_gpt4o_mini": {
+      "welch_t_F1": {
+        "t": -0.6911,
+        "df": 3.41,
+        "p_two_sided": 0.53358
+      },
+      "f_test_F1_variances": {
+        "F": 2.4126,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.58606,
+        "var_a": 0.023149,
+        "var_b": 0.009595
+      },
+      "mean_F1_a": 0.5037,
+      "mean_F1_b": 0.5759,
+      "sd_F1_a": 0.1521,
+      "sd_F1_b": 0.098
+    },
+    "sa_gpt4_turbo_vs_sa_gpt5_1": {
+      "welch_t_F1": {
+        "t": 0.9782,
+        "df": 2.53,
+        "p_two_sided": 0.41204
+      },
+      "f_test_F1_variances": {
+        "F": 7.4153,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.23766,
+        "var_a": 0.023149,
+        "var_b": 0.003122
+      },
+      "mean_F1_a": 0.5037,
+      "mean_F1_b": 0.4121,
+      "sd_F1_a": 0.1521,
+      "sd_F1_b": 0.0559
+    },
+    "sa_gpt4_turbo_vs_sa_gpt5_2": {
+      "welch_t_F1": {
+        "t": 1.4093,
+        "df": 3.56,
+        "p_two_sided": 0.23973
+      },
+      "f_test_F1_variances": {
+        "F": 2.0755,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.6503,
+        "var_a": 0.023149,
+        "var_b": 0.011153
+      },
+      "mean_F1_a": 0.5037,
+      "mean_F1_b": 0.353,
+      "sd_F1_a": 0.1521,
+      "sd_F1_b": 0.1056
+    },
+    "sa_gpt4_turbo_vs_sa_gpt5_4": {
+      "welch_t_F1": {
+        "t": -0.3416,
+        "df": 3.33,
+        "p_two_sided": 0.75313
+      },
+      "f_test_F1_variances": {
+        "F": 2.64,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.54945,
+        "var_a": 0.023149,
+        "var_b": 0.008768
+      },
+      "mean_F1_a": 0.5037,
+      "mean_F1_b": 0.5389,
+      "sd_F1_a": 0.1521,
+      "sd_F1_b": 0.0936
+    },
+    "sa_gpt4o_vs_sa_gpt4o_mini": {
+      "welch_t_F1": {
+        "t": -2.3405,
+        "df": 3.89,
+        "p_two_sided": 0.08118
+      },
+      "f_test_F1_variances": {
+        "F": 1.4041,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.83192,
+        "var_a": 0.013472,
+        "var_b": 0.009595
+      },
+      "mean_F1_a": 0.3706,
+      "mean_F1_b": 0.5759,
+      "sd_F1_a": 0.1161,
+      "sd_F1_b": 0.098
+    },
+    "sa_gpt4o_vs_sa_gpt5_1": {
+      "welch_t_F1": {
+        "t": -0.558,
+        "df": 2.88,
+        "p_two_sided": 0.61727
+      },
+      "f_test_F1_variances": {
+        "F": 4.3155,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.37626,
+        "var_a": 0.013472,
+        "var_b": 0.003122
+      },
+      "mean_F1_a": 0.3706,
+      "mean_F1_b": 0.4121,
+      "sd_F1_a": 0.1161,
+      "sd_F1_b": 0.0559
+    },
+    "sa_gpt4o_vs_sa_gpt5_2": {
+      "welch_t_F1": {
+        "t": 0.195,
+        "df": 3.96,
+        "p_two_sided": 0.85498
+      },
+      "f_test_F1_variances": {
+        "F": 1.2079,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.90585,
+        "var_a": 0.013472,
+        "var_b": 0.011153
+      },
+      "mean_F1_a": 0.3706,
+      "mean_F1_b": 0.353,
+      "sd_F1_a": 0.1161,
+      "sd_F1_b": 0.1056
+    },
+    "sa_gpt4o_vs_sa_gpt5_4": {
+      "welch_t_F1": {
+        "t": -1.9543,
+        "df": 3.83,
+        "p_two_sided": 0.12552
+      },
+      "f_test_F1_variances": {
+        "F": 1.5364,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.78851,
+        "var_a": 0.013472,
+        "var_b": 0.008768
+      },
+      "mean_F1_a": 0.3706,
+      "mean_F1_b": 0.5389,
+      "sd_F1_a": 0.1161,
+      "sd_F1_b": 0.0936
+    },
+    "sa_gpt4o_mini_vs_sa_gpt5_1": {
+      "welch_t_F1": {
+        "t": 2.5149,
+        "df": 3.18,
+        "p_two_sided": 0.08189
+      },
+      "f_test_F1_variances": {
+        "F": 3.0735,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.49097,
+        "var_a": 0.009595,
+        "var_b": 0.003122
+      },
+      "mean_F1_a": 0.5759,
+      "mean_F1_b": 0.4121,
+      "sd_F1_a": 0.098,
+      "sd_F1_b": 0.0559
+    },
+    "sa_gpt4o_mini_vs_sa_gpt5_2": {
+      "welch_t_F1": {
+        "t": 2.6803,
+        "df": 3.98,
+        "p_two_sided": 0.05554
+      },
+      "f_test_F1_variances": {
+        "F": 1.1624,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.92488,
+        "var_a": 0.009595,
+        "var_b": 0.011153
+      },
+      "mean_F1_a": 0.5759,
+      "mean_F1_b": 0.353,
+      "sd_F1_a": 0.098,
+      "sd_F1_b": 0.1056
+    },
+    "sa_gpt4o_mini_vs_sa_gpt5_4": {
+      "welch_t_F1": {
+        "t": 0.4725,
+        "df": 3.99,
+        "p_two_sided": 0.66125
+      },
+      "f_test_F1_variances": {
+        "F": 1.0942,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.955,
+        "var_a": 0.009595,
+        "var_b": 0.008768
+      },
+      "mean_F1_a": 0.5759,
+      "mean_F1_b": 0.5389,
+      "sd_F1_a": 0.098,
+      "sd_F1_b": 0.0936
+    },
+    "sa_gpt5_1_vs_sa_gpt5_2": {
+      "welch_t_F1": {
+        "t": 0.8577,
+        "df": 3.04,
+        "p_two_sided": 0.45338
+      },
+      "f_test_F1_variances": {
+        "F": 3.5728,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.43737,
+        "var_a": 0.003122,
+        "var_b": 0.011153
+      },
+      "mean_F1_a": 0.4121,
+      "mean_F1_b": 0.353,
+      "sd_F1_a": 0.0559,
+      "sd_F1_b": 0.1056
+    },
+    "sa_gpt5_1_vs_sa_gpt5_4": {
+      "welch_t_F1": {
+        "t": -2.0136,
+        "df": 3.26,
+        "p_two_sided": 0.13008
+      },
+      "f_test_F1_variances": {
+        "F": 2.8088,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.5251,
+        "var_a": 0.003122,
+        "var_b": 0.008768
+      },
+      "mean_F1_a": 0.4121,
+      "mean_F1_b": 0.5389,
+      "sd_F1_a": 0.0559,
+      "sd_F1_b": 0.0936
+    },
+    "sa_gpt5_2_vs_sa_gpt5_4": {
+      "welch_t_F1": {
+        "t": -2.2817,
+        "df": 3.94,
+        "p_two_sided": 0.08558
+      },
+      "f_test_F1_variances": {
+        "F": 1.272,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.88028,
+        "var_a": 0.011153,
+        "var_b": 0.008768
+      },
+      "mean_F1_a": 0.353,
+      "mean_F1_b": 0.5389,
+      "sd_F1_a": 0.1056,
+      "sd_F1_b": 0.0936
+    }
+  }
+}

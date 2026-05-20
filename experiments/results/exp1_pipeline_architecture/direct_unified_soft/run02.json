@@ -1,0 +1,2459 @@
+{
+  "condition": "direct_unified_soft",
+  "run_index": 2,
+  "timestamp": "2026-05-10T23:02:34.174044Z",
+  "wall_time_s": 223.77,
+  "lecture": "ecommerce/lec4",
+  "config": {
+    "pipeline": "direct",
+    "model": "gpt-5.2",
+    "ku_temperature": 0.1,
+    "node_temperature": 0.2,
+    "strict_temperature": 0.1,
+    "soft_temperature": 0.2,
+    "refine_temperature": 0.1,
+    "enrich_graph": false,
+    "use_slides": false,
+    "prompt_sha256_16": "4ba1a6faf49dab24",
+    "code_commit": "425bc99c6e0bb782fdaf5895b53a662504b2dcc0"
+  },
+  "runtime": {
+    "calls": 3,
+    "input_tokens": 51430,
+    "output_tokens": 19799,
+    "cost_usd": 0.2623
+  },
+  "metrics": {
+    "n_nodes": 106,
+    "n_edges": 126,
+    "n_components": 18,
+    "n_orphans": 1,
+    "orphan_pct": 0.0094,
+    "p_at_45": 0.3302,
+    "r_at_45": 0.5441,
+    "f1_at_45": 0.411,
+    "backbone_recall": 0.4118,
+    "backbone_f1": 0.4381,
+    "n_backbone_nodes": 47,
+    "edge_type_diversity": 7,
+    "edge_type_distribution": {
+      "explains": 41,
+      "details": 45,
+      "drives": 14,
+      "example_of": 10,
+      "defines": 3,
+      "contrasts": 4,
+      "requires": 9
+    },
+    "matched_concepts": [
+      "Analytics tools track user acquisition and behavior.",
+      "Behavioral segmentation groups customers with similar patterns.",
+      "Brand awareness influences consumer trust and purchasing decisions.",
+      "Business model design structures how value is created and captured.",
+      "Business planning integrates product design, delivery, and monetization.",
+      "CRM systems track customer information and interactions.",
+      "Continuity of experience across channels is important.",
+      "Customer personas represent typical users.",
+      "Customer service systems influence customer satisfaction and retention.",
+      "Data analysis enables targeted marketing and service design.",
+      "Digital distribution lowers barriers for offering large product catalogs.",
+      "Existing corporate systems may rely on outdated technologies.",
+      "Fraud and compromised payment data present risks.",
+      "Freemium models provide basic access with paid upgrades.",
+      "Integration with payment services and fulfillment systems is required.",
+      "Interface quality influences customer trust and conversion rates.",
+      "Keyword advertising determines visibility in search results.",
+      "Large technology firms invest heavily in computing infrastructure.",
+      "Logistics and taxation complicate international operations.",
+      "Marketing channels can be evaluated through traffic analysis.",
+      "Merchant systems manage orders, payments, and inventory.",
+      "Payment gateways and fulfillment services form core operational infrastructure.",
+      "Payment preferences differ between countries.",
+      "Payment systems must handle tax rules and compliance requirements.",
+      "Personalization relies on user data and demographic indicators.",
+      "Platform scale depends on both technical and financial resources.",
+      "Price differentiation can target different user groups.",
+      "Pricing can involve multiple service tiers.",
+      "Pricing design can deliberately introduce complexity.",
+      "Relationships between producers and consumers become more direct.",
+      "Social platforms rely on community participation.",
+      "Standardization technologies help bridge system differences.",
+      "Strategic alignment between value proposition and operational structure is required.",
+      "Support systems empower customer service representatives.",
+      "Traditional intermediaries may lose relevance.",
+      "Understanding customer motivations shapes product design.",
+      "Websites should emphasize calls to action and efficient navigation."
+    ],
+    "unmatched_concepts": [
+      "Advertising platforms allow targeted marketing campaigns.",
+      "Businesses track metrics such as acquisition cost and lifetime value.",
+      "Campaign performance is optimized through click-through metrics.",
+      "Clear layout and consistent navigation improve user engagement.",
+      "Cloud and data center capacity enable large-scale digital services.",
+      "Compatibility issues arise between modern software and legacy systems.",
+      "Data insights guide marketing and product strategy.",
+      "Digital marketplaces reshape industry structures.",
+      "Digital markets allow aggregation of demand across many niche products.",
+      "Early adoption challenges create “chicken-and-egg” problems.",
+      "Free services may be funded by advertising or data.",
+      "High-expectation users can influence wider adoption.",
+      "Infrastructure investment is a strategic competitive advantage.",
+      "Languages, currencies, and legal systems vary across markets.",
+      "Manufacturing costs often decrease with scale before increasing again.",
+      "Online payments rely on credit card networks and payment processors.",
+      "Online platforms allow producers to sell directly to consumers.",
+      "Online services must handle authentication, stock management, and customer support.",
+      "Payment platforms mediate transactions between buyers and sellers.",
+      "Platforms become more valuable as more users participate.",
+      "Poor design creates confusion and navigation difficulties.",
+      "Real-time e-commerce services must integrate with legacy databases and workflows.",
+      "Regulations affect what products can be sold.",
+      "Socio-economic classifications help define customer segments.",
+      "Subscription and pay-per-use models generate recurring revenue.",
+      "Successful products target clearly defined customer needs.",
+      "The Business Model Canvas organizes core components such as partners, resources, channels, and revenue streams.",
+      "The “long tail” describes how niche products collectively form large markets.",
+      "Time-limited offers and special discounts influence purchasing decisions.",
+      "User journeys reveal how customers make purchasing decisions.",
+      "User-generated content drives engagement and growth."
+    ],
+    "ground_truth_count": 68
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "node_001",
+        "node_id": "node_001",
+        "label": "Marginal cost to zero",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_002",
+        "node_id": "node_002",
+        "label": "Infinite distribution and inventory",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_003",
+        "node_id": "node_003",
+        "label": "Infinite growth assumption in capitalism",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_004",
+        "node_id": "node_004",
+        "label": "Intuitive fication",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_005",
+        "node_id": "node_005",
+        "label": "Customer journey support",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_006",
+        "node_id": "node_006",
+        "label": "Emerging commerce models at near-zero marginal cost",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_007",
+        "node_id": "node_007",
+        "label": "Hyperscaler CapEx acceleration",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_008",
+        "node_id": "node_008",
+        "label": "Technological revolutions and financial bubbles come in pairs",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_009",
+        "node_id": "node_009",
+        "label": "Capitalization mismatch with hardware lifetimes",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_010",
+        "node_id": "node_010",
+        "label": "Datacenter GPU and interconnect lifetime",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_011",
+        "node_id": "node_011",
+        "label": "Recouping capital investment requires profit targets",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_012",
+        "node_id": "node_012",
+        "label": "Model cost escalation for AI",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_013",
+        "node_id": "node_013",
+        "label": "Data centre efficiency as a business constraint",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_014",
+        "node_id": "node_014",
+        "label": "Fair price and pricing under near-zero marginal cost",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_015",
+        "node_id": "node_015",
+        "label": "Fair price depends on the customer",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_016",
+        "node_id": "node_016",
+        "label": "Price discovery for new products",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_017",
+        "node_id": "node_017",
+        "label": "Underpricing due to unknown market rate",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_018",
+        "node_id": "node_018",
+        "label": "Consulting rate negotiation story",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_019",
+        "node_id": "node_019",
+        "label": "Exponential price discovery algorithm",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_020",
+        "node_id": "node_020",
+        "label": "YC 2x until you lose 80% sales",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_021",
+        "node_id": "node_021",
+        "label": "Price before product",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_022",
+        "node_id": "node_022",
+        "label": "Cost-plus pricing mindset",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_023",
+        "node_id": "node_023",
+        "label": "Build product to fit price point",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_024",
+        "node_id": "node_024",
+        "label": "Apple sets price points then delivers to them",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_025",
+        "node_id": "node_025",
+        "label": "Price tiering in enterprise",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_026",
+        "node_id": "node_026",
+        "label": "Freemium and enterprise upsell ladder",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_027",
+        "node_id": "node_027",
+        "label": "Enterprise pricing aligned to approval thresholds",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_028",
+        "node_id": "node_028",
+        "label": "Student discounts as retention strategy",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_029",
+        "node_id": "node_029",
+        "label": "Lifetime value",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_030",
+        "node_id": "node_030",
+        "label": "Lifetime value formula",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_031",
+        "node_id": "node_031",
+        "label": "Retention offers vs loyalty penalty",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_032",
+        "node_id": "node_032",
+        "label": "Government contracts as special cases",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_033",
+        "node_id": "node_033",
+        "label": "Government contracts require higher diligence",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_034",
+        "node_id": "node_034",
+        "label": "Choosing customers sets operational complexity",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_035",
+        "node_id": "node_035",
+        "label": "Customer adoption curve",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_036",
+        "node_id": "node_036",
+        "label": "Differential pricing",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_037",
+        "node_id": "node_037",
+        "label": "Expensive Starbucks drink",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_038",
+        "node_id": "node_038",
+        "label": "Luxury watch pricing",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_039",
+        "node_id": "node_039",
+        "label": "Pricing complexity creates system complexity",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_040",
+        "node_id": "node_040",
+        "label": "Keep pricing exceptions minimal",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_041",
+        "node_id": "node_041",
+        "label": "Legacy system management",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_042",
+        "node_id": "node_042",
+        "label": "Batch processing windows in retail",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_043",
+        "node_id": "node_043",
+        "label": "Retail opening hours shaped batch processing",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_044",
+        "node_id": "node_044",
+        "label": "Documentation and test suites for long-lived systems",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_045",
+        "node_id": "node_045",
+        "label": "Millennium bug",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_046",
+        "node_id": "node_046",
+        "label": "Internet plumbing integrations",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_047",
+        "node_id": "node_047",
+        "label": "Zapier as non-robust enterprise integration",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_048",
+        "node_id": "node_048",
+        "label": "Payment risk and chargebacks",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_049",
+        "node_id": "node_049",
+        "label": "Deliver only to registered card address",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_050",
+        "node_id": "node_050",
+        "label": "Credit card theft hotel story",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_051",
+        "node_id": "node_051",
+        "label": "Tax and VAT compliance risk",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_052",
+        "node_id": "node_052",
+        "label": "Blurred line between business responsibility and customer responsibility",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_053",
+        "node_id": "node_053",
+        "label": "CRM as customer experience infrastructure",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_054",
+        "node_id": "node_054",
+        "label": "Zappos customer service advantage",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_055",
+        "node_id": "node_055",
+        "label": "Online clothing returns and sizing uncertainty",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_056",
+        "node_id": "node_056",
+        "label": "Automation without override causes bad experiences",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_057",
+        "node_id": "node_057",
+        "label": "Security and convenience tradeoff",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_058",
+        "node_id": "node_058",
+        "label": "Weak security questions",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_059",
+        "node_id": "node_059",
+        "label": "Security question answers need not be true",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_060",
+        "node_id": "node_060",
+        "label": "Continuity in customer support verification",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_061",
+        "node_id": "node_061",
+        "label": "Call centre metrics create perverse incentives",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_062",
+        "node_id": "node_062",
+        "label": "Personalisation to increase retention",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_063",
+        "node_id": "node_063",
+        "label": "Consumer behaviour databases and segmentation",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_064",
+        "node_id": "node_064",
+        "label": "Register with Information Commission for personal data",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_065",
+        "node_id": "node_065",
+        "label": "Creepy line in personalization",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_066",
+        "node_id": "node_066",
+        "label": "AI agents in customer service and commerce",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_067",
+        "node_id": "node_067",
+        "label": "AI agent refunds and liability",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_068",
+        "node_id": "node_068",
+        "label": "Escalation out of the AI loop",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_069",
+        "node_id": "node_069",
+        "label": "Agent-to-agent negotiation and exploitation",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_070",
+        "node_id": "node_070",
+        "label": "Pen portraits",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_071",
+        "node_id": "node_071",
+        "label": "Behavioural segmentation over demographics",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_072",
+        "node_id": "node_072",
+        "label": "Predicting interaction patterns",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_073",
+        "node_id": "node_073",
+        "label": "Marketing cadence by customer type",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_074",
+        "node_id": "node_074",
+        "label": "Super users",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_075",
+        "node_id": "node_075",
+        "label": "Internationalisation is culturally nuanced",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_076",
+        "node_id": "node_076",
+        "label": "Localization affects design and language",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_077",
+        "node_id": "node_077",
+        "label": "International fulfilment, tax and legal compliance",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_078",
+        "node_id": "node_078",
+        "label": "Business models for monetisation",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_079",
+        "node_id": "node_079",
+        "label": "Advertising-funded internet",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_080",
+        "node_id": "node_080",
+        "label": "Time attention money tradeoff",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_081",
+        "node_id": "node_081",
+        "label": "Selling user data as monetisation",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_082",
+        "node_id": "node_082",
+        "label": "Try before you buy",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_083",
+        "node_id": "node_083",
+        "label": "Freemium as avoiding sales force costs",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_084",
+        "node_id": "node_084",
+        "label": "DRM and loss of ownership in digital purchases",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_085",
+        "node_id": "node_085",
+        "label": "Cost per acquisition",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_086",
+        "node_id": "node_086",
+        "label": "Average revenue per customer",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_087",
+        "node_id": "node_087",
+        "label": "Brand awareness and trust",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_088",
+        "node_id": "node_088",
+        "label": "Brand promises build slowly and break quickly",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_089",
+        "node_id": "node_089",
+        "label": "Protecting brand online",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_090",
+        "node_id": "node_090",
+        "label": "Search advertising and brand keywords",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_091",
+        "node_id": "node_091",
+        "label": "Click through rate and cost per click",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_092",
+        "node_id": "node_092",
+        "label": "Generic vs specific keyword strategy",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_093",
+        "node_id": "node_093",
+        "label": "Supply chain advertising conflicts",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_094",
+        "node_id": "node_094",
+        "label": "Chicken and egg networks",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_095",
+        "node_id": "node_095",
+        "label": "Platform fees compress creator margins",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_096",
+        "node_id": "node_096",
+        "label": "LLMs scraping content reduces website traffic",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_097",
+        "node_id": "node_097",
+        "label": "Disintermediation",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_098",
+        "node_id": "node_098",
+        "label": "Supply chain margins at each step",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_099",
+        "node_id": "node_099",
+        "label": "Value provided by intermediaries",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_100",
+        "node_id": "node_100",
+        "label": "Supermarkets control shelf space and discovery",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_101",
+        "node_id": "node_101",
+        "label": "Travel agents displaced by online search",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": false,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_102",
+        "node_id": "node_102",
+        "label": "Who owns the customer relationship",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_103",
+        "node_id": "node_103",
+        "label": "Analytics can tell any story",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_104",
+        "node_id": "node_104",
+        "label": "More data does not mean better decisions",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_105",
+        "node_id": "node_105",
+        "label": "Bias in existing datasets",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      },
+      {
+        "id": "node_106",
+        "node_id": "node_106",
+        "label": "Projecting past behaviour repeats past mistakes",
+        "source_sentence": "[redacted: lecture transcript]",
+        "is_backbone": true,
+        "supporting_ku_ids": [],
+        "timestamp": {
+          "method": "direct",
+          "sentence_index": 0
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "node_001",
+        "to": "node_002",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_001"
+      },
+      {
+        "from": "node_003",
+        "to": "node_002",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_002"
+      },
+      {
+        "from": "node_002",
+        "to": "node_004",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_003"
+      },
+      {
+        "from": "node_004",
+        "to": "node_005",
+        "edge_type": "drives",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_004"
+      },
+      {
+        "from": "node_001",
+        "to": "node_006",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_005"
+      },
+      {
+        "from": "node_007",
+        "to": "node_008",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_006"
+      },
+      {
+        "from": "node_010",
+        "to": "node_009",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_007"
+      },
+      {
+        "from": "node_009",
+        "to": "node_011",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_008"
+      },
+      {
+        "from": "node_012",
+        "to": "node_013",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_009"
+      },
+      {
+        "from": "node_001",
+        "to": "node_014",
+        "edge_type": "drives",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_010"
+      },
+      {
+        "from": "node_014",
+        "to": "node_015",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_011"
+      },
+      {
+        "from": "node_018",
+        "to": "node_017",
+        "edge_type": "example_of",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_012"
+      },
+      {
+        "from": "node_017",
+        "to": "node_016",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_013"
+      },
+      {
+        "from": "node_020",
+        "to": "node_019",
+        "edge_type": "defines",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_014"
+      },
+      {
+        "from": "node_021",
+        "to": "node_023",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_015"
+      },
+      {
+        "from": "node_022",
+        "to": "node_021",
+        "edge_type": "contrasts",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_016"
+      },
+      {
+        "from": "node_024",
+        "to": "node_023",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_017"
+      },
+      {
+        "from": "node_025",
+        "to": "node_026",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_018"
+      },
+      {
+        "from": "node_025",
+        "to": "node_027",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_019"
+      },
+      {
+        "from": "node_028",
+        "to": "node_029",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_020"
+      },
+      {
+        "from": "node_030",
+        "to": "node_029",
+        "edge_type": "defines",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_021"
+      },
+      {
+        "from": "node_031",
+        "to": "node_030",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_022"
+      },
+      {
+        "from": "node_032",
+        "to": "node_033",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_023"
+      },
+      {
+        "from": "node_034",
+        "to": "node_033",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_024"
+      },
+      {
+        "from": "node_037",
+        "to": "node_036",
+        "edge_type": "example_of",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_025"
+      },
+      {
+        "from": "node_038",
+        "to": "node_036",
+        "edge_type": "example_of",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_026"
+      },
+      {
+        "from": "node_039",
+        "to": "node_040",
+        "edge_type": "drives",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_027"
+      },
+      {
+        "from": "node_042",
+        "to": "node_043",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_028"
+      },
+      {
+        "from": "node_045",
+        "to": "node_044",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_029"
+      },
+      {
+        "from": "node_047",
+        "to": "node_046",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_030"
+      },
+      {
+        "from": "node_047",
+        "to": "node_046",
+        "edge_type": "contrasts",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_031"
+      },
+      {
+        "from": "node_050",
+        "to": "node_048",
+        "edge_type": "example_of",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_032"
+      },
+      {
+        "from": "node_049",
+        "to": "node_048",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_033"
+      },
+      {
+        "from": "node_051",
+        "to": "node_052",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_034"
+      },
+      {
+        "from": "node_054",
+        "to": "node_053",
+        "edge_type": "example_of",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_035"
+      },
+      {
+        "from": "node_055",
+        "to": "node_053",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_036"
+      },
+      {
+        "from": "node_056",
+        "to": "node_053",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_037"
+      },
+      {
+        "from": "node_057",
+        "to": "node_058",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_038"
+      },
+      {
+        "from": "node_059",
+        "to": "node_058",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_039"
+      },
+      {
+        "from": "node_060",
+        "to": "node_053",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_040"
+      },
+      {
+        "from": "node_061",
+        "to": "node_053",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_041"
+      },
+      {
+        "from": "node_062",
+        "to": "node_029",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_042"
+      },
+      {
+        "from": "node_063",
+        "to": "node_062",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_043"
+      },
+      {
+        "from": "node_064",
+        "to": "node_063",
+        "edge_type": "requires",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_044"
+      },
+      {
+        "from": "node_065",
+        "to": "node_062",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_045"
+      },
+      {
+        "from": "node_067",
+        "to": "node_066",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_046"
+      },
+      {
+        "from": "node_068",
+        "to": "node_066",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_047"
+      },
+      {
+        "from": "node_069",
+        "to": "node_066",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_048"
+      },
+      {
+        "from": "node_071",
+        "to": "node_070",
+        "edge_type": "contrasts",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_049"
+      },
+      {
+        "from": "node_072",
+        "to": "node_071",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_050"
+      },
+      {
+        "from": "node_073",
+        "to": "node_072",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_051"
+      },
+      {
+        "from": "node_005",
+        "to": "node_072",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_052"
+      },
+      {
+        "from": "node_074",
+        "to": "node_035",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_053"
+      },
+      {
+        "from": "node_075",
+        "to": "node_076",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_054"
+      },
+      {
+        "from": "node_075",
+        "to": "node_077",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_055"
+      },
+      {
+        "from": "node_079",
+        "to": "node_078",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_056"
+      },
+      {
+        "from": "node_080",
+        "to": "node_079",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_057"
+      },
+      {
+        "from": "node_081",
+        "to": "node_078",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_058"
+      },
+      {
+        "from": "node_082",
+        "to": "node_078",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_059"
+      },
+      {
+        "from": "node_083",
+        "to": "node_078",
+        "edge_type": "defines",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_060"
+      },
+      {
+        "from": "node_084",
+        "to": "node_078",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_061"
+      },
+      {
+        "from": "node_088",
+        "to": "node_087",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_062"
+      },
+      {
+        "from": "node_090",
+        "to": "node_089",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_063"
+      },
+      {
+        "from": "node_091",
+        "to": "node_090",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_064"
+      },
+      {
+        "from": "node_092",
+        "to": "node_090",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_065"
+      },
+      {
+        "from": "node_093",
+        "to": "node_090",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_066"
+      },
+      {
+        "from": "node_094",
+        "to": "node_078",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_067"
+      },
+      {
+        "from": "node_095",
+        "to": "node_098",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_068"
+      },
+      {
+        "from": "node_096",
+        "to": "node_078",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_069"
+      },
+      {
+        "from": "node_097",
+        "to": "node_098",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_070"
+      },
+      {
+        "from": "node_099",
+        "to": "node_097",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_071"
+      },
+      {
+        "from": "node_100",
+        "to": "node_099",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_072"
+      },
+      {
+        "from": "node_101",
+        "to": "node_097",
+        "edge_type": "example_of",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_073"
+      },
+      {
+        "from": "node_103",
+        "to": "node_104",
+        "edge_type": "details",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_074"
+      },
+      {
+        "from": "node_105",
+        "to": "node_106",
+        "edge_type": "explains",
+        "justification_sentence": "[redacted: lecture transcript]",
+        "edge_source": "explicit",
+        "edge_id": "edge_075"
+      },
+      {
+        "from": "node_008",
+        "to": "node_007",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.74,
+        "edge_id": "edge_076",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_007",
+        "to": "node_009",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.78,
+        "edge_id": "edge_077",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_010",
+        "to": "node_011",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.83,
+        "edge_id": "edge_078",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_012",
+        "to": "node_011",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.7,
+        "edge_id": "edge_079",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_014",
+        "to": "node_015",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.76,
+        "edge_id": "edge_080",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_016",
+        "to": "node_017",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.82,
+        "edge_id": "edge_081",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_020",
+        "to": "node_019",
+        "edge_type": "example_of",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.86,
+        "edge_id": "edge_082",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_021",
+        "to": "node_022",
+        "edge_type": "contrasts",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.84,
+        "edge_id": "edge_083",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_024",
+        "to": "node_023",
+        "edge_type": "example_of",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.9,
+        "edge_id": "edge_084",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_025",
+        "to": "node_016",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.73,
+        "edge_id": "edge_085",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_027",
+        "to": "node_025",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.85,
+        "edge_id": "edge_086",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_028",
+        "to": "node_029",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.8,
+        "edge_id": "edge_087",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_031",
+        "to": "node_029",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.77,
+        "edge_id": "edge_088",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_032",
+        "to": "node_033",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.86,
+        "edge_id": "edge_089",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_034",
+        "to": "node_032",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.72,
+        "edge_id": "edge_090",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_036",
+        "to": "node_015",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.75,
+        "edge_id": "edge_091",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_041",
+        "to": "node_044",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.78,
+        "edge_id": "edge_092",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_045",
+        "to": "node_044",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.76,
+        "edge_id": "edge_093",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_047",
+        "to": "node_046",
+        "edge_type": "example_of",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.81,
+        "edge_id": "edge_094",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_048",
+        "to": "node_049",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.84,
+        "edge_id": "edge_095",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_053",
+        "to": "node_005",
+        "edge_type": "details",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.74,
+        "edge_id": "edge_096",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_055",
+        "to": "node_053",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.71,
+        "edge_id": "edge_097",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_056",
+        "to": "node_068",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.82,
+        "edge_id": "edge_098",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_057",
+        "to": "node_058",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.73,
+        "edge_id": "edge_099",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_058",
+        "to": "node_059",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.8,
+        "edge_id": "edge_100",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_060",
+        "to": "node_057",
+        "edge_type": "details",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.72,
+        "edge_id": "edge_101",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_061",
+        "to": "node_060",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.69,
+        "edge_id": "edge_102",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_062",
+        "to": "node_063",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.8,
+        "edge_id": "edge_103",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_063",
+        "to": "node_071",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.83,
+        "edge_id": "edge_104",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_066",
+        "to": "node_067",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.84,
+        "edge_id": "edge_105",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_066",
+        "to": "node_068",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.86,
+        "edge_id": "edge_106",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_070",
+        "to": "node_063",
+        "edge_type": "details",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.68,
+        "edge_id": "edge_107",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_072",
+        "to": "node_071",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.77,
+        "edge_id": "edge_108",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_073",
+        "to": "node_072",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.74,
+        "edge_id": "edge_109",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_075",
+        "to": "node_076",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.85,
+        "edge_id": "edge_110",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_075",
+        "to": "node_077",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.8,
+        "edge_id": "edge_111",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_079",
+        "to": "node_080",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.78,
+        "edge_id": "edge_112",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_081",
+        "to": "node_079",
+        "edge_type": "details",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.7,
+        "edge_id": "edge_113",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_083",
+        "to": "node_026",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.82,
+        "edge_id": "edge_114",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_085",
+        "to": "node_029",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.65,
+        "edge_id": "edge_115",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_087",
+        "to": "node_088",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.83,
+        "edge_id": "edge_116",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_089",
+        "to": "node_090",
+        "edge_type": "details",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.72,
+        "edge_id": "edge_117",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_091",
+        "to": "node_090",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.69,
+        "edge_id": "edge_118",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_092",
+        "to": "node_091",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.76,
+        "edge_id": "edge_119",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_093",
+        "to": "node_090",
+        "edge_type": "drives",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.73,
+        "edge_id": "edge_120",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_094",
+        "to": "node_035",
+        "edge_type": "details",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.64,
+        "edge_id": "edge_121",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_096",
+        "to": "node_097",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.8,
+        "edge_id": "edge_122",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_097",
+        "to": "node_099",
+        "edge_type": "requires",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.78,
+        "edge_id": "edge_123",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_100",
+        "to": "node_099",
+        "edge_type": "example_of",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.86,
+        "edge_id": "edge_124",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_102",
+        "to": "node_097",
+        "edge_type": "details",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.74,
+        "edge_id": "edge_125",
+        "edge_source": "inferred"
+      },
+      {
+        "from": "node_103",
+        "to": "node_104",
+        "edge_type": "explains",
+        "justification_span": "[redacted: lecture transcript]",
+        "confidence_score": 0.84,
+        "edge_id": "edge_126",
+        "edge_source": "inferred"
+      }
+    ]
+  }
+}

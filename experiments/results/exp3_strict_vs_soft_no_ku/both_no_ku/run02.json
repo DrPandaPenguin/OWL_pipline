@@ -1,0 +1,572 @@
+{
+  "condition": "both_no_ku",
+  "run_index": 2,
+  "timestamp": "2026-05-10T21:17:34.513312Z",
+  "wall_time_s": 60.01,
+  "n_strict": 40,
+  "n_soft": 24,
+  "n_edges_total": 64,
+  "edges": [
+    {
+      "from": "node_001",
+      "to": "node_002",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_001"
+    },
+    {
+      "from": "node_003",
+      "to": "node_005",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_002"
+    },
+    {
+      "from": "node_004",
+      "to": "node_005",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_003"
+    },
+    {
+      "from": "node_001",
+      "to": "node_006",
+      "edge_type": "drives",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_004"
+    },
+    {
+      "from": "node_007",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_005"
+    },
+    {
+      "from": "node_008",
+      "to": "node_006",
+      "edge_type": "example_of",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_006"
+    },
+    {
+      "from": "node_009",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_007"
+    },
+    {
+      "from": "node_010",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_008"
+    },
+    {
+      "from": "node_011",
+      "to": "node_010",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_009"
+    },
+    {
+      "from": "node_014",
+      "to": "node_010",
+      "edge_type": "requires",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_010"
+    },
+    {
+      "from": "node_012",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_011"
+    },
+    {
+      "from": "node_013",
+      "to": "node_012",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_012"
+    },
+    {
+      "from": "node_015",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_013"
+    },
+    {
+      "from": "node_016",
+      "to": "node_011",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_014"
+    },
+    {
+      "from": "node_017",
+      "to": "node_011",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_015"
+    },
+    {
+      "from": "node_018",
+      "to": "node_015",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_016"
+    },
+    {
+      "from": "node_019",
+      "to": "node_018",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_017"
+    },
+    {
+      "from": "node_020",
+      "to": "node_011",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_018"
+    },
+    {
+      "from": "node_021",
+      "to": "node_006",
+      "edge_type": "example_of",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_019"
+    },
+    {
+      "from": "node_022",
+      "to": "node_021",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_020"
+    },
+    {
+      "from": "node_023",
+      "to": "node_021",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_021"
+    },
+    {
+      "from": "node_024",
+      "to": "node_012",
+      "edge_type": "drives",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_022"
+    },
+    {
+      "from": "node_025",
+      "to": "node_024",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_023"
+    },
+    {
+      "from": "node_026",
+      "to": "node_024",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_024"
+    },
+    {
+      "from": "node_027",
+      "to": "node_024",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_025"
+    },
+    {
+      "from": "node_028",
+      "to": "node_024",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_026"
+    },
+    {
+      "from": "node_029",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_027"
+    },
+    {
+      "from": "node_030",
+      "to": "node_029",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_028"
+    },
+    {
+      "from": "node_031",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_029"
+    },
+    {
+      "from": "node_032",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_030"
+    },
+    {
+      "from": "node_033",
+      "to": "node_006",
+      "edge_type": "explains",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_031"
+    },
+    {
+      "from": "node_034",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_032"
+    },
+    {
+      "from": "node_035",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_033"
+    },
+    {
+      "from": "node_036",
+      "to": "node_035",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_034"
+    },
+    {
+      "from": "node_037",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_035"
+    },
+    {
+      "from": "node_038",
+      "to": "node_037",
+      "edge_type": "example_of",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_036"
+    },
+    {
+      "from": "node_039",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_037"
+    },
+    {
+      "from": "node_040",
+      "to": "node_039",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_038"
+    },
+    {
+      "from": "node_041",
+      "to": "node_006",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_039"
+    },
+    {
+      "from": "node_042",
+      "to": "node_041",
+      "edge_type": "details",
+      "justification_sentence": "[redacted: lecture transcript]",
+      "edge_source": "explicit",
+      "edge_id": "edge_040"
+    },
+    {
+      "from": "node_002",
+      "to": "node_006",
+      "edge_type": "drives",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.78,
+      "edge_id": "edge_041",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_003",
+      "to": "node_004",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.74,
+      "edge_id": "edge_042",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_005",
+      "to": "node_006",
+      "edge_type": "drives",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.8,
+      "edge_id": "edge_043",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_010",
+      "to": "node_012",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.7,
+      "edge_id": "edge_044",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_012",
+      "to": "node_013",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.86,
+      "edge_id": "edge_045",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_011",
+      "to": "node_016",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.66,
+      "edge_id": "edge_046",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_016",
+      "to": "node_014",
+      "edge_type": "drives",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.68,
+      "edge_id": "edge_047",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_015",
+      "to": "node_021",
+      "edge_type": "drives",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.6,
+      "edge_id": "edge_048",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_018",
+      "to": "node_015",
+      "edge_type": "details",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.72,
+      "edge_id": "edge_049",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_018",
+      "to": "node_019",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.84,
+      "edge_id": "edge_050",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_020",
+      "to": "node_021",
+      "edge_type": "drives",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.61,
+      "edge_id": "edge_051",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_021",
+      "to": "node_022",
+      "edge_type": "requires",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.83,
+      "edge_id": "edge_052",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_024",
+      "to": "node_026",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.85,
+      "edge_id": "edge_053",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_025",
+      "to": "node_024",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.8,
+      "edge_id": "edge_054",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_027",
+      "to": "node_025",
+      "edge_type": "contrasts",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.77,
+      "edge_id": "edge_055",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_028",
+      "to": "node_024",
+      "edge_type": "drives",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.58,
+      "edge_id": "edge_056",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_029",
+      "to": "node_030",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.86,
+      "edge_id": "edge_057",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_031",
+      "to": "node_035",
+      "edge_type": "details",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.79,
+      "edge_id": "edge_058",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_035",
+      "to": "node_036",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.82,
+      "edge_id": "edge_059",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_037",
+      "to": "node_038",
+      "edge_type": "example_of",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.9,
+      "edge_id": "edge_060",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_033",
+      "to": "node_039",
+      "edge_type": "details",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.63,
+      "edge_id": "edge_061",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_039",
+      "to": "node_040",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.81,
+      "edge_id": "edge_062",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_034",
+      "to": "node_031",
+      "edge_type": "contrasts",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.55,
+      "edge_id": "edge_063",
+      "edge_source": "inferred"
+    },
+    {
+      "from": "node_041",
+      "to": "node_042",
+      "edge_type": "explains",
+      "justification_span": "[redacted: lecture transcript]",
+      "confidence_score": 0.87,
+      "edge_id": "edge_064",
+      "edge_source": "inferred"
+    }
+  ],
+  "usage": {
+    "calls": 2,
+    "input_tokens": 33698,
+    "output_tokens": 5917,
+    "total_cost_usd": 0.1013,
+    "elapsed_s": 60.01,
+    "by_model": {
+      "gpt-5.2-2025-12-11": {
+        "calls": 2,
+        "input": 33698,
+        "output": 5917,
+        "cost_usd": 0.1013,
+        "price_in_per_M": 1.25,
+        "price_out_per_M": 10.0
+      }
+    }
+  },
+  "config": {
+    "include_strict": true,
+    "include_soft": true,
+    "knowledge_units_used": false,
+    "model": "gpt-5.2",
+    "strict_temperature": 0.1,
+    "soft_temperature": 0.2
+  }
+}

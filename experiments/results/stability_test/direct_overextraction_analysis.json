@@ -1,0 +1,360 @@
+{
+  "lexical_threshold": 0.45,
+  "pools": {
+    "sa": 762,
+    "ms": 634,
+    "di": 1717,
+    "gt": 68
+  },
+  "per_condition_means": {
+    "slide_anchored": {
+      "A": 0.5249,
+      "B": 0.4738,
+      "C": 0.0013,
+      "D": 0.0
+    },
+    "multi_stage": {
+      "A": 0.5665,
+      "B": 0.4323,
+      "C": 0.0,
+      "D": 0.0012
+    },
+    "direct": {
+      "A": 0.3691,
+      "B": 0.614,
+      "C": 0.0017,
+      "D": 0.0152
+    }
+  },
+  "per_condition_per_run": {
+    "slide_anchored": {
+      "A": [
+        0.619,
+        0.5,
+        0.4615,
+        0.5833,
+        0.5192,
+        0.5306,
+        0.625,
+        0.5686,
+        0.4792,
+        0.4902,
+        0.4921,
+        0.46,
+        0.5532,
+        0.5283,
+        0.463
+      ],
+      "B": [
+        0.381,
+        0.5,
+        0.5385,
+        0.4167,
+        0.4808,
+        0.4694,
+        0.375,
+        0.4314,
+        0.5208,
+        0.5098,
+        0.5079,
+        0.52,
+        0.4468,
+        0.4717,
+        0.537
+      ],
+      "C": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.02,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "multi_stage": {
+      "A": [
+        0.5366,
+        0.5789,
+        0.5091,
+        0.6098,
+        0.6571,
+        0.5357,
+        0.5745,
+        0.6364,
+        0.5366,
+        0.5349,
+        0.6038,
+        0.54,
+        0.6579,
+        0.4545,
+        0.5319
+      ],
+      "B": [
+        0.4634,
+        0.4211,
+        0.4727,
+        0.3902,
+        0.3429,
+        0.4643,
+        0.4255,
+        0.3636,
+        0.4634,
+        0.4651,
+        0.3962,
+        0.46,
+        0.3421,
+        0.5455,
+        0.4681
+      ],
+      "C": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0182,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "direct": {
+      "A": [
+        0.3636,
+        0.4111,
+        0.3909,
+        0.3909,
+        0.3304,
+        0.3636,
+        0.3306,
+        0.3818,
+        0.3302,
+        0.4034,
+        0.3805,
+        0.4298,
+        0.3246,
+        0.3548,
+        0.3504
+      ],
+      "B": [
+        0.6091,
+        0.5778,
+        0.5909,
+        0.5727,
+        0.6609,
+        0.6116,
+        0.6532,
+        0.6182,
+        0.6415,
+        0.5714,
+        0.6106,
+        0.5702,
+        0.6491,
+        0.6452,
+        0.6277
+      ],
+      "C": [
+        0.0,
+        0.0,
+        0.0091,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0094,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0073
+      ],
+      "D": [
+        0.0273,
+        0.0111,
+        0.0091,
+        0.0364,
+        0.0087,
+        0.0248,
+        0.0161,
+        0.0,
+        0.0189,
+        0.0252,
+        0.0088,
+        0.0,
+        0.0263,
+        0.0,
+        0.0146
+      ]
+    }
+  },
+  "samples": {
+    "slide_anchored": {
+      "A": [
+        "Infinite distribution and inventory as a digital market assumption",
+        "AI infrastructure investment requires rapid profit recoupment",
+        "Pricing and fair price discovery",
+        "Market willingness to pay is hard to estimate for new products",
+        "Price before product",
+        "Tiered pricing and enterprise price discrimination",
+        "Pricing complexity creates operational problems",
+        "Retention incentives can punish loyalty",
+        "Merchant systems must be navigable and explainable to humans",
+        "Shipping loss and fulfillment risk management",
+        "Legacy systems and batch processing constraints",
+        "Tax compliance risk in payment systems"
+      ],
+      "B": [
+        "Marginal cost near zero changes commerce models",
+        "Hyperscaler capital expenditure acceleration",
+        "Accounting depreciation mismatch with data center hardware lifetimes",
+        "Exponential price discovery algorithm",
+        "Lifetime value over one-time sale",
+        "Internet plumbing integrations are not robust enterprise architecture",
+        "Credit card chargebacks shift risk to retailers",
+        "Deliver only to registered card address as fraud mitigation",
+        "Call center metrics can create perverse incentives",
+        "Creepy line in personalization",
+        "Translation is not word substitution",
+        "Advertising-funded internet and attention-money tradeoff"
+      ],
+      "C": [
+        "Ad campaign metrics cost per click and click-through rate"
+      ],
+      "D": []
+    },
+    "multi_stage": {
+      "A": [
+        "Marketplace overload and discovery",
+        "Price-before-product strategy",
+        "Customer lifetime value and retention incentives",
+        "Customer selection and adoption segments",
+        "Legacy systems and batch processing constraints",
+        "System integration and brittle tooling",
+        "Payments, fraud, and chargeback risk",
+        "Tax and compliance in e-commerce",
+        "Customer service as competitive advantage",
+        "Call-centre escalation and incentive design",
+        "Personalisation and data-driven targeting",
+        "AI agents in customer operations and liability"
+      ],
+      "B": [
+        "Zero marginal cost commerce",
+        "Limits of infinite growth",
+        "Hyperscaler CapEx and AI infrastructure economics",
+        "Tech revolutions and financial bubbles",
+        "Fair pricing under zero marginal cost",
+        "Price discovery mechanisms",
+        "Tiered and freemium pricing",
+        "Differential pricing and luxury signalling",
+        "Operational complexity and pricing cruft",
+        "Fulfilment and shipping risk management",
+        "Support automation failure modes",
+        "Security–convenience tradeoffs in verification"
+      ],
+      "C": [],
+      "D": [
+        "Algorithmic pricing experiments (YC 2x until 80%)"
+      ]
+    },
+    "direct": {
+      "A": [
+        "Customer journey clarity",
+        "Technological revolutions and financial bubbles come in pairs",
+        "Recouping AI infrastructure investment",
+        "Market rate discovery problem",
+        "Pricing discovery mechanisms",
+        "Price before product",
+        "Retention vs acquisition incentives",
+        "Choosing customers in early-stage companies",
+        "Customer adoption curve",
+        "Pricing system complexity and customer navigation",
+        "Legacy system management",
+        "System integration and EDI"
+      ],
+      "B": [
+        "Marginal cost to zero",
+        "Infinite distribution",
+        "Infinite inventory",
+        "Infinite growth assumption",
+        "Intuitive fication",
+        "Emerging commerce models",
+        "Hyperscaler CapEx acceleration",
+        "Capitalisation mismatch with hardware lifetimes",
+        "Datacenter GPU and interconnect lifetime",
+        "Rising inference cost of new AI models",
+        "Fair price and pricing under near-zero marginal cost",
+        "Fair price depends on the customer"
+      ],
+      "C": [
+        "Zapier between Salesforce and community platform as fragility",
+        "Business model must recoup capital quickly",
+        "Internet age makes 10-year-old systems feel ancient"
+      ],
+      "D": [
+        "Internet age makes ten-year-old systems feel ancient",
+        "Test suite longevity",
+        "Millennium bug",
+        "Millennium bug as long-lived system failure",
+        "Millennium bug as long-lived system failure",
+        "Companies have bigger budgets than individuals",
+        "Test suite longevity",
+        "Millennium bug",
+        "DINKY",
+        "Millennium bug",
+        "Internet age makes ten-year-old systems feel ancient",
+        "Millennium bug as long-lived system failure"
+      ]
+    }
+  }
+}

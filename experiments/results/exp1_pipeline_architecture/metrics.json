@@ -1,0 +1,1238 @@
+{
+  "experiment_root": "experiments/exp1_pipeline_architecture",
+  "lecture": "ecommerce/lec4",
+  "per_condition": {
+    "direct_unified": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 112.0,
+          "sd": 3.4641,
+          "min": 108,
+          "max": 114,
+          "range": 6
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 83.6667,
+          "sd": 4.9329,
+          "min": 78,
+          "max": 87,
+          "range": 9
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 29.6667,
+          "sd": 5.5076,
+          "min": 26,
+          "max": 36,
+          "range": 10
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 2.6667,
+          "sd": 3.0551,
+          "min": 0,
+          "max": 6,
+          "range": 6
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0234,
+          "sd": 0.0268,
+          "min": 0.0,
+          "max": 0.0526,
+          "range": 0.0526
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.3335,
+          "sd": 0.0317,
+          "min": 0.2982,
+          "max": 0.3596,
+          "range": 0.0614
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.549,
+          "sd": 0.0225,
+          "min": 0.5294,
+          "max": 0.5735,
+          "range": 0.0441
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.4145,
+          "sd": 0.0287,
+          "min": 0.3815,
+          "max": 0.4331,
+          "range": 0.0516
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.3971,
+          "sd": 0.0295,
+          "min": 0.3676,
+          "max": 0.4265,
+          "range": 0.0589
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.4241,
+          "sd": 0.0349,
+          "min": 0.3906,
+          "max": 0.4603,
+          "range": 0.0697
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 7.0,
+          "sd": 0.0,
+          "min": 7,
+          "max": 7,
+          "range": 0
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.2586,
+          "sd": 0.0152,
+          "min": 0.2472,
+          "max": 0.2759
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.2495,
+          "sd": 0.03,
+          "min": 0.2278,
+          "max": 0.2838
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0681,
+          "sd": 0.0102,
+          "min": 0.0581,
+          "max": 0.0784
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0681,
+          "sd": 0.0102,
+          "min": 0.0581,
+          "max": 0.0784
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 32,
+          "items": [
+            "ai agent refunds and liability",
+            "ai agents in customer service and commerce",
+            "average revenue per customer",
+            "complexity creates problems",
+            "cost per acquisition",
+            "cost-plus pricing mindset",
+            "crm as customer experience infrastructure",
+            "customer adoption curve",
+            "deliver only to registered card address",
+            "differential pricing",
+            "disintermediation",
+            "documentation and test suites for long-lived systems",
+            "drm and loss of ownership in digital purchases",
+            "exponential price discovery algorithm",
+            "fair price depends on the customer",
+            "hyperscaler capex acceleration",
+            "lifetime value",
+            "marketplace fee incidence",
+            "more data does not mean better decisions",
+            "pen portraits",
+            "personalisation to increase retention",
+            "price before product",
+            "price tiering in enterprise",
+            "protecting brand online",
+            "security and convenience tradeoff",
+            "super users",
+            "technological revolutions and financial bubbles come in pairs",
+            "translation is not word substitution",
+            "travel agents displaced by online search",
+            "try before you buy",
+            "underpricing due to unknown market rate",
+            "weak security questions"
+          ]
+        },
+        "backbone": {
+          "size": 13,
+          "items": [
+            "ai agent refunds and liability",
+            "ai agents in customer service and commerce",
+            "complexity creates problems",
+            "crm as customer experience infrastructure",
+            "disintermediation",
+            "fair price depends on the customer",
+            "lifetime value",
+            "more data does not mean better decisions",
+            "personalisation to increase retention",
+            "price before product",
+            "price tiering in enterprise",
+            "security and convenience tradeoff",
+            "technological revolutions and financial bubbles come in pairs"
+          ]
+        },
+        "edge": {
+          "size": 4,
+          "items": [
+            [
+              "hyperscaler capex acceleration",
+              "technological revolutions and financial bubbles come in pairs",
+              "details"
+            ],
+            [
+              "personalisation to increase retention",
+              "lifetime value",
+              "drives"
+            ],
+            [
+              "security and convenience tradeoff",
+              "weak security questions",
+              "details"
+            ],
+            [
+              "travel agents displaced by online search",
+              "disintermediation",
+              "example_of"
+            ]
+          ]
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 140.9067,
+        "sd": 8.4881,
+        "min": 132.16,
+        "max": 149.11,
+        "range": 16.95
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.178,
+        "sd": 0.0015,
+        "min": 0.177,
+        "max": 0.1797,
+        "range": 0.0027
+      }
+    },
+    "direct_unified_soft": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 116.6667,
+          "sd": 13.6137,
+          "min": 106,
+          "max": 132,
+          "range": 26
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 133.6667,
+          "sd": 15.0444,
+          "min": 124,
+          "max": 151,
+          "range": 27
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 19.0,
+          "sd": 2.6458,
+          "min": 17,
+          "max": 22,
+          "range": 5
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 0.3333,
+          "sd": 0.5774,
+          "min": 0,
+          "max": 1,
+          "range": 1
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0031,
+          "sd": 0.0054,
+          "min": 0.0,
+          "max": 0.0094,
+          "range": 0.0094
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.353,
+          "sd": 0.0503,
+          "min": 0.3182,
+          "max": 0.4107,
+          "range": 0.0925
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.598,
+          "sd": 0.0473,
+          "min": 0.5441,
+          "max": 0.6324,
+          "range": 0.0883
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.443,
+          "sd": 0.0478,
+          "min": 0.411,
+          "max": 0.498,
+          "range": 0.087
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.4461,
+          "sd": 0.037,
+          "min": 0.4118,
+          "max": 0.4853,
+          "range": 0.0735
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.4728,
+          "sd": 0.0397,
+          "min": 0.4381,
+          "max": 0.5161,
+          "range": 0.078
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 7.0,
+          "sd": 0.0,
+          "min": 7,
+          "max": 7,
+          "range": 0
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.2698,
+          "sd": 0.0334,
+          "min": 0.2316,
+          "max": 0.2935
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 0.3146,
+          "sd": 0.0677,
+          "min": 0.2632,
+          "max": 0.3913
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0494,
+          "sd": 0.012,
+          "min": 0.0373,
+          "max": 0.0613
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0494,
+          "sd": 0.012,
+          "min": 0.0382,
+          "max": 0.0621
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0369,
+          "sd": 0.014,
+          "min": 0.0235,
+          "max": 0.0515
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 37,
+          "items": [
+            "advertising-funded internet",
+            "analytics can tell any story",
+            "average revenue per customer",
+            "bias in existing datasets",
+            "consulting rate negotiation story",
+            "cost per acquisition",
+            "cost-plus pricing mindset",
+            "crm as customer experience infrastructure",
+            "customer adoption curve",
+            "datacenter gpu and interconnect lifetime",
+            "differential pricing",
+            "documentation and test suites for long-lived systems",
+            "emerging commerce models at near-zero marginal cost",
+            "enterprise pricing aligned to approval thresholds",
+            "exponential price discovery algorithm",
+            "fair price depends on the customer",
+            "freemium and enterprise upsell ladder",
+            "hyperscaler capex acceleration",
+            "infinite distribution and inventory",
+            "infinite growth assumption in capitalism",
+            "internationalisation is culturally nuanced",
+            "more data does not mean better decisions",
+            "online clothing returns and sizing uncertainty",
+            "payment risk and chargebacks",
+            "personalisation to increase retention",
+            "predicting interaction patterns",
+            "price before product",
+            "price discovery for new products",
+            "price tiering in enterprise",
+            "security and convenience tradeoff",
+            "selling user data as monetisation",
+            "student discounts as retention strategy",
+            "supply chain advertising conflicts",
+            "tax and vat compliance risk",
+            "technological revolutions and financial bubbles come in pairs",
+            "try before you buy",
+            "underpricing due to unknown market rate"
+          ]
+        },
+        "backbone": {
+          "size": 18,
+          "items": [
+            "advertising-funded internet",
+            "analytics can tell any story",
+            "bias in existing datasets",
+            "cost per acquisition",
+            "crm as customer experience infrastructure",
+            "emerging commerce models at near-zero marginal cost",
+            "fair price depends on the customer",
+            "freemium and enterprise upsell ladder",
+            "infinite distribution and inventory",
+            "internationalisation is culturally nuanced",
+            "more data does not mean better decisions",
+            "payment risk and chargebacks",
+            "personalisation to increase retention",
+            "price before product",
+            "price discovery for new products",
+            "price tiering in enterprise",
+            "security and convenience tradeoff",
+            "tax and vat compliance risk"
+          ]
+        },
+        "edge": {
+          "size": 4,
+          "items": [
+            [
+              "analytics can tell any story",
+              "more data does not mean better decisions",
+              "details"
+            ],
+            [
+              "analytics can tell any story",
+              "more data does not mean better decisions",
+              "explains"
+            ],
+            [
+              "consulting rate negotiation story",
+              "underpricing due to unknown market rate",
+              "example_of"
+            ],
+            [
+              "cost-plus pricing mindset",
+              "price before product",
+              "contrasts"
+            ]
+          ]
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 234.81,
+        "sd": 41.6424,
+        "min": 199.8,
+        "max": 280.86,
+        "range": 81.06
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.2724,
+        "sd": 0.0266,
+        "min": 0.2523,
+        "max": 0.3026,
+        "range": 0.0503
+      }
+    },
+    "multi_stage": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 39.0,
+          "sd": 7.5498,
+          "min": 31,
+          "max": 46,
+          "range": 15
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 61.6667,
+          "sd": 12.3423,
+          "min": 48,
+          "max": 72,
+          "range": 24
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 4.0,
+          "sd": 5.1962,
+          "min": 1,
+          "max": 10,
+          "range": 9
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 0.3333,
+          "sd": 0.5774,
+          "min": 0,
+          "max": 1,
+          "range": 1
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0108,
+          "sd": 0.0186,
+          "min": 0.0,
+          "max": 0.0323,
+          "range": 0.0323
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.6395,
+          "sd": 0.061,
+          "min": 0.6,
+          "max": 0.7097,
+          "range": 0.1097
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.4216,
+          "sd": 0.0473,
+          "min": 0.3676,
+          "max": 0.4559,
+          "range": 0.0883
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.5047,
+          "sd": 0.0179,
+          "min": 0.4844,
+          "max": 0.5181,
+          "range": 0.0337
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 6.3333,
+          "sd": 0.5774,
+          "min": 6,
+          "max": 7,
+          "range": 1
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.1269,
+          "sd": 0.0331,
+          "min": 0.1,
+          "max": 0.1639
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0204,
+          "sd": 0.0236,
+          "min": 0.0,
+          "max": 0.0463
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0251,
+          "sd": 0.0338,
+          "min": 0.0,
+          "max": 0.0635
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0141,
+          "sd": 0.0122,
+          "min": 0.0,
+          "max": 0.0222
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 5,
+          "items": [
+            "customer selection and adoption curve",
+            "fair pricing and price discovery",
+            "hyperscaler capex and ai infrastructure economics",
+            "price-before-product strategy",
+            "pricing complexity and system cruft"
+          ]
+        },
+        "backbone": {
+          "size": 0,
+          "items": []
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 591.4833,
+        "sd": 532.7503,
+        "min": 263.09,
+        "max": 1206.17,
+        "range": 943.08
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.3402,
+        "sd": 0.0142,
+        "min": 0.3241,
+        "max": 0.3509,
+        "range": 0.0268
+      }
+    },
+    "multi_stage_refined": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 35.3333,
+          "sd": 2.5166,
+          "min": 33,
+          "max": 38,
+          "range": 5
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 18.0,
+          "sd": 14.4222,
+          "min": 6,
+          "max": 34,
+          "range": 28
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 21.0,
+          "sd": 11.7898,
+          "min": 8,
+          "max": 31,
+          "range": 23
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 17.0,
+          "sd": 15.1327,
+          "min": 0,
+          "max": 29,
+          "range": 29
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.4984,
+          "sd": 0.4392,
+          "min": 0.0,
+          "max": 0.8286,
+          "range": 0.8286
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.6112,
+          "sd": 0.0422,
+          "min": 0.5758,
+          "max": 0.6579,
+          "range": 0.0821
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.4461,
+          "sd": 0.0225,
+          "min": 0.4265,
+          "max": 0.4706,
+          "range": 0.0441
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.5157,
+          "sd": 0.03,
+          "min": 0.49,
+          "max": 0.5487,
+          "range": 0.0587
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 3.3333,
+          "sd": 1.5275,
+          "min": 2,
+          "max": 5,
+          "range": 3
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.1051,
+          "sd": 0.05,
+          "min": 0.0597,
+          "max": 0.1587
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0085,
+          "sd": 0.0148,
+          "min": 0.0,
+          "max": 0.0256
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0101,
+          "sd": 0.0175,
+          "min": 0.0,
+          "max": 0.0303
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 3,
+          "items": [
+            "disintermediation and value-chain power",
+            "drm and ownership limits in digital goods",
+            "hyperscaler capex and ai infrastructure economics"
+          ]
+        },
+        "backbone": {
+          "size": 0,
+          "items": []
+        },
+        "edge": {
+          "size": 0,
+          "items": []
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 283.7,
+        "sd": 9.9265,
+        "min": 272.28,
+        "max": 290.26,
+        "range": 17.98
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.3513,
+        "sd": 0.0075,
+        "min": 0.3427,
+        "max": 0.3558,
+        "range": 0.0131
+      }
+    },
+    "single_pass": {
+      "n_runs": 3,
+      "n_failed": 0,
+      "metrics": {
+        "n_nodes": {
+          "n": 3,
+          "mean": 148.0,
+          "sd": 10.8167,
+          "min": 136,
+          "max": 157,
+          "range": 21
+        },
+        "n_edges": {
+          "n": 3,
+          "mean": 99.0,
+          "sd": 4.3589,
+          "min": 94,
+          "max": 102,
+          "range": 8
+        },
+        "n_components": {
+          "n": 3,
+          "mean": 49.0,
+          "sd": 12.1655,
+          "min": 35,
+          "max": 57,
+          "range": 22
+        },
+        "n_orphans": {
+          "n": 3,
+          "mean": 12.6667,
+          "sd": 4.9329,
+          "min": 7,
+          "max": 16,
+          "range": 9
+        },
+        "orphan_pct": {
+          "n": 3,
+          "mean": 0.0843,
+          "sd": 0.0289,
+          "min": 0.0515,
+          "max": 0.106,
+          "range": 0.0545
+        },
+        "p_at_45": {
+          "n": 3,
+          "mean": 0.243,
+          "sd": 0.018,
+          "min": 0.2252,
+          "max": 0.2611,
+          "range": 0.0359
+        },
+        "r_at_45": {
+          "n": 3,
+          "mean": 0.3529,
+          "sd": 0.0147,
+          "min": 0.3382,
+          "max": 0.3676,
+          "range": 0.0294
+        },
+        "f1_at_45": {
+          "n": 3,
+          "mean": 0.2876,
+          "sd": 0.0154,
+          "min": 0.2704,
+          "max": 0.3002,
+          "range": 0.0298
+        },
+        "backbone_recall": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "backbone_f1": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "range": 0.0
+        },
+        "edge_type_diversity": {
+          "n": 3,
+          "mean": 7.0,
+          "sd": 0.0,
+          "min": 7,
+          "max": 7,
+          "range": 0
+        }
+      },
+      "pairwise": {
+        "node_overlap": {
+          "n_pairs": 3,
+          "mean": 0.314,
+          "sd": 0.065,
+          "min": 0.2699,
+          "max": 0.3886
+        },
+        "backbone_overlap": {
+          "n_pairs": 3,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "edge_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0898,
+          "sd": 0.0116,
+          "min": 0.0829,
+          "max": 0.1033
+        },
+        "explicit_overlap": {
+          "n_pairs": 3,
+          "mean": 0.0898,
+          "sd": 0.0116,
+          "min": 0.0829,
+          "max": 0.1033
+        },
+        "inferred_overlap": {
+          "n_pairs": 3,
+          "mean": 1.0,
+          "sd": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        }
+      },
+      "n_way_intersection": {
+        "node": {
+          "size": 47,
+          "items": [
+            "agent-to-agent negotiation",
+            "ai agents in customer service",
+            "bias in existing datasets",
+            "brand awareness",
+            "brand protection online",
+            "click-through rate (ctr)",
+            "communities and user-generated content",
+            "content moderation / appropriate speech",
+            "cost per acquisition (cpa)",
+            "cost per action",
+            "cost per click (cpc)",
+            "credit card chargebacks",
+            "customer adoption curve",
+            "customer journey",
+            "customer relationship ownership",
+            "differential pricing",
+            "disintermediation",
+            "early adopters",
+            "early majority",
+            "fair price",
+            "freemium as avoiding sales force",
+            "generic vs specific keywords",
+            "gpu/interconnect lifespan (3 years)",
+            "higher security requirements",
+            "higher uptime requirements",
+            "hyperscaler capex spending",
+            "infinite distribution",
+            "infinite growth potential (capitalism assumption)",
+            "infinite inventory",
+            "infinite markets (assumption)",
+            "innovators",
+            "legacy systems",
+            "life-stage segmentation",
+            "loyalty not rewarded dynamic",
+            "online clothing returns problem",
+            "platform fees (apple 30%)",
+            "selling user data",
+            "subscriptions / licensing",
+            "supply chain advertising conflicts",
+            "tax compliance (vat)",
+            "technological revolutions and financial bubbles",
+            "traditional supply chain margins",
+            "translation nuance",
+            "travel agent decline",
+            "try before you buy",
+            "twitter sxsw monitors example",
+            "vetting process"
+          ]
+        },
+        "backbone": {
+          "size": 0,
+          "items": []
+        },
+        "edge": {
+          "size": 6,
+          "items": [
+            [
+              "customer adoption curve",
+              "early adopters",
+              "details"
+            ],
+            [
+              "customer adoption curve",
+              "early majority",
+              "details"
+            ],
+            [
+              "customer adoption curve",
+              "innovators",
+              "details"
+            ],
+            [
+              "disintermediation",
+              "traditional supply chain margins",
+              "explains"
+            ],
+            [
+              "hyperscaler capex spending",
+              "technological revolutions and financial bubbles",
+              "explains"
+            ],
+            [
+              "travel agent decline",
+              "disintermediation",
+              "example_of"
+            ]
+          ]
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 76.3267,
+        "sd": 5.2154,
+        "min": 71.78,
+        "max": 82.02,
+        "range": 10.24
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.1004,
+        "sd": 0.004,
+        "min": 0.096,
+        "max": 0.1039,
+        "range": 0.0079
+      }
+    }
+  },
+  "between": {
+    "direct_unified_vs_direct_unified_soft": {
+      "welch_t_F1": {
+        "t": -0.8839,
+        "df": 3.27,
+        "p_two_sided": 0.43686
+      },
+      "f_test_F1_variances": {
+        "F": 2.7826,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.52873,
+        "var_a": 0.000823,
+        "var_b": 0.002289
+      },
+      "mean_F1_a": 0.4145,
+      "mean_F1_b": 0.443,
+      "sd_F1_a": 0.0287,
+      "sd_F1_b": 0.0478
+    },
+    "direct_unified_vs_multi_stage": {
+      "welch_t_F1": {
+        "t": -4.6209,
+        "df": 3.35,
+        "p_two_sided": 0.01491
+      },
+      "f_test_F1_variances": {
+        "F": 2.5736,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.55966,
+        "var_a": 0.000823,
+        "var_b": 0.00032
+      },
+      "mean_F1_a": 0.4145,
+      "mean_F1_b": 0.5047,
+      "sd_F1_a": 0.0287,
+      "sd_F1_b": 0.0179
+    },
+    "direct_unified_vs_multi_stage_refined": {
+      "welch_t_F1": {
+        "t": -4.2225,
+        "df": 3.99,
+        "p_two_sided": 0.01351
+      },
+      "f_test_F1_variances": {
+        "F": 1.0949,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.9547,
+        "var_a": 0.000823,
+        "var_b": 0.000901
+      },
+      "mean_F1_a": 0.4145,
+      "mean_F1_b": 0.5157,
+      "sd_F1_a": 0.0287,
+      "sd_F1_b": 0.03
+    },
+    "direct_unified_vs_single_pass": {
+      "welch_t_F1": {
+        "t": 6.748,
+        "df": 3.07,
+        "p_two_sided": 0.00618
+      },
+      "f_test_F1_variances": {
+        "F": 3.4513,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.4493,
+        "var_a": 0.000823,
+        "var_b": 0.000238
+      },
+      "mean_F1_a": 0.4145,
+      "mean_F1_b": 0.2876,
+      "sd_F1_a": 0.0287,
+      "sd_F1_b": 0.0154
+    },
+    "direct_unified_soft_vs_multi_stage": {
+      "welch_t_F1": {
+        "t": -2.0924,
+        "df": 2.55,
+        "p_two_sided": 0.14344
+      },
+      "f_test_F1_variances": {
+        "F": 7.1614,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.24506,
+        "var_a": 0.002289,
+        "var_b": 0.00032
+      },
+      "mean_F1_a": 0.443,
+      "mean_F1_b": 0.5047,
+      "sd_F1_a": 0.0478,
+      "sd_F1_b": 0.0179
+    },
+    "direct_unified_soft_vs_multi_stage_refined": {
+      "welch_t_F1": {
+        "t": -2.2306,
+        "df": 3.36,
+        "p_two_sided": 0.1023
+      },
+      "f_test_F1_variances": {
+        "F": 2.5415,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.56474,
+        "var_a": 0.002289,
+        "var_b": 0.000901
+      },
+      "mean_F1_a": 0.443,
+      "mean_F1_b": 0.5157,
+      "sd_F1_a": 0.0478,
+      "sd_F1_b": 0.03
+    },
+    "direct_unified_soft_vs_single_pass": {
+      "welch_t_F1": {
+        "t": 5.3529,
+        "df": 2.41,
+        "p_two_sided": 0.02177
+      },
+      "f_test_F1_variances": {
+        "F": 9.6038,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.18861,
+        "var_a": 0.002289,
+        "var_b": 0.000238
+      },
+      "mean_F1_a": 0.443,
+      "mean_F1_b": 0.2876,
+      "sd_F1_a": 0.0478,
+      "sd_F1_b": 0.0154
+    },
+    "multi_stage_vs_multi_stage_refined": {
+      "welch_t_F1": {
+        "t": -0.5471,
+        "df": 3.26,
+        "p_two_sided": 0.61957
+      },
+      "f_test_F1_variances": {
+        "F": 2.8178,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.52386,
+        "var_a": 0.00032,
+        "var_b": 0.000901
+      },
+      "mean_F1_a": 0.5047,
+      "mean_F1_b": 0.5157,
+      "sd_F1_a": 0.0179,
+      "sd_F1_b": 0.03
+    },
+    "multi_stage_vs_single_pass": {
+      "welch_t_F1": {
+        "t": 15.9165,
+        "df": 3.92,
+        "p_two_sided": 0.0001
+      },
+      "f_test_F1_variances": {
+        "F": 1.341,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.85432,
+        "var_a": 0.00032,
+        "var_b": 0.000238
+      },
+      "mean_F1_a": 0.5047,
+      "mean_F1_b": 0.2876,
+      "sd_F1_a": 0.0179,
+      "sd_F1_b": 0.0154
+    },
+    "multi_stage_refined_vs_single_pass": {
+      "welch_t_F1": {
+        "t": 11.7064,
+        "df": 2.99,
+        "p_two_sided": 0.00136
+      },
+      "f_test_F1_variances": {
+        "F": 3.7788,
+        "df1": 2,
+        "df2": 2,
+        "p_two_sided": 0.41851,
+        "var_a": 0.000901,
+        "var_b": 0.000238
+      },
+      "mean_F1_a": 0.5157,
+      "mean_F1_b": 0.2876,
+      "sd_F1_a": 0.03,
+      "sd_F1_b": 0.0154
+    }
+  }
+}

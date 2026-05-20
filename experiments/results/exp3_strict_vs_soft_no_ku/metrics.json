@@ -1,0 +1,215 @@
+{
+  "frozen_n_nodes": 42,
+  "per_condition": {
+    "strict_only_no_ku": {
+      "n_runs": 3,
+      "edge_counts": {
+        "strict": {
+          "n": 3,
+          "mean": 38.3333,
+          "sd": 2.8868,
+          "min": 35,
+          "max": 40
+        },
+        "soft": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "total": {
+          "n": 3,
+          "mean": 38.3333,
+          "sd": 2.8868,
+          "min": 35,
+          "max": 40
+        }
+      },
+      "n_components": {
+        "n": 3,
+        "mean": 4.3333,
+        "sd": 4.0415,
+        "min": 2,
+        "max": 9
+      },
+      "pairwise_edge_overlap": {
+        "exact": {
+          "n": 3,
+          "mean": 0.2734,
+          "sd": 0.0758,
+          "min": 0.1905,
+          "max": 0.3393
+        },
+        "type_agnostic_dir": {
+          "n": 3,
+          "mean": 0.3858,
+          "sd": 0.0607,
+          "min": 0.3393,
+          "max": 0.4545
+        },
+        "type_agnostic_undir": {
+          "n": 3,
+          "mean": 0.5095,
+          "sd": 0.0503,
+          "min": 0.4545,
+          "max": 0.5532
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 24.5533,
+        "sd": 1.2199,
+        "min": 23.48,
+        "max": 25.88
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.0488,
+        "sd": 0.0014,
+        "min": 0.0476,
+        "max": 0.0504
+      }
+    },
+    "soft_only_no_ku": {
+      "n_runs": 3,
+      "edge_counts": {
+        "strict": {
+          "n": 3,
+          "mean": 0.0,
+          "sd": 0.0,
+          "min": 0,
+          "max": 0
+        },
+        "soft": {
+          "n": 3,
+          "mean": 33.0,
+          "sd": 1.0,
+          "min": 32,
+          "max": 34
+        },
+        "total": {
+          "n": 3,
+          "mean": 33.0,
+          "sd": 1.0,
+          "min": 32,
+          "max": 34
+        }
+      },
+      "n_components": {
+        "n": 3,
+        "mean": 9.3333,
+        "sd": 0.5774,
+        "min": 9,
+        "max": 10
+      },
+      "pairwise_edge_overlap": {
+        "exact": {
+          "n": 3,
+          "mean": 0.4455,
+          "sd": 0.0206,
+          "min": 0.4255,
+          "max": 0.4667
+        },
+        "type_agnostic_dir": {
+          "n": 3,
+          "mean": 0.6375,
+          "sd": 0.0497,
+          "min": 0.5952,
+          "max": 0.6923
+        },
+        "type_agnostic_undir": {
+          "n": 3,
+          "mean": 0.7396,
+          "sd": 0.0831,
+          "min": 0.675,
+          "max": 0.8333
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 45.2533,
+        "sd": 0.8746,
+        "min": 44.68,
+        "max": 46.26
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.0577,
+        "sd": 0.0012,
+        "min": 0.0564,
+        "max": 0.0588
+      }
+    },
+    "both_no_ku": {
+      "n_runs": 3,
+      "edge_counts": {
+        "strict": {
+          "n": 3,
+          "mean": 38.0,
+          "sd": 4.3589,
+          "min": 33,
+          "max": 41
+        },
+        "soft": {
+          "n": 3,
+          "mean": 22.3333,
+          "sd": 1.5275,
+          "min": 21,
+          "max": 24
+        },
+        "total": {
+          "n": 3,
+          "mean": 60.3333,
+          "sd": 5.5076,
+          "min": 54,
+          "max": 64
+        }
+      },
+      "n_components": {
+        "n": 3,
+        "mean": 2.3333,
+        "sd": 2.3094,
+        "min": 1,
+        "max": 5
+      },
+      "pairwise_edge_overlap": {
+        "exact": {
+          "n": 3,
+          "mean": 0.3647,
+          "sd": 0.0925,
+          "min": 0.2717,
+          "max": 0.4568
+        },
+        "type_agnostic_dir": {
+          "n": 3,
+          "mean": 0.4766,
+          "sd": 0.0689,
+          "min": 0.4286,
+          "max": 0.5556
+        },
+        "type_agnostic_undir": {
+          "n": 3,
+          "mean": 0.5156,
+          "sd": 0.1102,
+          "min": 0.4507,
+          "max": 0.6429
+        }
+      },
+      "wall_time_s": {
+        "n": 3,
+        "mean": 59.6767,
+        "sd": 0.2996,
+        "min": 59.43,
+        "max": 60.01
+      },
+      "cost_usd": {
+        "n": 3,
+        "mean": 0.0988,
+        "sd": 0.0027,
+        "min": 0.0959,
+        "max": 0.1013
+      }
+    }
+  }
+}
