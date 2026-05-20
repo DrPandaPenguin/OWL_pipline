@@ -10,10 +10,10 @@ __pycache__/
 .venv/
 venv/
 
-# Outputs (재생성 가능)
-outputs/
-graphs/
-results/
+# Outputs (재생성 가능) — root only, experiments/results는 커밋함
+/outputs/
+/graphs/
+/results/
 
 # Data (저작권)
 data/

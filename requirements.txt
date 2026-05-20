@@ -14,3 +14,8 @@ matplotlib>=3.5.0
 
 # Optional — for .env file loading
 python-dotenv>=1.0.0
+
+# Experiments only (experiments/ — segmentation variants)
+scikit-learn>=1.3.0          # TF-IDF segmentation
+sentence-transformers>=2.2.0  # embedding segmentation
+numpy>=1.24.0

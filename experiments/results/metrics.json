@@ -1,0 +1,7 @@
+{
+  "node_overlap_pct": 61.81818181818181,
+  "backbone_overlap_pct": 87.5,
+  "edge_overlap_pct": 23.52941176470588,
+  "explicit_edge_overlap_pct": 21.568627450980394,
+  "inferred_edge_overlap_pct": 4.761904761904762
+}

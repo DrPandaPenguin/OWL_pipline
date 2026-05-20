@@ -8,15 +8,15 @@ _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from src.prompt_loader import load_prompt
-from src.extract_nodes import (
+from experiments.prompt_loader import load_prompt
+from experiments.extract_nodes import (
     extract_knowledge_units,
     add_ids_and_timestamps,
     construct_nodes,
     process_nodes,
     compute_orphan_kus,
 )
-from src.extract_edges import extract_edges, refine_edges
+from experiments.extract_edges import extract_edges, refine_edges
 
 # Registry
 _PIPELINES = {}
@@ -1145,7 +1145,7 @@ def pipeline_slide_no_ku(transcript: str, config):
     }
 
     # ---- Step 4: Grounded edge extraction from slide segments ----
-    from src.extract_edges import _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to
+    from experiments.extract_edges import _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to
 
     edge_types = config.get("edge_types", _DEFAULT_EDGE_TYPES)
     types_section = _build_edge_types_section(edge_types)
@@ -1191,7 +1191,7 @@ def pipeline_slide_no_ku(transcript: str, config):
     timing["grounded_edge_extraction"] = round(time.time() - t2, 2)
 
     # ---- Step 5: Soft edge extraction from full transcript ----
-    from src.extract_edges import extract_edges_soft
+    from experiments.extract_edges import extract_edges_soft
 
     t3 = time.time()
     soft_edges = extract_edges_soft(transcript, nodes, grounded_edges, config)
@@ -1480,7 +1480,7 @@ def pipeline_slide_anchored(transcript: str, config):
     nodes = _compute_ordering(nodes)
 
     # ---- Step 4a: Edge extraction Pass 1 — Grounded/Explicit ----
-    from src.extract_edges import (
+    from experiments.extract_edges import (
         _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to,
     )
     edge_model = config.get("strict_model", model)
@@ -1987,7 +1987,7 @@ def pipeline_slide_anchored_full(transcript: str, config):
     nodes = _compute_ordering(nodes)
 
     # ---- Step 3a: Edge extraction Pass 1 — Grounded/Strict ----
-    from src.extract_edges import (
+    from experiments.extract_edges import (
         _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to,
     )
     edge_types = config.get("edge_types", _DEFAULT_EDGE_TYPES)
@@ -2505,7 +2505,7 @@ def _extract_mini_graph(
         parent_label = n.pop("_parent_label", "")
         n["parent_id"] = _resolve_parent_id(parent_label, nodes) if parent_label else None
 
-    from src.extract_edges import _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to
+    from experiments.extract_edges import _DEFAULT_EDGE_TYPES, _build_edge_types_section, _normalize_edge_from_to
 
     edge_types = config.get("edge_types", _DEFAULT_EDGE_TYPES)
     types_section = _build_edge_types_section(edge_types)
@@ -2616,7 +2616,7 @@ def _add_cross_part_edges_llm(
     client, config,
 ):
     """Add cross-PART edges via LLM. transcript=None means nodes-only"""
-    from src.extract_edges import _DEFAULT_EDGE_TYPES, _build_edge_types_section
+    from experiments.extract_edges import _DEFAULT_EDGE_TYPES, _build_edge_types_section
 
     model = config.get("soft_model", config.get("node_model", "gpt-4.1"))
     edge_types = config.get("edge_types", _DEFAULT_EDGE_TYPES)
