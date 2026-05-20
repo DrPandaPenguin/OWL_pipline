@@ -41,7 +41,7 @@ which depend on knowledge-unit and strict-edge logic not present in the producti
 
 | Module | Responsibility |
 |---|---|
-| `pipelines.py` | All pipeline variants (single-pass, multi-stage, slide-anchored, segmentation) |
+| `pipelines.py` | Cited pipeline variants (single_pass, multi_stage, direct, slide_anchored) |
 | `extract_nodes.py` | Knowledge-unit node extraction (used by V1/V2 variants) |
 | `extract_edges.py` | Full edge extraction (grounded, soft, refinement) |
 | `config.py` | Experiment matrix — which conditions to run |

@@ -3,7 +3,7 @@ import copy
 
 DEFAULT_CONFIG = {
  # --- Pipeline method ---
-    "pipeline": "multi_stage",          # "multi_stage" | "single_pass" | "slide_structure" | "multi_stage_refined"
+    "pipeline": "slide_anchored",          # "slide_anchored" | "multi_stage" | "single_pass" | "direct"
 
  # --- Phase 1: KU extraction ---
     "ku_model": "gpt-5.2",
@@ -73,10 +73,6 @@ EXPERIMENTS = {
         "pipeline": "single_pass",
         "group": "exp1_single_vs_multi",
     },
-    "exp1_refined": {
-        "pipeline": "multi_stage_refined",
-        "group": "exp1_single_vs_multi",
-    },
 
  # Exp 2: KU Method
     "exp2_atomic": {
@@ -130,15 +126,6 @@ EXPERIMENTS = {
  # Exp 5: Slide structure (requires slide_text override at runtime)
  # Run with: python -m experiments.run_experiment exp5_slide_structure
  # (slide_text must be injected via config override or set here)
-    "exp5_slide_structure": {
-        "pipeline": "slide_structure",
-        "slide_text": None,            # set to actual slide content at runtime
-        "group": "exp5_pipeline_variants",
-    },
-    "exp5_refined": {
-        "pipeline": "multi_stage_refined",
-        "group": "exp5_pipeline_variants",
-    },
     "exp5_multi_stage": {
         "pipeline": "multi_stage",
         "group": "exp5_pipeline_variants",
@@ -153,27 +140,8 @@ EXPERIMENTS = {
         "pipeline": "multi_stage",
         "group": "exp6_slide_vs_ku",
     },
-    "exp6_multi_stage_refined": {
-        "pipeline": "multi_stage_refined",
-        "group": "exp6_slide_vs_ku",
-    },
-    "exp6_slide_with_ku": {
-        "pipeline": "slide_structure",
-        "slide_text": None,          # inject at runtime
-        "group": "exp6_slide_vs_ku",
-    },
-    "exp6_slide_no_ku": {
-        "pipeline": "slide_no_ku",
-        "slide_text": None,          # inject at runtime
-        "group": "exp6_slide_vs_ku",
-    },
     "exp6_slide_anchored": {
         "pipeline": "slide_anchored",
-        "slide_text": None,          # inject at runtime
-        "group": "exp6_slide_vs_ku",
-    },
-    "exp6_slide_anchored_full": {
-        "pipeline": "slide_anchored_full",
         "slide_text": None,          # inject at runtime
         "group": "exp6_slide_vs_ku",
     },
@@ -203,26 +171,6 @@ EXPERIMENTS = {
  # Baseline: slide_anchored (no segmentation, full transcript)
     "exp7_baseline": {
         "pipeline": "slide_anchored",
-        "slide_text": None,
-        "group": "exp7_segmentation",
-    },
-    "exp7_seg_tfidf": {
-        "pipeline": "segmented_tfidf_c",
-        "slide_text": None,
-        "group": "exp7_segmentation",
-    },
-    "exp7_seg_fuzzy": {
-        "pipeline": "segmented_fuzzy_c",
-        "slide_text": None,
-        "group": "exp7_segmentation",
-    },
-    "exp7_seg_embedding": {
-        "pipeline": "segmented_emb_c",
-        "slide_text": None,
-        "group": "exp7_segmentation",
-    },
-    "exp7_seg_llm": {
-        "pipeline": "segmented_llm_c",
         "slide_text": None,
         "group": "exp7_segmentation",
     },
@@ -363,21 +311,6 @@ EXPERIMENTS = {
  # Exp 8: Merge strategy comparison
  # Research question: which merge strategy produces better cross-PART edges?
  # Fixed segmentation: TF-IDF (cheapest, no LLM call for segmentation).
-    "exp8_merge_a": {
-        "pipeline": "segmented_tfidf_a",
-        "slide_text": None,
-        "group": "exp8_merge_strategy",
-    },
-    "exp8_merge_b": {
-        "pipeline": "segmented_tfidf_b",
-        "slide_text": None,
-        "group": "exp8_merge_strategy",
-    },
-    "exp8_merge_c": {
-        "pipeline": "segmented_tfidf_c",
-        "slide_text": None,
-        "group": "exp8_merge_strategy",
-    },
 }
 
 

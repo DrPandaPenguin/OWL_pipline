@@ -30,7 +30,7 @@ owl-pipeline/
 │   ├── prompt_loader.py        loads prompts from prompts/
 │   └── visualize_graph.py      static PNG (matplotlib CLI)
 ├── experiments/         evaluation / comparison study (self-contained)
-│   ├── pipelines.py            20 pipeline variants (8 main + 12 segmentation)
+│   ├── pipelines.py            4 pipeline variants (single_pass, multi_stage, direct, slide_anchored)
 │   ├── extract_nodes.py        KU extraction (used by V1/V2 variants)
 │   ├── extract_edges.py        full edge extraction (strict + soft + refine)
 │   ├── config.py               experiment matrix
@@ -53,9 +53,9 @@ owl-pipeline/
 | Group | Code | Comment | Blank | Total |
 |---|---:|---:|---:|---:|
 | `src/` (production) | 1,364 | 54 | 281 | 1,699 |
-| `experiments/` (evaluation) | 4,078 | 279 | 809 | 5,166 |
+| `experiments/` (evaluation) | — | — | — | 3,619 |
 | `dash_app.py` + `run_graph.py` | 1,256 | 89 | 194 | 1,539 |
-| **Total (submission)** | **6,698** | — | — | **8,404** |
+| **Total (submission, viewer 제외)** | — | — | — | **6,857** |
 | `viewer.py` (excluded) | 682 | 32 | 103 | 817 |
 
 Excluded from line count: libraries, generated outputs, dead code already removed.
